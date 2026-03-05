@@ -75,15 +75,17 @@
 
         /* LOGO MARK */
         .gate-logo {
-            width: 72px;
-            height: 72px;
+            width: 80px;
+            height: 80px;
             margin: 0 auto 40px;
             opacity: 0;
             animation: fadeIn 0.8s var(--ease-out) 0.1s forwards;
         }
-        .gate-logo svg {
+        .gate-logo img {
             width: 100%;
             height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
         }
 
         /* BRAND LINE */
@@ -289,14 +291,7 @@
         <div class="gate-content" id="gate-content">
             <!-- LOGO -->
             <div class="gate-logo">
-                <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="36" cy="36" r="34" stroke="#D48A3C" stroke-width="1.5" opacity="0.3"/>
-                    <g transform="translate(36,32)">
-                        <ellipse cx="-12" cy="0" rx="7" ry="12" stroke="#D48A3C" stroke-width="1.5" fill="none" transform="rotate(-10)"/>
-                        <ellipse cx="0" cy="0" rx="7" ry="13" stroke="#D48A3C" stroke-width="1.5" fill="none"/>
-                        <ellipse cx="12" cy="0" rx="7" ry="12" stroke="#D48A3C" stroke-width="1.5" fill="none" transform="rotate(10)"/>
-                    </g>
-                </svg>
+                <img src="img/THEORY%20COFFEE%20ROASTERS%20TAKES%20THE%20PODIUM%20AT%20THE%20US%20COFFEE%20ROASTING%20CHAM.png" alt="Theory Coffee Roasters">
             </div>
 
             <div class="gate-brand">Theory Coffee Roasters</div>

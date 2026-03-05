@@ -361,6 +361,50 @@
             .merch-grid { grid-template-columns: 1fr; }
         }
 
+        /* MERCH GALLERY */
+        .merch-gallery {
+            padding: 100px 48px;
+            background: var(--charcoal);
+        }
+
+        .merch-gallery-label {
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 48px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .merch-gallery-label::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.08); max-width: 60px; }
+
+        .merch-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            max-width: 1000px;
+        }
+
+        .merch-gallery-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+            background: var(--black);
+            position: relative;
+        }
+
+        .merch-gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .merch-gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .merch-gallery { padding: 72px 24px; }
+            .merch-gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        }
+
         /* ═══════════════════════════════════════════════════════════════
            PACKAGING RULES
            ═══════════════════════════════════════════════════════════════ */
@@ -442,13 +486,13 @@
             <svg viewBox="0 0 16 16" fill="none"><path d="M10 4l-4 4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Brand House
         </a>
-        <span class="topbar-chapter">Chapter 06</span>
+        <span class="topbar-chapter">Chapter 04</span>
     </nav>
 
     <!-- CHAPTER HERO -->
     <section class="chapter-hero">
         <div class="chapter-hero-inner">
-            <div class="chapter-num">06</div>
+            <div class="chapter-num">04</div>
             <h1 class="chapter-title">Packaging + Merch</h1>
             <p class="chapter-intro">Every bag, cup, and t-shirt is a brand touchpoint. They should all feel like Theory.</p>
         </div>
@@ -573,6 +617,43 @@
         </div>
     </div>
 
+    <!-- MERCH GALLERY -->
+    <div class="merch-gallery reveal">
+        <div class="merch-gallery-label">Merch Gallery</div>
+        <div class="merch-gallery-grid">
+            <div class="merch-gallery-item">
+                <img src="merch/Theory Coffee Striped Baseball Hat.jpg" alt="Theory Coffee Striped Baseball Hat">
+            </div>
+            <div class="merch-gallery-item">
+                <img src="merch/Theory%20Coffee%20Striped%20Baseball%20Hat%20%E2%80%93%20Theory%20Coffee%20Roasters.png" alt="Theory Coffee Striped Baseball Hat">
+            </div>
+            <div class="merch-gallery-item">
+                <img src="merch/Theory%20Coffee%20Striped%20Baseball%20Hat%20%E2%80%93%20Theory%20Coffee%20Roasters%20(2).png" alt="Theory Coffee Striped Baseball Hat - angle 2">
+            </div>
+            <div class="merch-gallery-item">
+                <img src="merch/Theory%20Coffee%20Striped%20Baseball%20Hat%20%E2%80%93%20Theory%20Coffee%20Roasters%20(3).png" alt="Theory Coffee Striped Baseball Hat - angle 3">
+            </div>
+            <div class="merch-gallery-item">
+                <img src="merch/Theory%20Coffee%20Striped%20Baseball%20Hat%20%E2%80%93%20Theory%20Coffee%20Roasters%20(4).png" alt="Theory Coffee Striped Baseball Hat - detail">
+            </div>
+            <div class="merch-gallery-item">
+                <img src="merch/Theory%20Coffee%20Striped%20Baseball%20Hat%20%E2%80%93%20Theory%20Coffee%20Roasters%20(5).png" alt="Theory Coffee Striped Baseball Hat - side">
+            </div>
+            <div class="merch-gallery-item">
+                <img src="merch/Theory%20Coffee%20Striped%20Baseball%20Hat%20%E2%80%93%20Theory%20Coffee%20Roasters%20(6).png" alt="Theory Coffee Striped Baseball Hat - back">
+            </div>
+            <div class="merch-gallery-item">
+                <img src="merch/Theory%20Coffee%20Striped%20Baseball%20Hat%20%E2%80%93%20Theory%20Coffee%20Roasters%20(7).png" alt="Theory Coffee Striped Baseball Hat - top">
+            </div>
+            <div class="merch-gallery-item">
+                <img src="merch/Theory%20Mini%20Tote%20-%20Portafilter%20Design.png" alt="Theory Mini Tote - Portafilter Design">
+            </div>
+            <div class="merch-gallery-item">
+                <img src="merch/Theory%20Mini%20Tote%20-%20Portafilter%20Design%20(2).png" alt="Theory Mini Tote - Portafilter Design alt">
+            </div>
+        </div>
+    </div>
+
     <!-- PACKAGING RULES -->
     <div class="rules-section reveal">
         <div class="rules-label">Packaging Guidelines</div>
@@ -605,13 +686,13 @@
 
     <!-- CHAPTER NAV -->
     <nav class="chapter-nav">
-        <a href="cafe-experience.html" class="chapter-nav-link">
+        <a href="photography.html" class="chapter-nav-link">
             <div class="chapter-nav-dir">Previous</div>
-            <div class="chapter-nav-title">05 — Café Experience</div>
+            <div class="chapter-nav-title">03 — Photography</div>
         </a>
-        <a href="digital-social.html" class="chapter-nav-link chapter-nav-link--next">
+        <a href="coffee-origins.html" class="chapter-nav-link chapter-nav-link--next">
             <div class="chapter-nav-dir">Next Chapter</div>
-            <div class="chapter-nav-title">07 — Digital + Social</div>
+            <div class="chapter-nav-title">05 — Coffee Origins</div>
         </a>
     </nav>
 
