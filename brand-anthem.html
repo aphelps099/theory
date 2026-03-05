@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Anthem — Theory Coffee Roasters</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --copper: #D48A3C;
+            --copper-bright: #E89F4C;
+            --copper-dark: #B87430;
+            --charcoal: #1A1A1A;
+            --charcoal-mid: #242424;
+            --white: #FFFFFF;
+            --offwhite: #F8F6F3;
+            --bone: #EEEBE6;
+            --silver: #D8D4CE;
+            --grey-300: #A09B94;
+            --grey-400: #6E6A64;
+            --grey-500: #4A4744;
+            --black: #111111;
+            --font-sans: 'Jost', -apple-system, sans-serif;
+            --font-serif: 'Newsreader', Georgia, serif;
+            --ease: cubic-bezier(0.25, 1, 0.5, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; overflow-x: hidden; }
+        body {
+            font-family: var(--font-sans);
+            font-weight: 400; line-height: 1.5;
+            color: var(--black); background: var(--black);
+            -webkit-font-smoothing: antialiased;
+        }
+        ::selection { background: var(--copper); color: var(--white); }
+
+        .grain {
+            position: fixed; inset: 0; z-index: 9999;
+            pointer-events: none; opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat; background-size: 256px 256px;
+        }
+
+        /* NAV */
+        .topbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px 48px;
+            background: rgba(17,17,17,0.95);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .topbar-back {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none; color: var(--white);
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.3s;
+        }
+        .topbar-back:hover { color: var(--copper); }
+        .topbar-back svg { width: 16px; height: 16px; transition: transform 0.3s var(--ease); }
+        .topbar-back:hover svg { transform: translateX(-3px); }
+        .topbar-chapter { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); }
+        @media (max-width: 768px) { .topbar { padding: 20px 24px; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           CINEMATIC HERO — full black, minimal
+           ═══════════════════════════════════════════════════════════════ */
+
+        .anthem-hero {
+            height: 100vh; height: 100svh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .anthem-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(212,138,60,0.04) 0%, transparent 70%);
+        }
+
+        .anthem-num {
+            font-family: var(--font-sans);
+            font-size: 0.5625rem; font-weight: 800;
+            letter-spacing: 0.25em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 32px;
+            opacity: 0; animation: fadeIn 1s var(--ease-out) 0.5s forwards;
+        }
+
+        .anthem-title-word {
+            font-family: var(--font-sans);
+            font-size: clamp(48px, 10vw, 140px);
+            font-weight: 800; letter-spacing: -0.04em;
+            text-transform: uppercase;
+            color: var(--white); line-height: 0.9;
+            opacity: 0; animation: fadeUp 1s var(--ease-out) 0.8s forwards;
+        }
+
+        .anthem-subtitle {
+            font-family: var(--font-serif);
+            font-size: clamp(18px, 2.5vw, 28px);
+            font-weight: 400; font-style: italic;
+            color: var(--copper-bright);
+            margin-top: 20px;
+            opacity: 0; animation: fadeIn 1s var(--ease-out) 1.2s forwards;
+        }
+
+        .anthem-scroll {
+            position: absolute;
+            bottom: 48px; left: 50%;
+            transform: translateX(-50%);
+            width: 1px; height: 48px;
+            background: linear-gradient(180deg, var(--copper) 0%, transparent 100%);
+            opacity: 0; animation: fadeIn 1s var(--ease-out) 1.8s forwards;
+        }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           FILM SCRIPT — the manifesto as screenplay
+           ═══════════════════════════════════════════════════════════════ */
+
+        .script {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 120px 48px;
+        }
+
+        .script-meta {
+            text-align: center;
+            margin-bottom: 80px;
+            padding-bottom: 48px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .script-meta-label {
+            font-size: 0.5625rem; font-weight: 800;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 16px;
+        }
+
+        .script-meta-title {
+            font-family: var(--font-sans);
+            font-size: clamp(20px, 3vw, 28px);
+            font-weight: 700; letter-spacing: -0.02em;
+            color: var(--white); margin-bottom: 8px;
+        }
+
+        .script-meta-details {
+            font-size: 0.75rem;
+            color: var(--grey-500);
+            line-height: 1.6;
+        }
+
+        /* Scene blocks */
+        .scene {
+            margin-bottom: 72px;
+            opacity: 0; transform: translateY(16px);
+            transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+        }
+        .scene.is-visible { opacity: 1; transform: translateY(0); }
+
+        .scene-heading {
+            font-family: var(--font-sans);
+            font-size: 0.6875rem; font-weight: 800;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(212,138,60,0.2);
+        }
+
+        .scene-direction {
+            font-family: var(--font-serif);
+            font-size: 0.875rem; font-style: italic;
+            line-height: 1.7; color: var(--grey-500);
+            margin-bottom: 24px;
+            padding-left: 24px;
+            border-left: 2px solid rgba(255,255,255,0.04);
+        }
+
+        .scene-vo-label {
+            font-size: 0.5625rem; font-weight: 800;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--grey-500);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .scene-vo {
+            font-family: var(--font-sans);
+            font-size: clamp(18px, 2.5vw, 24px);
+            font-weight: 400;
+            line-height: 1.65;
+            color: var(--white);
+            text-align: center;
+            padding: 0 12px;
+        }
+
+        .scene-vo em {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: var(--copper-bright);
+            font-weight: 400;
+        }
+
+        .scene-vo strong {
+            font-weight: 700;
+        }
+
+        /* Scene divider */
+        .scene-divider {
+            display: flex; align-items: center;
+            gap: 16px; margin: 72px 0;
+        }
+
+        .scene-divider-line {
+            flex: 1; height: 1px;
+            background: rgba(255,255,255,0.04);
+        }
+
+        .scene-divider-dot {
+            width: 4px; height: 4px;
+            background: var(--copper);
+            border-radius: 50%;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           SUPER / TITLE CARDS — big cinematic text breaks
+           ═══════════════════════════════════════════════════════════════ */
+
+        .super {
+            padding: 160px 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .super::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at center, rgba(212,138,60,0.03) 0%, transparent 60%);
+        }
+
+        .super-text {
+            font-family: var(--font-sans);
+            font-size: clamp(36px, 7vw, 96px);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+            line-height: 0.95;
+            color: var(--white);
+            position: relative; z-index: 1;
+            opacity: 0; transform: translateY(16px);
+            transition: opacity 1s var(--ease), transform 1s var(--ease);
+        }
+        .super-text.is-visible { opacity: 1; transform: translateY(0); }
+
+        .super-text em {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: var(--copper-bright);
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        @media (max-width: 768px) { .super { padding: 100px 24px; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           PRODUCTION NOTES — technical details
+           ═══════════════════════════════════════════════════════════════ */
+
+        .production {
+            padding: 100px 48px;
+            background: var(--charcoal);
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .production-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .production-label {
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 48px;
+        }
+
+        .production-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+
+        .production-card {
+            padding: 36px 28px;
+            background: var(--charcoal-mid);
+            transition: all 0.4s var(--ease);
+        }
+        .production-card:hover { background: var(--black); }
+
+        .production-card-label {
+            font-size: 0.5625rem; font-weight: 800;
+            letter-spacing: 0.16em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 8px;
+        }
+
+        .production-card-value {
+            font-family: var(--font-sans);
+            font-size: 1rem; font-weight: 600;
+            color: var(--white); margin-bottom: 8px;
+        }
+
+        .production-card-desc {
+            font-size: 0.8125rem; line-height: 1.6;
+            color: var(--grey-400);
+        }
+
+        @media (max-width: 768px) {
+            .production { padding: 72px 24px; }
+            .production-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           SHOT LIST
+           ═══════════════════════════════════════════════════════════════ */
+
+        .shotlist {
+            padding: 100px 48px;
+            background: var(--black);
+        }
+
+        .shotlist-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .shotlist-label {
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 48px;
+        }
+
+        .shotlist-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+        }
+
+        .shot-card {
+            padding: 32px 28px;
+            background: var(--charcoal-mid);
+            display: flex; gap: 20px;
+            transition: all 0.4s var(--ease);
+            border-left: 3px solid transparent;
+        }
+        .shot-card:hover {
+            border-left-color: var(--copper);
+            background: var(--charcoal);
+        }
+
+        .shot-num {
+            font-family: var(--font-sans);
+            font-size: 1.5rem; font-weight: 800;
+            color: rgba(255,255,255,0.08);
+            flex-shrink: 0;
+            line-height: 1;
+            min-width: 32px;
+        }
+
+        .shot-type {
+            font-size: 0.5625rem; font-weight: 800;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 4px;
+        }
+
+        .shot-desc {
+            font-size: 0.875rem; line-height: 1.6;
+            color: var(--grey-300);
+        }
+
+        @media (max-width: 768px) {
+            .shotlist { padding: 72px 24px; }
+            .shotlist-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           CLOSING MANIFESTO — the distilled version
+           ═══════════════════════════════════════════════════════════════ */
+
+        .manifesto {
+            padding: 160px 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .manifesto::before {
+            content: 'THEORY';
+            position: absolute;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--font-sans);
+            font-size: clamp(200px, 30vw, 500px);
+            font-weight: 800;
+            color: rgba(255,255,255,0.015);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .manifesto-inner {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative; z-index: 1;
+        }
+
+        .manifesto-label {
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 32px;
+        }
+
+        .manifesto-text {
+            font-family: var(--font-serif);
+            font-size: clamp(20px, 3vw, 28px);
+            font-weight: 400; font-style: italic;
+            line-height: 1.7;
+            color: var(--grey-300);
+        }
+
+        .manifesto-text strong {
+            font-family: var(--font-sans);
+            font-style: normal;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .manifesto-sig {
+            margin-top: 48px;
+            font-size: 0.6875rem; font-weight: 800;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            color: rgba(255,255,255,0.2);
+        }
+
+        @media (max-width: 768px) { .manifesto { padding: 100px 24px; } }
+
+        /* CHAPTER NAV + COLOPHON */
+        .chapter-nav { display: flex; border-top: 3px solid var(--copper); }
+        .chapter-nav-link { flex: 1; padding: 40px 48px; text-decoration: none; color: inherit; background: var(--white); transition: background 0.3s var(--ease); }
+        .chapter-nav-link:hover { background: var(--offwhite); }
+        .chapter-nav-link--next { text-align: right; }
+        .chapter-nav-dir { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--copper); margin-bottom: 6px; }
+        .chapter-nav-title { font-family: var(--font-sans); font-size: clamp(16px, 2vw, 22px); font-weight: 600; color: var(--black); }
+        @media (max-width: 768px) { .chapter-nav { flex-direction: column; } .chapter-nav-link { padding: 28px 24px; } .chapter-nav-link--next { text-align: left; border-top: 1px solid var(--bone); } }
+
+        .colophon { padding: 48px; background: var(--black); display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); }
+        .colophon-left { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.2); }
+        .colophon-right { font-size: 0.625rem; font-weight: 400; letter-spacing: 0.06em; color: rgba(255,255,255,0.15); }
+        .colophon-right a { color: var(--copper); text-decoration: none; opacity: 0.6; transition: opacity 0.3s; }
+        .colophon-right a:hover { opacity: 1; }
+        @media (max-width: 768px) { .colophon { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; } }
+    </style>
+</head>
+<body>
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <nav class="topbar">
+        <a href="theory-v6-zag.html" class="topbar-back">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M10 4l-4 4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Brand House
+        </a>
+        <span class="topbar-chapter">Chapter 11</span>
+    </nav>
+
+    <!-- CINEMATIC HERO -->
+    <section class="anthem-hero">
+        <div class="anthem-num">Chapter Eleven</div>
+        <div class="anthem-title-word">Brand<br>Anthem</div>
+        <div class="anthem-subtitle">A Manifesto Film Script</div>
+        <div class="anthem-scroll"></div>
+    </section>
+
+    <!-- SCRIPT -->
+    <div class="script">
+
+        <div class="script-meta">
+            <div class="script-meta-label">Brand Film Script</div>
+            <div class="script-meta-title">"Theory."</div>
+            <div class="script-meta-details">
+                Runtime: 90 seconds<br>
+                Format: 16:9 Cinematic<br>
+                Tone: Quiet confidence. Earned, not declared.<br>
+                Music: Ambient piano. Builds to crescendo.
+            </div>
+        </div>
+
+        <!-- SCENE 1 -->
+        <div class="scene">
+            <div class="scene-heading">Scene 1 — Before Dawn</div>
+            <div class="scene-direction">
+                Black screen. The low hum of a machine warming up. A single light turns on — the roastery, 4:47 AM. Steam rises. We see hands adjusting a dial. Close on the roast date: today.
+            </div>
+            <div class="scene-vo-label">Voiceover</div>
+            <div class="scene-vo">
+                Every morning starts the same way.<br>
+                Before the doors open.<br>
+                Before the first order.<br>
+                <em>Before anyone is watching.</em>
+            </div>
+        </div>
+
+        <div class="scene-divider">
+            <div class="scene-divider-line"></div>
+            <div class="scene-divider-dot"></div>
+            <div class="scene-divider-line"></div>
+        </div>
+
+        <!-- SCENE 2 -->
+        <div class="scene">
+            <div class="scene-heading">Scene 2 — The Farms</div>
+            <div class="scene-direction">
+                Cut to: Coffee cherries on the branch. Hands picking. A hillside in Ethiopia. Then Colombia. Then Honduras. Quick cuts — vivid, warm, human. End on a cupping table: someone breaking the crust.
+            </div>
+            <div class="scene-vo-label">Voiceover</div>
+            <div class="scene-vo">
+                We start at the source.<br>
+                Not a warehouse. Not a catalog.<br>
+                A farm. A face. <em>A handshake.</em>
+            </div>
+        </div>
+
+        <div class="scene-divider">
+            <div class="scene-divider-line"></div>
+            <div class="scene-divider-dot"></div>
+            <div class="scene-divider-line"></div>
+        </div>
+
+        <!-- SCENE 3 -->
+        <div class="scene">
+            <div class="scene-heading">Scene 3 — The Roast</div>
+            <div class="scene-direction">
+                The roaster drum turning. Green beans cascading in. The crack — first, then second. Sam pulls a sample, holds it to the light. Nods once. Cut to: beans cooling on the tray, steam billowing.
+            </div>
+            <div class="scene-vo-label">Voiceover</div>
+            <div class="scene-vo">
+                We don't roast by schedule.<br>
+                We roast by ear. By color.<br>
+                By the way the bean <em>tells us it's ready.</em>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SUPER 1 -->
+    <div class="super">
+        <div class="super-text">Good coffee starts<br>at the farm.</div>
+    </div>
+
+    <div class="script">
+
+        <!-- SCENE 4 -->
+        <div class="scene">
+            <div class="scene-heading">Scene 4 — The Cafe</div>
+            <div class="scene-direction">
+                California Street flagship. Morning light through the windows. The espresso machine hissing. A barista's hands — tamping, pulling the shot. The pour: amber crema settling. Hand it across the counter. The customer takes a sip. Holds it. Smiles.
+            </div>
+            <div class="scene-vo-label">Voiceover</div>
+            <div class="scene-vo">
+                This is where it lands.<br>
+                Not in a boardroom. Not on a slide deck.<br>
+                In someone's hands. <em>In the first sip of their day.</em>
+            </div>
+        </div>
+
+        <div class="scene-divider">
+            <div class="scene-divider-line"></div>
+            <div class="scene-divider-dot"></div>
+            <div class="scene-divider-line"></div>
+        </div>
+
+        <!-- SCENE 5 -->
+        <div class="scene">
+            <div class="scene-heading">Scene 5 — The Community</div>
+            <div class="scene-direction">
+                Quick montage: A regular waves from the door. A barista writes a name on a cup — spelled right. Two people share a table, talking, laughing. The parking lot at 7 AM, already full. A kid hands Sam a drawing of a coffee cup.
+            </div>
+            <div class="scene-vo-label">Voiceover</div>
+            <div class="scene-vo">
+                We're not building a brand.<br>
+                We're building a <em>place.</em><br>
+                A reason to come back.
+            </div>
+        </div>
+
+        <div class="scene-divider">
+            <div class="scene-divider-line"></div>
+            <div class="scene-divider-dot"></div>
+            <div class="scene-divider-line"></div>
+        </div>
+
+        <!-- SCENE 6 -->
+        <div class="scene">
+            <div class="scene-heading">Scene 6 — The Obsession</div>
+            <div class="scene-direction">
+                Late night at the roastery. Cupping bowls lined up. Notebooks filled with scores. Sam stares at the board: origin names, roast profiles, tasting notes. Erases one line. Rewrites it. Steps back. It's never done.
+            </div>
+            <div class="scene-vo-label">Voiceover</div>
+            <div class="scene-vo">
+                Some people find the answer and stop looking.<br>
+                <strong>We found the answer and kept going.</strong>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SUPER 2 -->
+    <div class="super">
+        <div class="super-text">Great coffee starts<br>with a <em>theory.</em></div>
+    </div>
+
+    <div class="script">
+
+        <!-- SCENE 7 — CLOSING -->
+        <div class="scene">
+            <div class="scene-heading">Scene 7 — The End Card</div>
+            <div class="scene-direction">
+                Slow fade to black. Hold for two beats. The Theory logo fades in — white on black. Simple. Clean. Below it: "Redding, California. Est. 2018." Hold. Then: "theorycoffee.com" fades in below. The piano resolves. Silence.
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PRODUCTION NOTES -->
+    <section class="production">
+        <div class="production-inner">
+            <div class="production-label">Production Notes</div>
+            <div class="production-grid">
+                <div class="production-card">
+                    <div class="production-card-label">Duration</div>
+                    <div class="production-card-value">90 Seconds</div>
+                    <div class="production-card-desc">Cut versions at :60, :30, and :15 for social and paid media.</div>
+                </div>
+                <div class="production-card">
+                    <div class="production-card-label">Aspect Ratio</div>
+                    <div class="production-card-value">2.39:1 Cinematic</div>
+                    <div class="production-card-desc">Wide letterbox. Crop to 16:9 for YouTube, 9:16 for stories, 1:1 for feed.</div>
+                </div>
+                <div class="production-card">
+                    <div class="production-card-label">Color Grade</div>
+                    <div class="production-card-value">Warm, Desaturated</div>
+                    <div class="production-card-desc">Lifted blacks. Copper highlights. Low contrast. Film-like. Think: Terrence Malick meets coffee.</div>
+                </div>
+                <div class="production-card">
+                    <div class="production-card-label">Sound</div>
+                    <div class="production-card-value">Ambient + Piano</div>
+                    <div class="production-card-desc">Foley-heavy: machine hum, bean crack, steam hiss. Piano enters Scene 3, builds through Scene 6.</div>
+                </div>
+                <div class="production-card">
+                    <div class="production-card-label">Voiceover</div>
+                    <div class="production-card-value">Male, Mid-Register</div>
+                    <div class="production-card-desc">Calm, unhurried. Not announcer-read. Sounds like a friend who takes coffee seriously.</div>
+                </div>
+                <div class="production-card">
+                    <div class="production-card-label">Locations</div>
+                    <div class="production-card-value">3 Primary</div>
+                    <div class="production-card-desc">Roastery (pre-dawn), California St. flagship (morning), origin farm footage (stock or trip).</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SHOT LIST -->
+    <section class="shotlist">
+        <div class="shotlist-inner">
+            <div class="shotlist-label">Key Shots</div>
+            <div class="shotlist-grid">
+                <div class="shot-card">
+                    <div class="shot-num">01</div>
+                    <div>
+                        <div class="shot-type">Extreme Close-Up</div>
+                        <div class="shot-desc">Roaster dial turning. Steam rising. The machine waking up before dawn.</div>
+                    </div>
+                </div>
+                <div class="shot-card">
+                    <div class="shot-num">02</div>
+                    <div>
+                        <div class="shot-type">Wide + Aerial</div>
+                        <div class="shot-desc">Coffee farm hillside. Morning mist. Rows of cherry-laden trees stretching to the horizon.</div>
+                    </div>
+                </div>
+                <div class="shot-card">
+                    <div class="shot-num">03</div>
+                    <div>
+                        <div class="shot-type">Medium Close-Up</div>
+                        <div class="shot-desc">Sam pulling a roast sample. Holding beans to the light. The decision moment.</div>
+                    </div>
+                </div>
+                <div class="shot-card">
+                    <div class="shot-num">04</div>
+                    <div>
+                        <div class="shot-type">Slow Motion</div>
+                        <div class="shot-desc">Green beans cascading into the drum. 120fps. The transformation begins.</div>
+                    </div>
+                </div>
+                <div class="shot-card">
+                    <div class="shot-num">05</div>
+                    <div>
+                        <div class="shot-type">Tracking Shot</div>
+                        <div class="shot-desc">Following a barista from the grinder to the group head to the pour. One continuous take.</div>
+                    </div>
+                </div>
+                <div class="shot-card">
+                    <div class="shot-num">06</div>
+                    <div>
+                        <div class="shot-type">Portrait</div>
+                        <div class="shot-desc">Customer's face in the moment of the first sip. Natural light from the cafe window.</div>
+                    </div>
+                </div>
+                <div class="shot-card">
+                    <div class="shot-num">07</div>
+                    <div>
+                        <div class="shot-type">Top-Down</div>
+                        <div class="shot-desc">Cupping table. Eight bowls in a row. Breaking the crust with a spoon.</div>
+                    </div>
+                </div>
+                <div class="shot-card">
+                    <div class="shot-num">08</div>
+                    <div>
+                        <div class="shot-type">Wide Locked-Off</div>
+                        <div class="shot-desc">Empty roastery at the end of the day. One light still on. The work continues.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MANIFESTO -->
+    <section class="manifesto">
+        <div class="manifesto-inner">
+            <div class="manifesto-label">The Manifesto</div>
+            <p class="manifesto-text">
+                We believe coffee is a craft, not a commodity. That the farmer matters as much as the roaster. That a great cup should make you stop, even for a second, and think: <strong>this is different.</strong> We started on a backyard grill. We'll finish when there's nothing left to improve. <strong>We haven't found that point yet.</strong>
+            </p>
+            <div class="manifesto-sig">Theory Coffee Roasters · Redding, CA · Est. 2018</div>
+        </div>
+    </section>
+
+    <!-- CHAPTER NAV -->
+    <nav class="chapter-nav">
+        <a href="wholesale-toolkit.html" class="chapter-nav-link">
+            <div class="chapter-nav-dir">Previous</div>
+            <div class="chapter-nav-title">10 — Wholesale Toolkit</div>
+        </a>
+        <a href="theory-v6-zag.html" class="chapter-nav-link chapter-nav-link--next">
+            <div class="chapter-nav-dir">Return to</div>
+            <div class="chapter-nav-title">Brand House</div>
+        </a>
+    </nav>
+
+    <footer class="colophon">
+        <div class="colophon-left">Theory Coffee Roasters · Redding, CA</div>
+        <div class="colophon-right">Brand House 2026 · <a href="https://theorycoffee.com" target="_blank">theorycoffee.com</a></div>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
+        }, { threshold: 0.1, rootMargin: '-40px' });
+        document.querySelectorAll('.scene, .super-text').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
