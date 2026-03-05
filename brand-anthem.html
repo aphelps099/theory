@@ -458,6 +458,12 @@
 
         @media (max-width: 768px) { .manifesto { padding: 100px 24px; } }
 
+        /* CINEMATIC PHOTO BREAKS */
+        .cinema-break { position: relative; overflow: hidden; }
+        .cinema-break img { width: 100%; height: 400px; object-fit: cover; display: block; filter: saturate(0.7) contrast(1.1); }
+        .cinema-break::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, var(--black) 0%, transparent 15%, transparent 85%, var(--black) 100%); }
+        @media (max-width: 768px) { .cinema-break img { height: 280px; } }
+
         /* CHAPTER NAV + COLOPHON */
         .chapter-nav { display: flex; border-top: 3px solid var(--copper); }
         .chapter-nav-link { flex: 1; padding: 40px 48px; text-decoration: none; color: inherit; background: var(--white); transition: background 0.3s var(--ease); }
@@ -566,6 +572,11 @@
 
     </div>
 
+    <!-- CINEMATIC BREAK: ROASTERY -->
+    <div class="cinema-break">
+        <img src="img/day 2,703 in the roastery  fyp baristadaily coffeeroaster coffeeshop b.jpg" alt="The roastery" loading="lazy">
+    </div>
+
     <!-- SUPER 1 -->
     <div class="super">
         <div class="super-text">Good coffee starts<br>at the farm.</div>
@@ -626,6 +637,11 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- CINEMATIC BREAK: THE CAFE -->
+    <div class="cinema-break">
+        <img src="img/slow mornings here at Theory coffeeshop coffeeroasters coffeedaily bar.jpg" alt="Slow mornings at Theory" loading="lazy">
     </div>
 
     <!-- SUPER 2 -->

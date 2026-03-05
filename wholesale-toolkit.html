@@ -579,6 +579,16 @@
         .colophon-right a:hover { opacity: 1; }
         @media (max-width: 768px) { .colophon { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; } }
 
+        /* PHOTO BREAKS */
+        .photo-break { position: relative; overflow: hidden; }
+        .photo-break img { width: 100%; height: 480px; object-fit: cover; display: block; }
+        .photo-break-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px 48px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+        @media (max-width: 768px) { .photo-break img { height: 320px; } .photo-break-caption { padding: 16px 24px; } }
+
+        /* LINEUP CARD IMAGE */
+        .lineup-card-img { width: 100%; height: 200px; object-fit: cover; display: block; margin-bottom: 16px; opacity: 0.9; transition: opacity 0.4s; }
+        .lineup-card:hover .lineup-card-img { opacity: 1; }
+
         .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
         .reveal.is-visible { opacity: 1; transform: translateY(0); }
     </style>
@@ -611,6 +621,12 @@
             <p class="promise-text">We don't just ship coffee. We ship the <em>entire experience.</em> Training, brand assets, equipment guidance, and an open line to our roastery. Your success is our reputation.</p>
         </div>
     </section>
+
+    <!-- PHOTO: THE COUNTER -->
+    <div class="photo-break reveal">
+        <img src="img/coffeebar.jpg" alt="Theory Coffee retail counter with full bag lineup and espresso equipment" loading="lazy">
+        <div class="photo-break-caption">The Theory Experience — Behind Every Counter</div>
+    </div>
 
     <!-- WHAT WE PROVIDE -->
     <section class="provide reveal">
@@ -655,24 +671,28 @@
         <div class="lineup-title">The Lineup</div>
         <div class="lineup-grid">
             <div class="lineup-card">
+                <img class="lineup-card-img" src="img/This weeks coffee release The first coffee is the Colombia Pink Bourbo.jpg" alt="Theory Coffee Colombia bag" loading="lazy">
                 <div class="lineup-card-type">Blend</div>
                 <div class="lineup-card-name">House Theory</div>
                 <div class="lineup-card-tasting">Chocolate, caramel, balanced. Our everyday espresso and drip anchor.</div>
                 <div class="lineup-card-format">5 lb / 25 lb bags</div>
             </div>
             <div class="lineup-card">
+                <img class="lineup-card-img" src="img/NEW COFFEE Sumatra - Gayo (Anaerobic Natural) This new release from th.jpg" alt="Theory Coffee Sumatra Gayo bag" loading="lazy">
                 <div class="lineup-card-type">Blend</div>
                 <div class="lineup-card-name">Dark Side of the Bloom</div>
                 <div class="lineup-card-tasting">Bold, smoky, full body. For partners who want intensity without bitterness.</div>
                 <div class="lineup-card-format">5 lb / 25 lb bags</div>
             </div>
             <div class="lineup-card">
+                <img class="lineup-card-img" src="img/NEW COFFEE ALERT Guatemala - Raul Solis Paiz Pink Bourbon (Natural) aR.jpg" alt="Theory Coffee Guatemala bag" loading="lazy">
                 <div class="lineup-card-type">Single Origin</div>
                 <div class="lineup-card-name">Rotating Seasonal</div>
                 <div class="lineup-card-tasting">Changes quarterly. Always 84+ cup score. Origin cards provided.</div>
                 <div class="lineup-card-format">5 lb bags</div>
             </div>
             <div class="lineup-card">
+                <img class="lineup-card-img" src="img/coffees/bang-of-coffee-handheld.jpg" alt="Theory Coffee bag handheld" loading="lazy">
                 <div class="lineup-card-type">Decaf</div>
                 <div class="lineup-card-name">Peru Cajamarca</div>
                 <div class="lineup-card-tasting">Swiss Water process. Milk chocolate, walnut. Proof that decaf can work.</div>
@@ -754,6 +774,12 @@
             </div>
         </div>
     </section>
+
+    <!-- PHOTO: QUALITY -->
+    <div class="photo-break reveal">
+        <img src="img/bts of cupping day  making sure the coffee hits like it should coffeer.jpg" alt="Cupping day — quality control at Theory Coffee" loading="lazy">
+        <div class="photo-break-caption">Quality is Non-Negotiable</div>
+    </div>
 
     <!-- BRAND GUIDELINES -->
     <section class="guidelines reveal">
