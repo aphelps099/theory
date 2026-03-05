@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Index — Theory Coffee Roasters</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --copper: #D48A3C;
+            --charcoal: #1A1A1A;
+            --white: #FFFFFF;
+            --offwhite: #F8F6F3;
+            --bone: #EEEBE6;
+            --grey-400: #6E6A64;
+            --black: #111111;
+            --font-sans: 'Jost', -apple-system, sans-serif;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--charcoal);
+            color: var(--white);
+            -webkit-font-smoothing: antialiased;
+        }
+        .topbar {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px 48px;
+            background: rgba(26,26,26,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .topbar a {
+            text-decoration: none; color: var(--white);
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.14em; text-transform: uppercase;
+        }
+        .topbar a:hover { color: var(--copper); }
+        .topbar-title { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); }
+        .header {
+            padding: 80px 48px 48px;
+        }
+        .header h1 {
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: var(--grey-400);
+            font-size: 0.9375rem;
+        }
+        .filter {
+            padding: 0 48px 32px;
+            display: flex; gap: 8px; flex-wrap: wrap;
+        }
+        .filter input {
+            background: var(--black);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--white);
+            padding: 10px 16px;
+            font-family: var(--font-sans);
+            font-size: 0.875rem;
+            width: 100%;
+            max-width: 400px;
+            outline: none;
+        }
+        .filter input:focus {
+            border-color: var(--copper);
+        }
+        .grid {
+            padding: 0 48px 80px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .img-card {
+            background: var(--black);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .img-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .img-card-preview {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .img-card-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .img-card:hover .img-card-preview img {
+            transform: scale(1.05);
+        }
+        .img-card-name {
+            padding: 12px 16px;
+            font-size: 0.6875rem;
+            font-weight: 500;
+            color: var(--grey-400);
+            line-height: 1.4;
+            word-break: break-all;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+        .count {
+            color: var(--copper);
+            font-weight: 700;
+        }
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: rgba(0,0,0,0.92);
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            cursor: pointer;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        .lightbox-name {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--grey-400);
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-align: center;
+            max-width: 80vw;
+            word-break: break-all;
+        }
+        @media (max-width: 768px) {
+            .topbar, .header, .filter, .grid { padding-left: 24px; padding-right: 24px; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+            .img-card-preview { height: 160px; }
+            .header { padding-top: 48px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="topbar">
+        <a href="theory-v6-zag.html">Back to Brand House</a>
+        <span class="topbar-title">Image Index</span>
+    </nav>
+
+    <div class="header">
+        <h1>Image Index</h1>
+        <p><span class="count">96</span> images in the repository</p>
+    </div>
+
+    <div class="filter">
+        <input type="text" id="search" placeholder="Filter images by name...">
+    </div>
+
+    <div class="grid" id="grid">
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Costa%20Rica%20-%20Aquaires%20Estate%20Centroamericano%20%28Anaerobic%20Natural%29%20%282%29.png" alt="img/Costa Rica - Aquaires Estate Centroamericano (Anaerobic Natural) (2).png" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Costa Rica - Aquaires Estate Centroamericano (Anaerobic Natural) (2).png</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Costa%20Rica%20-%20Aquaires%20Estate%20Centroamericano%20%28Anaerobic%20Natural%29%20%283%29.png" alt="img/Costa Rica - Aquaires Estate Centroamericano (Anaerobic Natural) (3).png" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Costa Rica - Aquaires Estate Centroamericano (Anaerobic Natural) (3).png</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Costa%20Rica%20-%20Aquaires%20Estate%20Centroamericano%20%28Anaerobic%20Natural%29.png" alt="img/Costa Rica - Aquaires Estate Centroamericano (Anaerobic Natural).png" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Costa Rica - Aquaires Estate Centroamericano (Anaerobic Natural).png</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Holiday%20Blend%20%E2%80%93%20Merry%20%20Bright%20Our%20holiday%20blend%20is%20back%21%20This%20year%2C%20we.jpg" alt="img/Holiday Blend – Merry  Bright Our holiday blend is back! This year, we.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Holiday Blend – Merry  Bright Our holiday blend is back! This year, we.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Looking%20for%20an%20office%20space%20that%E2%80%99s%20conveniently%20located%20steps%20away%20fro.jpg" alt="img/Looking for an office space that’s conveniently located steps away fro.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Looking for an office space that’s conveniently located steps away fro.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Meet%20our%20employee%20of%20the%20month%20%20Indica%20is%20the%20heart%20and%20soul%20of%20the%20ba.jpg" alt="img/Meet our employee of the month  Indica is the heart and soul of the ba.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Meet our employee of the month  Indica is the heart and soul of the ba.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Meet%20our%20employee%20of%20the%20month%20We%20LOVE%20having%20Grace%20on%20our%20team%21%20Wheth.jpg" alt="img/Meet our employee of the month We LOVE having Grace on our team! Wheth.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Meet our employee of the month We LOVE having Grace on our team! Wheth.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Meet%20your%20new%20morning%20ritual.%20Bold%20flavor%2C%20smooth%20finish%2C%20and%20the%20kin.jpg" alt="img/Meet your new morning ritual. Bold flavor, smooth finish, and the kin.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Meet your new morning ritual. Bold flavor, smooth finish, and the kin.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Mexico%20-%20La%20Yerba%20%28Natural%29%20%282%29.jpg" alt="img/Mexico - La Yerba (Natural) (2).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Mexico - La Yerba (Natural) (2).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Mexico%20-%20La%20Yerba%20%28Natural%29%20%283%29.jpg" alt="img/Mexico - La Yerba (Natural) (3).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Mexico - La Yerba (Natural) (3).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Mexico%20-%20La%20Yerba%20%28Natural%29.png" alt="img/Mexico - La Yerba (Natural).png" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Mexico - La Yerba (Natural).png</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/NEW%20COFFEE%20ALERT%20Guatemala%20-%20Raul%20Solis%20Paiz%20Pink%20Bourbon%20%28Natural%29%20aR.jpg" alt="img/NEW COFFEE ALERT Guatemala - Raul Solis Paiz Pink Bourbon (Natural) aR.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/NEW COFFEE ALERT Guatemala - Raul Solis Paiz Pink Bourbon (Natural) aR.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/NEW%20COFFEE%20Guatemala%20-%20Emilio%20Garcia%20Say%20hello%20to%20Emilio%20Garcia%2C%20our%20n.jpg" alt="img/NEW COFFEE Guatemala - Emilio Garcia Say hello to Emilio Garcia, our n.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/NEW COFFEE Guatemala - Emilio Garcia Say hello to Emilio Garcia, our n.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/NEW%20COFFEE%20Sumatra%20-%20Gayo%20%28Anaerobic%20Natural%29%20This%20new%20release%20from%20th.jpg" alt="img/NEW COFFEE Sumatra - Gayo (Anaerobic Natural) This new release from th.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/NEW COFFEE Sumatra - Gayo (Anaerobic Natural) This new release from th.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/National%20Espresso%20Day%20has%20a%20special%20place%20in%20our%20hearts%20There%E2%80%99s%20just%20s.jpg" alt="img/National Espresso Day has a special place in our hearts There’s just s.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/National Espresso Day has a special place in our hearts There’s just s.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/New%20coffee%20alert%21%20This%20tasty%20washed%20Guatemala%20has%20a%20creamy%20body%20with.jpg" alt="img/New coffee alert! This tasty washed Guatemala has a creamy body with.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/New coffee alert! This tasty washed Guatemala has a creamy body with.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/New%20drink%20menu%20is%20here%20and%20it%E2%80%99s%20basically%20holiday%20in%20a%20cup%20Meet%20the%20li.jpg" alt="img/New drink menu is here and it’s basically holiday in a cup Meet the li.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/New drink menu is here and it’s basically holiday in a cup Meet the li.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/New%20season%2C%20new%20sips%20Pumpkin%20Spice%20LatteA%20Fall%20staple%2C%20a%20latte%20with%20ou.jpg" alt="img/New season, new sips Pumpkin Spice LatteA Fall staple, a latte with ou.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/New season, new sips Pumpkin Spice LatteA Fall staple, a latte with ou.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20Au%20%282%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Au (2).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Au (2).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20Au.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Au.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Au.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20De%20%282%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on De (2).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on De (2).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20De%20%283%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on De (3).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on De (3).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20De%20%286%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on De (6).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on De (6).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20De%20%287%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on De (7).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on De (7).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20De.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on De.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on De.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20Ju%20%282%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Ju (2).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Ju (2).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20Ju%20%283%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Ju (3).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Ju (3).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20Ju%20%284%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Ju (4).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Ju (4).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20Ju.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Ju.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Ju.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20No%20%282%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on No (2).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on No (2).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20No%20%284%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on No (4).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on No (4).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20No%20%285%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on No (5).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on No (5).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20No%20%286%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on No (6).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on No (6).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20No%20%287%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on No (7).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on No (7).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20No.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on No.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on No.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20Oc%20%282%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Oc (2).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Oc (2).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20Oc%20%283%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Oc (3).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Oc (3).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20Oc%20%284%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Oc (4).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Oc (4).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20Oc.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Oc.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Oc.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20Se%20%282%29.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Se (2).jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Se (2).jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Photo%20by%20Theory%20Coffee%20Roasters%20%20Northern%20California%20Coffee%20Shop%20on%20Se.jpg" alt="img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Se.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Photo by Theory Coffee Roasters  Northern California Coffee Shop on Se.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Small%20Business%20Saturday%20vibes%20all%20day%20We%E2%80%99re%20proud%20to%20be%20part%20of%20a%20neig.jpg" alt="img/Small Business Saturday vibes all day We’re proud to be part of a neig.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Small Business Saturday vibes all day We’re proud to be part of a neig.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/THEORY%20COFFEE%20ROASTERS%20TAKES%20THE%20PODIUM%20AT%20THE%20US%20COFFEE%20ROASTING%20CHAM.png" alt="img/THEORY COFFEE ROASTERS TAKES THE PODIUM AT THE US COFFEE ROASTING CHAM.png" loading="lazy">
+                </div>
+                <div class="img-card-name">img/THEORY COFFEE ROASTERS TAKES THE PODIUM AT THE US COFFEE ROASTING CHAM.png</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/The%20early%20birds%20are%20already%20wrapping%20their%20gifts%20Make%20it%20easy%20this%20yea.jpg" alt="img/The early birds are already wrapping their gifts Make it easy this yea.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/The early birds are already wrapping their gifts Make it easy this yea.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Theory%20Coffee%20Roasters.png" alt="img/Theory Coffee Roasters.png" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Theory Coffee Roasters.png</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Theory_Us_Coffee_Roasting_Championship_2.jpg" alt="img/Theory_Us_Coffee_Roasting_Championship_2.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Theory_Us_Coffee_Roasting_Championship_2.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/This%20is%20Jenna%2C%20Theory%E2%80%99s%20most%20recent%20employee%20of%20the%20month%21%20She%20is%20one.jpg" alt="img/This is Jenna, Theory’s most recent employee of the month! She is one.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/This is Jenna, Theory’s most recent employee of the month! She is one.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/This%20is%20the%20weekend%20for%20coffee%20lovers%20and%20holiday%20gifting%20All%20weekend.jpg" alt="img/This is the weekend for coffee lovers and holiday gifting All weekend.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/This is the weekend for coffee lovers and holiday gifting All weekend.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/This%20weeks%20coffee%20release%20The%20first%20coffee%20is%20the%20Colombia%20Pink%20Bourbo.jpg" alt="img/This weeks coffee release The first coffee is the Colombia Pink Bourbo.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/This weeks coffee release The first coffee is the Colombia Pink Bourbo.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Tomorrow%E2%80%99s%20fall%20pastry%20drop%20you%20didn%E2%80%99t%20know%20you%20needed%20-%20Pumpkin%20Crea.jpg" alt="img/Tomorrow’s fall pastry drop you didn’t know you needed - Pumpkin Crea.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Tomorrow’s fall pastry drop you didn’t know you needed - Pumpkin Crea.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/Trick%20or%20treat%20yourself%20to%20a%20scary%20good%20drink%21%20Come%20in%20costume%20for%201%20o.jpg" alt="img/Trick or treat yourself to a scary good drink! Come in costume for 1 o.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/Trick or treat yourself to a scary good drink! Come in costume for 1 o.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/We%20are%20excited%20to%20announce%20something%20new%20at%20Theory%20From%20starter%20to%20sta.jpg" alt="img/We are excited to announce something new at Theory From starter to sta.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/We are excited to announce something new at Theory From starter to sta.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/What%20a%20journey%20it%20has%20been%20to%20get%20Raul%E2%80%99s%20coffee%20this%20year.%20As%20many%20of.jpg" alt="img/What a journey it has been to get Raul’s coffee this year. As many of.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/What a journey it has been to get Raul’s coffee this year. As many of.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/a%20little%20sneak%20peek%20to%20our%20fall%20drinks%20launch%20this%20FRIDAY%20%20send%20this%20t.jpg" alt="img/a little sneak peek to our fall drinks launch this FRIDAY  send this t.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/a little sneak peek to our fall drinks launch this FRIDAY  send this t.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/a%20peek%20into%20our%20staff%20christmas%20party%20happyholidays%20fyp%E3%82%B7%20coffeeshop.jpg" alt="img/a peek into our staff christmas party happyholidays fypシ coffeeshop.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/a peek into our staff christmas party happyholidays fypシ coffeeshop.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/bakery1.jpeg" alt="img/bakery1.jpeg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/bakery1.jpeg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/bakery1.webp" alt="img/bakery1.webp" loading="lazy">
+                </div>
+                <div class="img-card-name">img/bakery1.webp</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/baristadaily%20coffeeshop%20coffeeroasters%20baristalife%20coffeetime%20coffeec.jpg" alt="img/baristadaily coffeeshop coffeeroasters baristalife coffeetime coffeec.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/baristadaily coffeeshop coffeeroasters baristalife coffeetime coffeec.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/bts%20of%20cupping%20day%20%20making%20sure%20the%20coffee%20hits%20like%20it%20should%20coffeer.jpg" alt="img/bts of cupping day  making sure the coffee hits like it should coffeer.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/bts of cupping day  making sure the coffee hits like it should coffeer.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/but%20have%20you%20tried%20our%20chai%20snickerdoodle%20cookie%20%20baristalife%20baristad.jpg" alt="img/but have you tried our chai snickerdoodle cookie  baristalife baristad.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/but have you tried our chai snickerdoodle cookie  baristalife baristad.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/coffeebar.jpg" alt="img/coffeebar.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/coffeebar.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/coffees/bang-of-coffee-handheld.jpg" alt="img/coffees/bang-of-coffee-handheld.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/coffees/bang-of-coffee-handheld.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/coffees/dsom.png" alt="img/coffees/dsom.png" loading="lazy">
+                </div>
+                <div class="img-card-name">img/coffees/dsom.png</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/coffees/landscape.jpg" alt="img/coffees/landscape.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/coffees/landscape.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/day%202%2C703%20in%20the%20roastery%20%20fyp%20baristadaily%20coffeeroaster%20coffeeshop%20b.jpg" alt="img/day 2,703 in the roastery  fyp baristadaily coffeeroaster coffeeshop b.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/day 2,703 in the roastery  fyp baristadaily coffeeroaster coffeeshop b.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/downtown.jpeg" alt="img/downtown.jpeg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/downtown.jpeg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/downtown.webp" alt="img/downtown.webp" loading="lazy">
+                </div>
+                <div class="img-card-name">img/downtown.webp</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/happy%20two%20years%20to%20our%20mount%20shasta%20location%20coffeeshop%20coffeeaddict%20c.jpg" alt="img/happy two years to our mount shasta location coffeeshop coffeeaddict c.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/happy two years to our mount shasta location coffeeshop coffeeaddict c.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/hilltop.jpeg" alt="img/hilltop.jpeg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/hilltop.jpeg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/hilltop.webp" alt="img/hilltop.webp" loading="lazy">
+                </div>
+                <div class="img-card-name">img/hilltop.webp</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/it%E2%80%99s%20%40samlarobardiere%20only%20wish%20for%20his%20birthday%20%20comment%20to%20wish%20him.jpg" alt="img/it’s @samlarobardiere only wish for his birthday  comment to wish him.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/it’s @samlarobardiere only wish for his birthday  comment to wish him.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/limited-edition%20hats%2C%20brewed%20fresh%20coffeeshop%20coffeetime%20coffeeroaster.jpg" alt="img/limited-edition hats, brewed fresh coffeeshop coffeetime coffeeroaster.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/limited-edition hats, brewed fresh coffeeshop coffeetime coffeeroaster.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/logo-light.jpeg" alt="img/logo-light.jpeg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/logo-light.jpeg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/logo-light.webp" alt="img/logo-light.webp" loading="lazy">
+                </div>
+                <div class="img-card-name">img/logo-light.webp</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/logos/Theory_Roasters-c_Theory_Dark_76974309-61d8-4f70-bf31-caab0f38085e_540x.webp" alt="img/logos/Theory_Roasters-c_Theory_Dark_76974309-61d8-4f70-bf31-caab0f38085e_540x.webp" loading="lazy">
+                </div>
+                <div class="img-card-name">img/logos/Theory_Roasters-c_Theory_Dark_76974309-61d8-4f70-bf31-caab0f38085e_540x.webp</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/map-of-the-world.jpeg" alt="img/map-of-the-world.jpeg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/map-of-the-world.jpeg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/maybe%20we%20need%20to%20double%20check%20coffeeshop%20fyp%E3%82%B7%20baristalife%20baristadaily.jpg" alt="img/maybe we need to double check coffeeshop fypシ baristalife baristadaily.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/maybe we need to double check coffeeshop fypシ baristalife baristadaily.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/motorcycles.jpeg" alt="img/motorcycles.jpeg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/motorcycles.jpeg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/motorcycles.webp" alt="img/motorcycles.webp" loading="lazy">
+                </div>
+                <div class="img-card-name">img/motorcycles.webp</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/our%20iconic%20mango%20lemonade%20with%20matcha%20matcha%20matchatime%20fyp%E3%82%B7%20iconic%20ba.jpg" alt="img/our iconic mango lemonade with matcha matcha matchatime fypシ iconic ba.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/our iconic mango lemonade with matcha matcha matchatime fypシ iconic ba.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/our%20new%20hoodies%20are%20here%20%20coffeeshop%20coffeeroasters%20fyp%E3%82%B7.jpg" alt="img/our new hoodies are here  coffeeshop coffeeroasters fypシ.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/our new hoodies are here  coffeeshop coffeeroasters fypシ.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/sam.jpg" alt="img/sam.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/sam.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/send%20this%20to%20someone%20who%20can%20relate%20fyp%E3%82%B7%20coffeetime%20baristadaily%20baris.jpg" alt="img/send this to someone who can relate fypシ coffeetime baristadaily baris.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/send this to someone who can relate fypシ coffeetime baristadaily baris.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/send%20this%20to%20someone%20who%20needs%20a%20little%20birthday%20treat%20fyp%E3%82%B7%20coffeedail.jpg" alt="img/send this to someone who needs a little birthday treat fypシ coffeedail.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/send this to someone who needs a little birthday treat fypシ coffeedail.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/shasta.jpeg" alt="img/shasta.jpeg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/shasta.jpeg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/shasta.webp" alt="img/shasta.webp" loading="lazy">
+                </div>
+                <div class="img-card-name">img/shasta.webp</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/slow%20mornings%20here%20at%20Theory%20coffeeshop%20coffeeroasters%20coffeedaily%20bar.jpg" alt="img/slow mornings here at Theory coffeeshop coffeeroasters coffeedaily bar.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/slow mornings here at Theory coffeeshop coffeeroasters coffeedaily bar.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/so%20weird%2C%20happens%20all%20the%20time%E2%80%A6%20but%20have%20you%20tried%20a%20strawberry%20mango.jpg" alt="img/so weird, happens all the time… but have you tried a strawberry mango.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/so weird, happens all the time… but have you tried a strawberry mango.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/take%20your%20time%20%20coffeeshop%20fyp%E3%82%B7%20coffeetime%20baristadaily%20baristalife%20tr.jpg" alt="img/take your time  coffeeshop fypシ coffeetime baristadaily baristalife tr.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/take your time  coffeeshop fypシ coffeetime baristadaily baristalife tr.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/the%20usual%20already%20working%20on%20it%20coffeeshop%20coffee%20baristalife%20baristad.jpg" alt="img/the usual already working on it coffeeshop coffee baristalife baristad.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/the usual already working on it coffeeshop coffee baristalife baristad.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/theorycoffeeroasterss%20profile%20picture.jpg" alt="img/theorycoffeeroasterss profile picture.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/theorycoffeeroasterss profile picture.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/this%20is%20your%20sign%20to%20try%20our%20pumpkin%20muffin%20%20baristalife%20coffeeshop%20fy.jpg" alt="img/this is your sign to try our pumpkin muffin  baristalife coffeeshop fy.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/this is your sign to try our pumpkin muffin  baristalife coffeeshop fy.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/we%20gotchu%20%20coffeetime%20coffeeshop%20coffeeroasters%20fyp%E3%82%B7%20baristalife%20baris.jpg" alt="img/we gotchu  coffeetime coffeeshop coffeeroasters fypシ baristalife baris.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/we gotchu  coffeetime coffeeshop coffeeroasters fypシ baristalife baris.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/we%20love%20you%20baristalife%20baristadaily%20coffeeshop%20fyp%E3%82%B7%20coffeetime%20coffee.jpg" alt="img/we love you baristalife baristadaily coffeeshop fypシ coffeetime coffee.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/we love you baristalife baristadaily coffeeshop fypシ coffeetime coffee.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/what%20are%20some%20propaganda%20you%E2%80%99re%20not%20falling%20for%20coffee%20coffeetime%20coff.jpg" alt="img/what are some propaganda you’re not falling for coffee coffeetime coff.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/what are some propaganda you’re not falling for coffee coffeetime coff.jpg</div>
+            </div>
+            <div class="img-card">
+                <div class="img-card-preview">
+                    <img src="img/works%20every%20time%20coffee%20fyp%E3%82%B7%20coffeedaily%20baristadaily%20coffeeshop.jpg" alt="img/works every time coffee fypシ coffeedaily baristadaily coffeeshop.jpg" loading="lazy">
+                </div>
+                <div class="img-card-name">img/works every time coffee fypシ coffeedaily baristadaily coffeeshop.jpg</div>
+            </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <img id="lightbox-img" src="" alt="">
+        <div class="lightbox-name" id="lightbox-name"></div>
+    </div>
+
+    <script>
+        const search = document.getElementById('search');
+        const cards = document.querySelectorAll('.img-card');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxName = document.getElementById('lightbox-name');
+
+        search.addEventListener('input', () => {
+            const q = search.value.toLowerCase();
+            cards.forEach(card => {
+                const name = card.querySelector('.img-card-name').textContent.toLowerCase();
+                card.style.display = name.includes(q) ? '' : 'none';
+            });
+        });
+
+        document.querySelectorAll('.img-card-preview').forEach(preview => {
+            preview.addEventListener('click', () => {
+                const img = preview.querySelector('img');
+                lightboxImg.src = img.src;
+                lightboxName.textContent = img.alt;
+                lightbox.classList.add('active');
+            });
+        });
+
+        lightbox.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+            lightboxImg.src = '';
+        });
+    </script>
+</body>
+</html>
