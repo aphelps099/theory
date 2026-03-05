@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Timeline — Theory Coffee Roasters</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --copper: #D48A3C;
+            --copper-bright: #E89F4C;
+            --copper-dark: #B87430;
+            --charcoal: #1A1A1A;
+            --charcoal-mid: #242424;
+            --white: #FFFFFF;
+            --offwhite: #F8F6F3;
+            --bone: #EEEBE6;
+            --silver: #D8D4CE;
+            --grey-300: #A09B94;
+            --grey-400: #6E6A64;
+            --grey-500: #4A4744;
+            --black: #111111;
+            --font-sans: 'Jost', -apple-system, sans-serif;
+            --font-serif: 'Newsreader', Georgia, serif;
+            --ease: cubic-bezier(0.25, 1, 0.5, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; overflow-x: hidden; }
+        body {
+            font-family: var(--font-sans);
+            font-weight: 400; line-height: 1.5;
+            color: var(--black); background: var(--white);
+            -webkit-font-smoothing: antialiased;
+        }
+        ::selection { background: var(--copper); color: var(--white); }
+
+        .grain {
+            position: fixed; inset: 0; z-index: 9999;
+            pointer-events: none; opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat; background-size: 256px 256px;
+        }
+
+        /* NAV */
+        .topbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px 48px;
+            background: rgba(26,26,26,0.95);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .topbar-back {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none; color: var(--white);
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.3s;
+        }
+        .topbar-back:hover { color: var(--copper); }
+        .topbar-back svg { width: 16px; height: 16px; transition: transform 0.3s var(--ease); }
+        .topbar-back:hover svg { transform: translateX(-3px); }
+        .topbar-chapter { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); }
+        @media (max-width: 768px) { .topbar { padding: 20px 24px; } }
+
+        /* CHAPTER HERO */
+        .chapter-hero {
+            padding: 180px 48px 100px;
+            background: var(--white);
+            position: relative;
+        }
+        .chapter-hero::after {
+            content: '';
+            position: absolute; bottom: 0; left: 48px; right: 48px;
+            height: 3px; background: var(--black);
+        }
+        .chapter-hero-inner { max-width: 900px; }
+        .chapter-num {
+            font-family: var(--font-sans);
+            font-size: clamp(80px, 12vw, 160px);
+            font-weight: 800; line-height: 0.85;
+            color: var(--bone);
+            margin-bottom: 24px;
+            opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.1s forwards;
+        }
+        .chapter-title {
+            font-family: var(--font-sans);
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700; letter-spacing: -0.03em;
+            line-height: 1.1; color: var(--black);
+            margin-bottom: 24px;
+            opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.25s forwards;
+        }
+        .chapter-intro {
+            font-size: clamp(16px, 1.8vw, 20px);
+            font-weight: 400; line-height: 1.7;
+            color: var(--grey-400); max-width: 560px;
+            opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.4s forwards;
+        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) { .chapter-hero { padding: 140px 24px 72px; } .chapter-hero::after { left: 24px; right: 24px; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           VERTICAL TIMELINE — the heart of the page
+           ═══════════════════════════════════════════════════════════════ */
+
+        .timeline {
+            padding: 100px 48px;
+            background: var(--white);
+            position: relative;
+        }
+
+        .timeline-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* The central vertical line */
+        .timeline-inner::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0; bottom: 0;
+            width: 2px;
+            background: var(--bone);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+            margin-bottom: 80px;
+        }
+
+        .timeline-item:last-child { margin-bottom: 0; }
+
+        /* Alternating sides */
+        .timeline-item--left { justify-content: flex-start; }
+        .timeline-item--right { justify-content: flex-end; }
+
+        .timeline-item-content {
+            width: 44%;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+        }
+
+        .timeline-item-content.is-visible {
+            opacity: 1; transform: translateY(0);
+        }
+
+        /* The dot on the timeline */
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 24px;
+            width: 16px; height: 16px;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .timeline-dot-inner {
+            width: 16px; height: 16px;
+            background: var(--white);
+            border: 3px solid var(--copper);
+            border-radius: 50%;
+            transition: all 0.4s var(--ease);
+        }
+
+        .timeline-item:hover .timeline-dot-inner {
+            background: var(--copper);
+            transform: scale(1.25);
+        }
+
+        /* Year badge */
+        .timeline-year {
+            font-family: var(--font-sans);
+            font-size: clamp(48px, 6vw, 72px);
+            font-weight: 800;
+            line-height: 1;
+            color: var(--copper);
+            margin-bottom: 16px;
+        }
+
+        .timeline-event {
+            font-family: var(--font-sans);
+            font-size: clamp(18px, 2vw, 22px);
+            font-weight: 700;
+            color: var(--black);
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .timeline-desc {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            color: var(--grey-400);
+            margin-bottom: 16px;
+        }
+
+        .timeline-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border: 1px solid var(--bone);
+            color: var(--grey-300);
+            transition: all 0.3s;
+        }
+
+        .timeline-item:hover .timeline-tag {
+            border-color: var(--copper);
+            color: var(--copper);
+        }
+
+        /* Emblem inside select items */
+        .timeline-emblem {
+            width: 56px; height: 56px;
+            margin-bottom: 16px;
+            opacity: 0.6;
+            transition: opacity 0.4s;
+        }
+        .timeline-item:hover .timeline-emblem { opacity: 0.9; }
+        .timeline-emblem svg { width: 100%; height: 100%; }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .timeline { padding: 72px 24px; }
+            .timeline-inner::before { left: 20px; }
+            .timeline-dot { left: 20px; }
+            .timeline-item--left,
+            .timeline-item--right { justify-content: flex-end; }
+            .timeline-item-content { width: calc(100% - 56px); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           ERA DIVIDERS — visual breaks between time periods
+           ═══════════════════════════════════════════════════════════════ */
+
+        .era {
+            padding: 64px 48px;
+            background: var(--black);
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .era-line {
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .era-label {
+            font-family: var(--font-sans);
+            font-size: 0.6875rem;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--copper);
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) { .era { padding: 48px 24px; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           AWARDS SHELF — a visual trophy case
+           ═══════════════════════════════════════════════════════════════ */
+
+        .awards {
+            padding: 100px 48px;
+            background: var(--charcoal);
+        }
+
+        .awards-label {
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 48px;
+        }
+
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            max-width: 1100px;
+        }
+
+        .award-card {
+            padding: 40px 24px;
+            background: var(--charcoal-mid);
+            text-align: center;
+            transition: all 0.4s var(--ease);
+            border-top: 3px solid transparent;
+        }
+
+        .award-card:hover {
+            border-top-color: var(--copper);
+            background: var(--black);
+        }
+
+        .award-emblem {
+            width: 64px; height: 64px;
+            margin: 0 auto 20px;
+            opacity: 0.5;
+            transition: opacity 0.4s;
+        }
+        .award-card:hover .award-emblem { opacity: 0.9; }
+        .award-emblem svg { width: 100%; height: 100%; }
+
+        .award-year {
+            font-size: 0.5625rem; font-weight: 800;
+            letter-spacing: 0.16em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 8px;
+        }
+
+        .award-name {
+            font-family: var(--font-sans);
+            font-size: 1rem; font-weight: 700;
+            color: var(--white); line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .award-detail {
+            font-size: 0.8125rem;
+            color: var(--grey-400);
+            line-height: 1.4;
+        }
+
+        @media (max-width: 900px) { .awards-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .awards { padding: 72px 24px; } .awards-grid { grid-template-columns: 1fr; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           STATS ROW — big numbers, small labels
+           ═══════════════════════════════════════════════════════════════ */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 3px solid var(--copper);
+        }
+
+        .stat {
+            padding: 48px 32px;
+            background: var(--offwhite);
+            text-align: center;
+            transition: background 0.4s var(--ease);
+        }
+
+        .stat:hover { background: var(--black); }
+
+        .stat-num {
+            font-family: var(--font-sans);
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            color: var(--copper);
+            line-height: 1;
+            margin-bottom: 8px;
+            transition: color 0.4s;
+        }
+        .stat:hover .stat-num { color: var(--copper-bright); }
+
+        .stat-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--grey-400);
+            transition: color 0.4s;
+        }
+        .stat:hover .stat-label { color: rgba(255,255,255,0.4); }
+
+        @media (max-width: 768px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .stats { grid-template-columns: 1fr; } .stat { padding: 32px 24px; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           THE FUTURE — closing section
+           ═══════════════════════════════════════════════════════════════ */
+
+        .future {
+            padding: 120px 48px;
+            background: var(--black);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .future::before {
+            content: 'NEXT';
+            position: absolute;
+            right: -40px; bottom: -40px;
+            font-family: var(--font-sans);
+            font-size: clamp(200px, 25vw, 400px);
+            font-weight: 800;
+            color: rgba(255,255,255,0.02);
+            line-height: 0.8;
+            pointer-events: none;
+        }
+
+        .future-inner {
+            max-width: 700px;
+            position: relative; z-index: 1;
+        }
+
+        .future-label {
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 24px;
+        }
+
+        .future-headline {
+            font-family: var(--font-sans);
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 600; letter-spacing: -0.02em;
+            line-height: 1.15;
+            color: var(--white);
+            margin-bottom: 32px;
+        }
+
+        .future-headline em {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: var(--copper-bright);
+            font-weight: 400;
+        }
+
+        .future-body {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--grey-300);
+            max-width: 520px;
+        }
+
+        @media (max-width: 768px) { .future { padding: 80px 24px; } }
+
+        /* CHAPTER NAV + COLOPHON */
+        .chapter-nav { display: flex; border-top: 3px solid var(--copper); }
+        .chapter-nav-link { flex: 1; padding: 40px 48px; text-decoration: none; color: inherit; transition: background 0.3s var(--ease); }
+        .chapter-nav-link:hover { background: var(--offwhite); }
+        .chapter-nav-link--next { text-align: right; }
+        .chapter-nav-dir { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--copper); margin-bottom: 6px; }
+        .chapter-nav-title { font-family: var(--font-sans); font-size: clamp(16px, 2vw, 22px); font-weight: 600; color: var(--black); }
+        @media (max-width: 768px) { .chapter-nav { flex-direction: column; } .chapter-nav-link { padding: 28px 24px; } .chapter-nav-link--next { text-align: left; border-top: 1px solid var(--bone); } }
+
+        .colophon { padding: 48px; background: var(--black); display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); }
+        .colophon-left { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.2); }
+        .colophon-right { font-size: 0.625rem; font-weight: 400; letter-spacing: 0.06em; color: rgba(255,255,255,0.15); }
+        .colophon-right a { color: var(--copper); text-decoration: none; opacity: 0.6; transition: opacity 0.3s; }
+        .colophon-right a:hover { opacity: 1; }
+        @media (max-width: 768px) { .colophon { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; } }
+
+        .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <nav class="topbar">
+        <a href="theory-v6-zag.html" class="topbar-back">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M10 4l-4 4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Brand House
+        </a>
+        <span class="topbar-chapter">Chapter 09</span>
+    </nav>
+
+    <!-- CHAPTER HERO -->
+    <section class="chapter-hero">
+        <div class="chapter-hero-inner">
+            <div class="chapter-num">09</div>
+            <h1 class="chapter-title">Brand Timeline</h1>
+            <p class="chapter-intro">From a smoked-out kitchen to a top ten roaster. Every milestone, every inflection point, every moment that mattered.</p>
+        </div>
+    </section>
+
+    <!-- ERA I -->
+    <div class="era reveal">
+        <div class="era-line"></div>
+        <span class="era-label">Era I — The Kitchen</span>
+        <div class="era-line"></div>
+    </div>
+
+    <!-- VERTICAL TIMELINE -->
+    <section class="timeline">
+        <div class="timeline-inner">
+
+            <!-- 2018: First Roast -->
+            <div class="timeline-item timeline-item--left">
+                <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+                <div class="timeline-item-content">
+                    <div class="timeline-year">2018</div>
+                    <div class="timeline-event">The First Roast</div>
+                    <p class="timeline-desc">Sam LaRobardiere smoked out his family kitchen roasting green coffee beans in a cast iron skillet. Moved to a popcorn popper. Then a backyard barbecue grill. The obsession had begun.</p>
+                    <span class="timeline-tag">Origin</span>
+                </div>
+            </div>
+
+            <!-- 2018: Farmers Markets -->
+            <div class="timeline-item timeline-item--right">
+                <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+                <div class="timeline-item-content">
+                    <div class="timeline-year">2018</div>
+                    <div class="timeline-event">Farmers Market Debut</div>
+                    <p class="timeline-desc">Started selling bags at the Redding Saturday farmers market. No logo, no brand, just good coffee and a folding table. Sold out every week.</p>
+                    <span class="timeline-tag">First Sales</span>
+                </div>
+            </div>
+
+            <!-- 2018: Golden Bean -->
+            <div class="timeline-item timeline-item--left">
+                <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+                <div class="timeline-item-content">
+                    <div class="timeline-emblem">
+                        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="28" cy="28" r="26" stroke="#D48A3C" stroke-width="1.5"/>
+                            <circle cx="28" cy="28" r="21" stroke="#D48A3C" stroke-width="0.75" opacity="0.5"/>
+                            <path d="M28 12c-5 0-8 4-8 10 0 7 3.5 13 8 18 4.5-5 8-11 8-18 0-6-3-10-8-10z" stroke="#D48A3C" stroke-width="1.2" fill="none"/>
+                            <line x1="28" y1="16" x2="28" y2="35" stroke="#D48A3C" stroke-width="0.75" opacity="0.5"/>
+                            <text x="28" y="52" text-anchor="middle" font-family="Jost,sans-serif" font-size="4.5" font-weight="700" letter-spacing="0.5" fill="#D48A3C" opacity="0.7">GOLDEN BEAN</text>
+                        </svg>
+                    </div>
+                    <div class="timeline-year">2018</div>
+                    <div class="timeline-event">Golden Bean Gold</div>
+                    <p class="timeline-desc">Won gold in the espresso category at Golden Bean North America. Year one. Still roasting on a barbecue grill. The industry noticed.</p>
+                    <span class="timeline-tag">Award</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ERA II -->
+    <div class="era reveal">
+        <div class="era-line"></div>
+        <span class="era-label">Era II — The Leap</span>
+        <div class="era-line"></div>
+    </div>
+
+    <section class="timeline">
+        <div class="timeline-inner">
+
+            <!-- 2019: Good Food Awards -->
+            <div class="timeline-item timeline-item--right">
+                <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+                <div class="timeline-item-content">
+                    <div class="timeline-emblem">
+                        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(28,26)">
+                                <polygon points="0,-20 4,-8 17,-8 6,1 10,14 0,6 -10,14 -6,1 -17,-8 -4,-8" stroke="#D48A3C" stroke-width="1" fill="none"/>
+                                <circle r="12" stroke="#D48A3C" stroke-width="0.75" opacity="0.5"/>
+                            </g>
+                            <text x="28" y="52" text-anchor="middle" font-family="Jost,sans-serif" font-size="4" font-weight="700" letter-spacing="0.5" fill="#D48A3C" opacity="0.7">GOOD FOOD AWARDS</text>
+                        </svg>
+                    </div>
+                    <div class="timeline-year">2019</div>
+                    <div class="timeline-event">Good Food Awards — Top 10</div>
+                    <p class="timeline-desc">Judged alongside the best specialty producers in the country. Finished in the top 10 overall. Theory was no longer a farmers market operation.</p>
+                    <span class="timeline-tag">Award</span>
+                </div>
+            </div>
+
+            <!-- 2019: Food + Wine -->
+            <div class="timeline-item timeline-item--left">
+                <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+                <div class="timeline-item-content">
+                    <div class="timeline-emblem">
+                        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="6" y="4" width="44" height="42" rx="1" stroke="#D48A3C" stroke-width="1"/>
+                            <line x1="6" y1="14" x2="50" y2="14" stroke="#D48A3C" stroke-width="0.75" opacity="0.5"/>
+                            <text x="28" y="12" text-anchor="middle" font-family="Jost,sans-serif" font-size="5.5" font-weight="700" fill="#D48A3C">FOOD + WINE</text>
+                            <text x="28" y="28" text-anchor="middle" font-family="Newsreader,serif" font-size="9" font-weight="500" font-style="italic" fill="#D48A3C">Top</text>
+                            <text x="28" y="40" text-anchor="middle" font-family="Jost,sans-serif" font-size="12" font-weight="300" fill="#D48A3C">100</text>
+                            <text x="28" y="52" text-anchor="middle" font-family="Jost,sans-serif" font-size="3.5" font-weight="700" letter-spacing="0.5" fill="#D48A3C" opacity="0.7">BEST CAFES IN AMERICA</text>
+                        </svg>
+                    </div>
+                    <div class="timeline-year">2019</div>
+                    <div class="timeline-event">Food + Wine Top 100</div>
+                    <p class="timeline-desc">Named one of the 100 best cafes in America by Food &amp; Wine Magazine. A backyard roaster from Redding, California on the same list as the nation's best.</p>
+                    <span class="timeline-tag">Press</span>
+                </div>
+            </div>
+
+            <!-- 2019: Twitter -->
+            <div class="timeline-item timeline-item--right">
+                <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+                <div class="timeline-item-content">
+                    <div class="timeline-year">2019</div>
+                    <div class="timeline-event">Twitter HQ — Sole Provider</div>
+                    <p class="timeline-desc">Entered a blind tasting competition at Twitter's San Francisco headquarters. Won. Became their sole coffee provider. Small-town roaster, big-tech validation.</p>
+                    <span class="timeline-tag">Wholesale</span>
+                </div>
+            </div>
+
+            <!-- 2019: First Cafe -->
+            <div class="timeline-item timeline-item--left">
+                <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+                <div class="timeline-item-content">
+                    <div class="timeline-year">2019</div>
+                    <div class="timeline-event">First Cafe Opens</div>
+                    <p class="timeline-desc">Opened the original Theory cafe in downtown Redding. Small, intentional, and designed to make every cup feel like something. The brand finally had a home.</p>
+                    <span class="timeline-tag">Milestone</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ERA III -->
+    <div class="era reveal">
+        <div class="era-line"></div>
+        <span class="era-label">Era III — The Build</span>
+        <div class="era-line"></div>
+    </div>
+
+    <section class="timeline">
+        <div class="timeline-inner">
+
+            <!-- 2020: Q-Graders -->
+            <div class="timeline-item timeline-item--right">
+                <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+                <div class="timeline-item-content">
+                    <div class="timeline-year">2020</div>
+                    <div class="timeline-event">Two Q-Graders Certified</div>
+                    <p class="timeline-desc">Both lead roasters earned Q-Grader certification — the highest professional tasting credential in coffee. Theory was building a team, not just a brand.</p>
+                    <span class="timeline-tag">Quality</span>
+                </div>
+            </div>
+
+            <!-- 2021: Hilltop -->
+            <div class="timeline-item timeline-item--left">
+                <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+                <div class="timeline-item-content">
+                    <div class="timeline-year">2021</div>
+                    <div class="timeline-event">Hilltop Drive Opens</div>
+                    <p class="timeline-desc">Second location on Hilltop Drive. Drive-through format. Proved that speed and quality can coexist. Became the highest-volume location within six months.</p>
+                    <span class="timeline-tag">Expansion</span>
+                </div>
+            </div>
+
+            <!-- 2022: California Street -->
+            <div class="timeline-item timeline-item--right">
+                <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+                <div class="timeline-item-content">
+                    <div class="timeline-year">2022</div>
+                    <div class="timeline-event">California Street Flagship</div>
+                    <p class="timeline-desc">The flagship. Motorcycles parked out front. Full espresso bar, pour-over station, and a retail wall that looks like it belongs in a design magazine. The space where the brand lives.</p>
+                    <span class="timeline-tag">Flagship</span>
+                </div>
+            </div>
+
+            <!-- 2023: Mt. Shasta -->
+            <div class="timeline-item timeline-item--left">
+                <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+                <div class="timeline-item-content">
+                    <div class="timeline-year">2023</div>
+                    <div class="timeline-event">Mt. Shasta Location</div>
+                    <p class="timeline-desc">Fourth location at the foot of Mt. Shasta. Theory went from a Redding secret to a Northern California institution. New market, same standards.</p>
+                    <span class="timeline-tag">Expansion</span>
+                </div>
+            </div>
+
+            <!-- 2024: Wholesale -->
+            <div class="timeline-item timeline-item--right">
+                <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+                <div class="timeline-item-content">
+                    <div class="timeline-year">2024</div>
+                    <div class="timeline-event">Wholesale Program Scales</div>
+                    <p class="timeline-desc">Launched a formal wholesale program. Restaurants, hotels, offices — all serving Theory. The beans started showing up in places Sam never expected.</p>
+                    <span class="timeline-tag">Growth</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ERA IV -->
+    <div class="era reveal">
+        <div class="era-line"></div>
+        <span class="era-label">Era IV — Now</span>
+        <div class="era-line"></div>
+    </div>
+
+    <section class="timeline">
+        <div class="timeline-inner">
+
+            <!-- Now -->
+            <div class="timeline-item timeline-item--left">
+                <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+                <div class="timeline-item-content">
+                    <div class="timeline-year">Now</div>
+                    <div class="timeline-event">Top 10 Roaster in the United States</div>
+                    <p class="timeline-desc">Four locations. Two Q-Graders. Weekly cuppings. A wholesale program spanning Northern California. Direct relationships with farms in seven countries. The obsession hasn't changed. Just the scale.</p>
+                    <span class="timeline-tag">Present</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <div class="stats reveal">
+        <div class="stat">
+            <div class="stat-num">4</div>
+            <div class="stat-label">Cafe Locations</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">2</div>
+            <div class="stat-label">Q-Graders</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">7</div>
+            <div class="stat-label">Origin Countries</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">2018</div>
+            <div class="stat-label">Year Founded</div>
+        </div>
+    </div>
+
+    <!-- AWARDS -->
+    <section class="awards reveal">
+        <div class="awards-label">Recognition</div>
+        <div class="awards-grid">
+            <div class="award-card">
+                <div class="award-emblem">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="32" cy="32" r="28" stroke="#D48A3C" stroke-width="1.5"/>
+                        <path d="M32 14c-5 0-9 4.5-9 11 0 8 4 14 9 19 5-5 9-11 9-19 0-6.5-4-11-9-11z" stroke="#D48A3C" stroke-width="1.2" fill="none"/>
+                    </svg>
+                </div>
+                <div class="award-year">2018</div>
+                <div class="award-name">Golden Bean Gold</div>
+                <div class="award-detail">Espresso Category</div>
+            </div>
+            <div class="award-card">
+                <div class="award-emblem">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="translate(32,30)">
+                            <polygon points="0,-22 4.5,-9 18,-9 7,1 11,15 0,7 -11,15 -7,1 -18,-9 -4.5,-9" stroke="#D48A3C" stroke-width="1" fill="none"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="award-year">2019</div>
+                <div class="award-name">Good Food Awards</div>
+                <div class="award-detail">Top 10 Overall</div>
+            </div>
+            <div class="award-card">
+                <div class="award-emblem">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="10" y="8" width="44" height="48" rx="1" stroke="#D48A3C" stroke-width="1"/>
+                        <text x="32" y="38" text-anchor="middle" font-family="Jost,sans-serif" font-size="16" font-weight="300" fill="#D48A3C">100</text>
+                    </svg>
+                </div>
+                <div class="award-year">2019</div>
+                <div class="award-name">Food + Wine</div>
+                <div class="award-detail">Top 100 Cafes in America</div>
+            </div>
+            <div class="award-card">
+                <div class="award-emblem">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="32" cy="32" r="28" stroke="#D48A3C" stroke-width="1"/>
+                        <text x="32" y="37" text-anchor="middle" font-family="Jost,sans-serif" font-size="11" font-weight="700" fill="#D48A3C">Q</text>
+                    </svg>
+                </div>
+                <div class="award-year">2020</div>
+                <div class="award-name">Q-Grader Certified</div>
+                <div class="award-detail">Two Lead Roasters</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE FUTURE -->
+    <section class="future reveal">
+        <div class="future-inner">
+            <div class="future-label">What's Next</div>
+            <h2 class="future-headline">The goal was never to be the <em>biggest.</em> It was to be the <em>best.</em></h2>
+            <p class="future-body">Theory grows by deepening, not widening. Better sourcing. Better roasting. Better training. Better relationships with the people who drink the coffee and the people who grow it. The next chapter looks a lot like this one — just sharper.</p>
+        </div>
+    </section>
+
+    <!-- CHAPTER NAV -->
+    <nav class="chapter-nav">
+        <a href="coffee-origins.html" class="chapter-nav-link">
+            <div class="chapter-nav-dir">Previous</div>
+            <div class="chapter-nav-title">08 — Coffee Origins</div>
+        </a>
+        <a href="wholesale-toolkit.html" class="chapter-nav-link chapter-nav-link--next">
+            <div class="chapter-nav-dir">Next Chapter</div>
+            <div class="chapter-nav-title">10 — Wholesale Toolkit</div>
+        </a>
+    </nav>
+
+    <footer class="colophon">
+        <div class="colophon-left">Theory Coffee Roasters · Redding, CA</div>
+        <div class="colophon-right">Brand House 2026 · <a href="https://theorycoffee.com" target="_blank">theorycoffee.com</a></div>
+    </footer>
+
+    <script>
+        // Scroll reveals
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
+        }, { threshold: 0.1, rootMargin: '-40px' });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Timeline items use their own observer for staggered entry
+        const timelineObs = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '-60px' });
+        document.querySelectorAll('.timeline-item-content').forEach(el => timelineObs.observe(el));
+    </script>
+</body>
+</html>

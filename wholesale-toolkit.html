@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wholesale Partner Toolkit — Theory Coffee Roasters</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --copper: #D48A3C;
+            --copper-bright: #E89F4C;
+            --copper-dark: #B87430;
+            --charcoal: #1A1A1A;
+            --charcoal-mid: #242424;
+            --white: #FFFFFF;
+            --offwhite: #F8F6F3;
+            --bone: #EEEBE6;
+            --silver: #D8D4CE;
+            --grey-300: #A09B94;
+            --grey-400: #6E6A64;
+            --grey-500: #4A4744;
+            --black: #111111;
+            --font-sans: 'Jost', -apple-system, sans-serif;
+            --font-serif: 'Newsreader', Georgia, serif;
+            --ease: cubic-bezier(0.25, 1, 0.5, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; overflow-x: hidden; }
+        body {
+            font-family: var(--font-sans);
+            font-weight: 400; line-height: 1.5;
+            color: var(--black); background: var(--white);
+            -webkit-font-smoothing: antialiased;
+        }
+        ::selection { background: var(--copper); color: var(--white); }
+
+        .grain {
+            position: fixed; inset: 0; z-index: 9999;
+            pointer-events: none; opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat; background-size: 256px 256px;
+        }
+
+        /* NAV */
+        .topbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px 48px;
+            background: rgba(26,26,26,0.95);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .topbar-back {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none; color: var(--white);
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.3s;
+        }
+        .topbar-back:hover { color: var(--copper); }
+        .topbar-back svg { width: 16px; height: 16px; transition: transform 0.3s var(--ease); }
+        .topbar-back:hover svg { transform: translateX(-3px); }
+        .topbar-chapter { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); }
+        @media (max-width: 768px) { .topbar { padding: 20px 24px; } }
+
+        /* CHAPTER HERO */
+        .chapter-hero {
+            padding: 180px 48px 100px;
+            background: var(--charcoal);
+        }
+        .chapter-hero-inner { max-width: 800px; }
+        .chapter-num {
+            font-family: var(--font-sans);
+            font-size: clamp(80px, 12vw, 160px);
+            font-weight: 800; line-height: 0.85;
+            color: rgba(255,255,255,0.06);
+            margin-bottom: 24px;
+            opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.1s forwards;
+        }
+        .chapter-title {
+            font-family: var(--font-sans);
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700; letter-spacing: -0.03em;
+            line-height: 1.1; color: var(--white);
+            margin-bottom: 24px;
+            opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.25s forwards;
+        }
+        .chapter-intro {
+            font-size: clamp(16px, 1.8vw, 20px);
+            font-weight: 400; line-height: 1.7;
+            color: var(--grey-300); max-width: 560px;
+            opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.4s forwards;
+        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) { .chapter-hero { padding: 140px 24px 72px; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           PARTNER PROMISE
+           ═══════════════════════════════════════════════════════════════ */
+
+        .promise {
+            padding: 100px 48px;
+            background: var(--black);
+            position: relative;
+        }
+        .promise::before {
+            content: ''; position: absolute;
+            top: 100px; bottom: 100px; left: 48px;
+            width: 3px; background: var(--copper);
+        }
+        .promise-inner { max-width: 700px; padding-left: 48px; }
+        .promise-label {
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 24px;
+        }
+        .promise-text {
+            font-family: var(--font-sans);
+            font-size: clamp(22px, 3.5vw, 36px);
+            font-weight: 300; line-height: 1.35;
+            color: var(--white); letter-spacing: -0.01em;
+        }
+        .promise-text em {
+            font-family: var(--font-serif);
+            font-style: italic; color: var(--copper-bright);
+            font-weight: 400;
+        }
+        @media (max-width: 768px) { .promise { padding: 72px 24px; } .promise::before { left: 24px; top: 72px; bottom: 72px; } .promise-inner { padding-left: 32px; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           WHAT WE PROVIDE — numbered grid
+           ═══════════════════════════════════════════════════════════════ */
+
+        .provide {
+            padding: 100px 48px;
+            background: var(--offwhite);
+        }
+
+        .provide-label {
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 48px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .provide-label::after { content: ''; flex: 1; height: 1px; background: var(--bone); max-width: 60px; }
+
+        .provide-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            max-width: 1100px;
+        }
+
+        .provide-card {
+            padding: 40px 32px;
+            background: var(--white);
+            transition: all 0.4s var(--ease);
+            border-top: 3px solid transparent;
+        }
+
+        .provide-card:hover {
+            background: var(--black);
+            border-top-color: var(--copper);
+        }
+
+        .provide-card-num {
+            font-family: var(--font-sans);
+            font-size: clamp(36px, 4vw, 48px);
+            font-weight: 800; line-height: 1;
+            color: var(--bone); margin-bottom: 20px;
+            transition: color 0.4s var(--ease);
+        }
+        .provide-card:hover .provide-card-num { color: var(--copper); }
+
+        .provide-card-name {
+            font-family: var(--font-sans);
+            font-size: 1rem; font-weight: 700;
+            color: var(--black); margin-bottom: 12px;
+            transition: color 0.4s var(--ease);
+        }
+        .provide-card:hover .provide-card-name { color: var(--white); }
+
+        .provide-card-desc {
+            font-size: 0.875rem; line-height: 1.65;
+            color: var(--grey-400);
+            transition: color 0.4s var(--ease);
+        }
+        .provide-card:hover .provide-card-desc { color: rgba(255,255,255,0.45); }
+
+        @media (max-width: 900px) { .provide-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .provide { padding: 72px 24px; } .provide-grid { grid-template-columns: 1fr; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           COFFEE LINEUP — what partners can order
+           ═══════════════════════════════════════════════════════════════ */
+
+        .lineup {
+            padding: 100px 48px;
+            background: var(--charcoal);
+        }
+
+        .lineup-label {
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 16px;
+        }
+
+        .lineup-title {
+            font-family: var(--font-sans);
+            font-size: clamp(22px, 3vw, 32px);
+            font-weight: 600; letter-spacing: -0.02em;
+            color: var(--white); margin-bottom: 48px;
+        }
+
+        .lineup-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            max-width: 1100px;
+        }
+
+        .lineup-card {
+            padding: 36px 28px;
+            background: var(--charcoal-mid);
+            border-left: 3px solid transparent;
+            transition: all 0.4s var(--ease);
+        }
+
+        .lineup-card:hover {
+            border-left-color: var(--copper);
+            background: var(--black);
+        }
+
+        .lineup-card-type {
+            font-size: 0.5625rem; font-weight: 800;
+            letter-spacing: 0.16em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 8px;
+        }
+
+        .lineup-card-name {
+            font-family: var(--font-sans);
+            font-size: 1.0625rem; font-weight: 700;
+            color: var(--white); margin-bottom: 8px;
+            transition: color 0.4s;
+        }
+
+        .lineup-card-tasting {
+            font-family: var(--font-serif);
+            font-size: 0.8125rem; font-style: italic;
+            color: var(--grey-400); margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .lineup-card-format {
+            font-size: 0.6875rem; font-weight: 600;
+            color: var(--grey-500);
+        }
+
+        @media (max-width: 900px) { .lineup-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .lineup { padding: 72px 24px; } .lineup-grid { grid-template-columns: 1fr; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           PARTNERSHIP TIERS
+           ═══════════════════════════════════════════════════════════════ */
+
+        .tiers {
+            padding: 100px 48px;
+            background: var(--white);
+            border-top: 3px solid var(--copper);
+        }
+
+        .tiers-label {
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 48px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .tiers-label::after { content: ''; flex: 1; height: 1px; background: var(--bone); max-width: 60px; }
+
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            max-width: 1000px;
+        }
+
+        .tier-card {
+            padding: 48px 36px;
+            background: var(--offwhite);
+            position: relative;
+            transition: all 0.4s var(--ease);
+        }
+
+        .tier-card:hover { background: var(--black); }
+
+        .tier-card--featured {
+            background: var(--black);
+        }
+
+        .tier-card--featured .tier-name,
+        .tier-card:hover .tier-name { color: var(--white); }
+        .tier-card--featured .tier-price,
+        .tier-card:hover .tier-price { color: var(--copper-bright); }
+        .tier-card--featured .tier-desc,
+        .tier-card:hover .tier-desc { color: rgba(255,255,255,0.5); }
+        .tier-card--featured .tier-feature,
+        .tier-card:hover .tier-feature { color: rgba(255,255,255,0.65); }
+        .tier-card--featured .tier-feature::before,
+        .tier-card:hover .tier-feature::before { color: var(--copper); }
+
+        .tier-badge {
+            position: absolute;
+            top: 0; right: 0;
+            padding: 6px 14px;
+            background: var(--copper);
+            font-size: 0.5625rem; font-weight: 800;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            color: var(--white);
+        }
+
+        .tier-name {
+            font-family: var(--font-sans);
+            font-size: 1.25rem; font-weight: 700;
+            color: var(--black); margin-bottom: 8px;
+            transition: color 0.4s var(--ease);
+        }
+
+        .tier-price {
+            font-family: var(--font-sans);
+            font-size: clamp(32px, 4vw, 44px);
+            font-weight: 800; line-height: 1;
+            color: var(--copper); margin-bottom: 4px;
+            transition: color 0.4s;
+        }
+
+        .tier-unit {
+            font-size: 0.75rem; font-weight: 600;
+            color: var(--grey-300); margin-bottom: 24px;
+        }
+
+        .tier-desc {
+            font-size: 0.875rem; line-height: 1.6;
+            color: var(--grey-400); margin-bottom: 24px;
+            transition: color 0.4s var(--ease);
+        }
+
+        .tier-features { list-style: none; }
+
+        .tier-feature {
+            font-size: 0.8125rem;
+            color: var(--grey-400);
+            padding: 8px 0;
+            border-bottom: 1px solid var(--bone);
+            display: flex; align-items: center; gap: 10px;
+            transition: color 0.4s var(--ease);
+        }
+
+        .tier-card:hover .tier-feature,
+        .tier-card--featured .tier-feature { border-bottom-color: rgba(255,255,255,0.06); }
+
+        .tier-feature::before {
+            content: '+';
+            font-weight: 800;
+            color: var(--copper);
+            font-size: 0.875rem;
+            transition: color 0.4s;
+        }
+
+        @media (max-width: 900px) { .tiers-grid { grid-template-columns: 1fr; max-width: 400px; } }
+        @media (max-width: 600px) { .tiers { padding: 72px 24px; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           BRAND ASSETS — what partners receive
+           ═══════════════════════════════════════════════════════════════ */
+
+        .assets {
+            padding: 100px 48px;
+            background: var(--charcoal);
+        }
+
+        .assets-label {
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 16px;
+        }
+
+        .assets-title {
+            font-family: var(--font-sans);
+            font-size: clamp(22px, 3vw, 32px);
+            font-weight: 600; letter-spacing: -0.02em;
+            color: var(--white); margin-bottom: 48px;
+        }
+
+        .assets-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+            max-width: 800px;
+        }
+
+        .asset-card {
+            padding: 36px 28px;
+            background: var(--charcoal-mid);
+            transition: all 0.4s var(--ease);
+        }
+
+        .asset-card:hover { background: var(--black); }
+
+        .asset-icon {
+            width: 32px; height: 32px;
+            margin-bottom: 16px;
+            color: var(--copper);
+        }
+
+        .asset-name {
+            font-family: var(--font-sans);
+            font-size: 1rem; font-weight: 700;
+            color: var(--white); margin-bottom: 8px;
+        }
+
+        .asset-desc {
+            font-size: 0.8125rem; line-height: 1.6;
+            color: var(--grey-400);
+        }
+
+        @media (max-width: 600px) { .assets { padding: 72px 24px; } .assets-grid { grid-template-columns: 1fr; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           GUIDELINES — do's and don'ts
+           ═══════════════════════════════════════════════════════════════ */
+
+        .guidelines {
+            padding: 100px 48px;
+            background: var(--offwhite);
+            border-top: 3px solid var(--copper);
+        }
+
+        .guidelines-label {
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 48px;
+        }
+
+        .guidelines-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            max-width: 900px;
+        }
+
+        .guidelines-col-title {
+            font-family: var(--font-sans);
+            font-size: 1.125rem; font-weight: 700;
+            color: var(--black); margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--black);
+        }
+
+        .guidelines-col-title--dont {
+            border-bottom-color: var(--grey-300);
+            color: var(--grey-400);
+        }
+
+        .guideline-item {
+            display: flex; align-items: flex-start; gap: 12px;
+            padding: 12px 0;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            color: var(--grey-400);
+        }
+
+        .guideline-icon {
+            flex-shrink: 0;
+            width: 20px; height: 20px;
+            margin-top: 2px;
+        }
+
+        .guideline-icon--do { color: var(--copper); }
+        .guideline-icon--dont { color: var(--grey-300); }
+
+        @media (max-width: 768px) { .guidelines { padding: 72px 24px; } .guidelines-cols { grid-template-columns: 1fr; gap: 36px; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           CTA
+           ═══════════════════════════════════════════════════════════════ */
+
+        .cta {
+            padding: 120px 48px;
+            background: var(--black);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: 'PARTNER';
+            position: absolute;
+            left: 50%; bottom: -30px;
+            transform: translateX(-50%);
+            font-family: var(--font-sans);
+            font-size: clamp(100px, 15vw, 250px);
+            font-weight: 800;
+            color: rgba(255,255,255,0.02);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .cta-inner { position: relative; z-index: 1; }
+
+        .cta-label {
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--copper); margin-bottom: 24px;
+        }
+
+        .cta-headline {
+            font-family: var(--font-sans);
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 600; letter-spacing: -0.02em;
+            line-height: 1.15; color: var(--white);
+            margin-bottom: 32px;
+        }
+
+        .cta-headline em {
+            font-family: var(--font-serif);
+            font-style: italic; color: var(--copper-bright);
+            font-weight: 400;
+        }
+
+        .cta-body {
+            font-size: 1rem; line-height: 1.7;
+            color: var(--grey-300); max-width: 480px;
+            margin: 0 auto 40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 48px;
+            background: var(--copper);
+            color: var(--white);
+            font-family: var(--font-sans);
+            font-size: 0.8125rem; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.4s var(--ease);
+        }
+
+        .cta-button:hover {
+            background: var(--copper-bright);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(212,138,60,0.25);
+        }
+
+        .cta-note {
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: var(--grey-500);
+        }
+
+        @media (max-width: 768px) { .cta { padding: 80px 24px; } }
+
+        /* CHAPTER NAV + COLOPHON */
+        .chapter-nav { display: flex; border-top: 3px solid var(--copper); }
+        .chapter-nav-link { flex: 1; padding: 40px 48px; text-decoration: none; color: inherit; transition: background 0.3s var(--ease); }
+        .chapter-nav-link:hover { background: var(--offwhite); }
+        .chapter-nav-link--next { text-align: right; }
+        .chapter-nav-dir { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--copper); margin-bottom: 6px; }
+        .chapter-nav-title { font-family: var(--font-sans); font-size: clamp(16px, 2vw, 22px); font-weight: 600; color: var(--black); }
+        @media (max-width: 768px) { .chapter-nav { flex-direction: column; } .chapter-nav-link { padding: 28px 24px; } .chapter-nav-link--next { text-align: left; border-top: 1px solid var(--bone); } }
+
+        .colophon { padding: 48px; background: var(--black); display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); }
+        .colophon-left { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.2); }
+        .colophon-right { font-size: 0.625rem; font-weight: 400; letter-spacing: 0.06em; color: rgba(255,255,255,0.15); }
+        .colophon-right a { color: var(--copper); text-decoration: none; opacity: 0.6; transition: opacity 0.3s; }
+        .colophon-right a:hover { opacity: 1; }
+        @media (max-width: 768px) { .colophon { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; } }
+
+        .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <nav class="topbar">
+        <a href="theory-v6-zag.html" class="topbar-back">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M10 4l-4 4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Brand House
+        </a>
+        <span class="topbar-chapter">Chapter 10</span>
+    </nav>
+
+    <!-- CHAPTER HERO -->
+    <section class="chapter-hero">
+        <div class="chapter-hero-inner">
+            <div class="chapter-num">10</div>
+            <h1 class="chapter-title">Wholesale Partner Toolkit</h1>
+            <p class="chapter-intro">Everything a wholesale partner needs to represent Theory correctly. The coffee, the brand, and the standards — delivered together.</p>
+        </div>
+    </section>
+
+    <!-- PARTNER PROMISE -->
+    <section class="promise reveal">
+        <div class="promise-inner">
+            <div class="promise-label">The Partner Promise</div>
+            <p class="promise-text">We don't just ship coffee. We ship the <em>entire experience.</em> Training, brand assets, equipment guidance, and an open line to our roastery. Your success is our reputation.</p>
+        </div>
+    </section>
+
+    <!-- WHAT WE PROVIDE -->
+    <section class="provide reveal">
+        <div class="provide-label">What We Provide</div>
+        <div class="provide-grid">
+            <div class="provide-card">
+                <div class="provide-card-num">01</div>
+                <div class="provide-card-name">Freshly Roasted Coffee</div>
+                <div class="provide-card-desc">Roasted to order, shipped within 24 hours. Single origins, blends, and seasonal rotations. You choose the lineup or we curate it for you.</div>
+            </div>
+            <div class="provide-card">
+                <div class="provide-card-num">02</div>
+                <div class="provide-card-name">Barista Training</div>
+                <div class="provide-card-desc">On-site or virtual training for your team. Dialing in espresso, pour-over technique, milk steaming, and our quality standards. We come to you.</div>
+            </div>
+            <div class="provide-card">
+                <div class="provide-card-num">03</div>
+                <div class="provide-card-name">Equipment Guidance</div>
+                <div class="provide-card-desc">Grinder calibration, machine recommendations, and water quality consultation. We help you build a setup that does the coffee justice.</div>
+            </div>
+            <div class="provide-card">
+                <div class="provide-card-num">04</div>
+                <div class="provide-card-name">Brand Collateral</div>
+                <div class="provide-card-desc">Shelf talkers, menu boards, origin cards, and digital assets. Everything your customers need to understand what they're drinking.</div>
+            </div>
+            <div class="provide-card">
+                <div class="provide-card-num">05</div>
+                <div class="provide-card-name">Seasonal Releases</div>
+                <div class="provide-card-desc">First access to limited releases and seasonal single origins. Keep your menu dynamic without the sourcing work. We handle the curation.</div>
+            </div>
+            <div class="provide-card">
+                <div class="provide-card-num">06</div>
+                <div class="provide-card-name">Dedicated Support</div>
+                <div class="provide-card-desc">A direct line to our team. Order changes, quality feedback, recipe adjustments — handled by people who know coffee, not a call center.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COFFEE LINEUP -->
+    <section class="lineup reveal">
+        <div class="lineup-label">Wholesale Offerings</div>
+        <div class="lineup-title">The Lineup</div>
+        <div class="lineup-grid">
+            <div class="lineup-card">
+                <div class="lineup-card-type">Blend</div>
+                <div class="lineup-card-name">House Theory</div>
+                <div class="lineup-card-tasting">Chocolate, caramel, balanced. Our everyday espresso and drip anchor.</div>
+                <div class="lineup-card-format">5 lb / 25 lb bags</div>
+            </div>
+            <div class="lineup-card">
+                <div class="lineup-card-type">Blend</div>
+                <div class="lineup-card-name">Dark Side of the Bloom</div>
+                <div class="lineup-card-tasting">Bold, smoky, full body. For partners who want intensity without bitterness.</div>
+                <div class="lineup-card-format">5 lb / 25 lb bags</div>
+            </div>
+            <div class="lineup-card">
+                <div class="lineup-card-type">Single Origin</div>
+                <div class="lineup-card-name">Rotating Seasonal</div>
+                <div class="lineup-card-tasting">Changes quarterly. Always 84+ cup score. Origin cards provided.</div>
+                <div class="lineup-card-format">5 lb bags</div>
+            </div>
+            <div class="lineup-card">
+                <div class="lineup-card-type">Decaf</div>
+                <div class="lineup-card-name">Peru Cajamarca</div>
+                <div class="lineup-card-tasting">Swiss Water process. Milk chocolate, walnut. Proof that decaf can work.</div>
+                <div class="lineup-card-format">5 lb bags</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PARTNERSHIP TIERS -->
+    <section class="tiers reveal">
+        <div class="tiers-label">Partnership Tiers</div>
+        <div class="tiers-grid">
+            <div class="tier-card">
+                <div class="tier-name">Starter</div>
+                <div class="tier-price">25 lb</div>
+                <div class="tier-unit">minimum per month</div>
+                <div class="tier-desc">For cafes, restaurants, and offices getting started with specialty coffee.</div>
+                <ul class="tier-features">
+                    <li class="tier-feature">Freshly roasted to order</li>
+                    <li class="tier-feature">Virtual barista training</li>
+                    <li class="tier-feature">Basic brand collateral</li>
+                    <li class="tier-feature">Email support</li>
+                </ul>
+            </div>
+            <div class="tier-card tier-card--featured">
+                <div class="tier-badge">Most Popular</div>
+                <div class="tier-name">Partner</div>
+                <div class="tier-price">75 lb</div>
+                <div class="tier-unit">minimum per month</div>
+                <div class="tier-desc">For established accounts that want the full Theory experience.</div>
+                <ul class="tier-features">
+                    <li class="tier-feature">Everything in Starter</li>
+                    <li class="tier-feature">On-site training visits</li>
+                    <li class="tier-feature">Full brand asset kit</li>
+                    <li class="tier-feature">Equipment guidance</li>
+                    <li class="tier-feature">Priority seasonal access</li>
+                </ul>
+            </div>
+            <div class="tier-card">
+                <div class="tier-name">Enterprise</div>
+                <div class="tier-price">200+ lb</div>
+                <div class="tier-unit">minimum per month</div>
+                <div class="tier-desc">For multi-location operations and high-volume accounts.</div>
+                <ul class="tier-features">
+                    <li class="tier-feature">Everything in Partner</li>
+                    <li class="tier-feature">Custom blend development</li>
+                    <li class="tier-feature">Quarterly business reviews</li>
+                    <li class="tier-feature">Co-branded opportunities</li>
+                    <li class="tier-feature">Dedicated account manager</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- BRAND ASSETS -->
+    <section class="assets reveal">
+        <div class="assets-label">Brand Assets</div>
+        <div class="assets-title">What's In the Kit</div>
+        <div class="assets-grid">
+            <div class="asset-card">
+                <svg class="asset-icon" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="24" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M4 12h24" stroke="currentColor" stroke-width="1.5"/></svg>
+                <div class="asset-name">Menu Board Templates</div>
+                <div class="asset-desc">Print-ready menu boards with proper typography, pricing layout, and origin descriptions. Customizable per location.</div>
+            </div>
+            <div class="asset-card">
+                <svg class="asset-icon" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M16 10v6l4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <div class="asset-name">Origin Cards</div>
+                <div class="asset-desc">Printed cards for each coffee detailing farm, altitude, process, tasting notes, and the relationship story. Updated seasonally.</div>
+            </div>
+            <div class="asset-card">
+                <svg class="asset-icon" viewBox="0 0 32 32" fill="none"><rect x="6" y="2" width="20" height="28" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="8" x2="22" y2="8" stroke="currentColor" stroke-width="1"/><line x1="10" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="1"/><line x1="10" y1="16" x2="18" y2="16" stroke="currentColor" stroke-width="1"/></svg>
+                <div class="asset-name">Logo Files + Guidelines</div>
+                <div class="asset-desc">Full logo suite in all formats (SVG, PNG, EPS). Clear space rules, minimum sizes, and approved color applications.</div>
+            </div>
+            <div class="asset-card">
+                <svg class="asset-icon" viewBox="0 0 32 32" fill="none"><rect x="2" y="6" width="28" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2 12h28" stroke="currentColor" stroke-width="1"/><circle cx="8" cy="20" r="2" stroke="currentColor" stroke-width="1"/></svg>
+                <div class="asset-name">Social Media Assets</div>
+                <div class="asset-desc">Instagram templates, story graphics, and co-branded announcement posts. Tag us and we'll amplify your content.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BRAND GUIDELINES -->
+    <section class="guidelines reveal">
+        <div class="guidelines-label">Partner Brand Guidelines</div>
+        <div class="guidelines-cols">
+            <div class="guidelines-col">
+                <div class="guidelines-col-title">Do</div>
+                <div class="guideline-item">
+                    <svg class="guideline-icon guideline-icon--do" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>Use our provided logo files at approved sizes</span>
+                </div>
+                <div class="guideline-item">
+                    <svg class="guideline-icon guideline-icon--do" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>Display origin information for each coffee</span>
+                </div>
+                <div class="guideline-item">
+                    <svg class="guideline-icon guideline-icon--do" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>Tag @theorycoffee in social media posts</span>
+                </div>
+                <div class="guideline-item">
+                    <svg class="guideline-icon guideline-icon--do" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>Serve within 21 days of roast date</span>
+                </div>
+                <div class="guideline-item">
+                    <svg class="guideline-icon guideline-icon--do" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>Contact us with quality concerns immediately</span>
+                </div>
+            </div>
+            <div class="guidelines-col">
+                <div class="guidelines-col-title guidelines-col-title--dont">Don't</div>
+                <div class="guideline-item">
+                    <svg class="guideline-icon guideline-icon--dont" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5l-10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span>Modify the logo colors, proportions, or type</span>
+                </div>
+                <div class="guideline-item">
+                    <svg class="guideline-icon guideline-icon--dont" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5l-10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span>Rebrand or repackage our coffee under another name</span>
+                </div>
+                <div class="guideline-item">
+                    <svg class="guideline-icon guideline-icon--dont" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5l-10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span>Serve coffee older than 30 days from roast</span>
+                </div>
+                <div class="guideline-item">
+                    <svg class="guideline-icon guideline-icon--dont" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5l-10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span>Mix our beans with other roasters' coffee</span>
+                </div>
+                <div class="guideline-item">
+                    <svg class="guideline-icon guideline-icon--dont" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5l-10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span>Use our brand in paid advertising without approval</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta reveal">
+        <div class="cta-inner">
+            <div class="cta-label">Become a Partner</div>
+            <h2 class="cta-headline">Ready to serve <em>something real?</em></h2>
+            <p class="cta-body">We're selective about our partners because our name is on every cup. If you care about quality as much as we do, let's talk.</p>
+            <a href="mailto:wholesale@theorycoffee.com" class="cta-button">Start the Conversation</a>
+            <p class="cta-note">wholesale@theorycoffee.com</p>
+        </div>
+    </section>
+
+    <!-- CHAPTER NAV -->
+    <nav class="chapter-nav">
+        <a href="brand-timeline.html" class="chapter-nav-link">
+            <div class="chapter-nav-dir">Previous</div>
+            <div class="chapter-nav-title">09 — Brand Timeline</div>
+        </a>
+        <a href="brand-anthem.html" class="chapter-nav-link chapter-nav-link--next">
+            <div class="chapter-nav-dir">Next Chapter</div>
+            <div class="chapter-nav-title">11 — Brand Anthem</div>
+        </a>
+    </nav>
+
+    <footer class="colophon">
+        <div class="colophon-left">Theory Coffee Roasters · Redding, CA</div>
+        <div class="colophon-right">Brand House 2026 · <a href="https://theorycoffee.com" target="_blank">theorycoffee.com</a></div>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
+        }, { threshold: 0.1, rootMargin: '-40px' });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
