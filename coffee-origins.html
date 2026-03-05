@@ -77,19 +77,20 @@
         @media (max-width: 768px) { .chapter-hero { padding: 140px 24px 72px; } }
 
         /* TEXT SECTION */
-        .text-section { padding: 100px 48px; max-width: 800px; }
-        .text-section--dark { background: var(--charcoal); }
-        .text-section--dark .text-section-label { color: var(--copper); }
-        .text-section--dark h2 { color: var(--white); }
-        .text-section--dark h2 em { color: var(--copper-bright); }
-        .text-section--dark p { color: var(--grey-300); }
+        .text-section { padding: 100px 48px; }
+        .text-section h2, .text-section p { max-width: 700px; }
         .text-section-label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
         .text-section-label::after { content: ''; flex: 1; height: 1px; background: var(--bone); max-width: 60px; }
-        .text-section--dark .text-section-label::after { background: rgba(255,255,255,0.08); }
         .text-section h2 { font-family: var(--font-sans); font-size: clamp(22px, 3vw, 32px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; color: var(--black); margin-bottom: 24px; }
         .text-section h2 em { font-family: var(--font-serif); font-style: italic; color: var(--copper-dark); font-weight: 500; }
         .text-section p { font-size: 1rem; line-height: 1.8; color: var(--grey-400); margin-bottom: 20px; }
         .text-section p:last-child { margin-bottom: 0; }
+        .text-section--dark { background: var(--charcoal); }
+        .text-section--dark .text-section-label { color: var(--copper); }
+        .text-section--dark .text-section-label::after { background: rgba(255,255,255,0.08); }
+        .text-section--dark h2 { color: var(--white); }
+        .text-section--dark h2 em { color: var(--copper-bright); }
+        .text-section--dark p { color: var(--grey-300); }
         @media (max-width: 768px) { .text-section { padding: 72px 24px; } }
 
         /* ═══════════════════════════════════════════════════════════════
@@ -113,14 +114,14 @@
 
         .map-container {
             position: relative;
-            max-width: 1100px;
-            aspect-ratio: 2 / 1;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .map-svg {
+        .map-image {
             width: 100%;
-            height: 100%;
+            height: auto;
+            display: block;
         }
 
         .map-pin {
@@ -549,93 +550,7 @@
     <div class="map-section reveal">
         <div class="map-label">Origin Map</div>
         <div class="map-container">
-            <svg class="map-svg" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
-                <!-- Coffee Belt band -->
-                <rect class="map-belt" x="0" y="180" width="1000" height="140" rx="0" stroke-dasharray="2 6" />
-
-                <!-- Simplified continent outlines -->
-                <!-- North America -->
-                <path d="M150,80 L200,60 L250,70 L280,100 L270,140 L250,170 L230,200 L210,220 L190,240 L170,230 L160,200 L140,170 L130,130 L140,100 Z" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
-                <!-- Central America -->
-                <path d="M190,240 L200,250 L215,260 L225,270 L220,280 L210,275 L200,260 L190,250 Z" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
-                <!-- South America -->
-                <path d="M220,280 L250,270 L290,280 L310,310 L320,350 L310,390 L290,420 L260,430 L240,410 L230,370 L220,340 L210,310 L215,290 Z" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
-                <!-- Africa -->
-                <path d="M480,150 L520,140 L560,160 L570,200 L575,240 L570,280 L555,320 L540,350 L520,370 L500,360 L490,330 L480,290 L475,250 L470,210 L475,180 Z" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
-                <!-- Asia/Indonesia -->
-                <path d="M680,160 L720,150 L760,160 L780,180 L790,210 L780,240 L760,260 L730,270 L700,260 L680,240 L670,210 L675,180 Z" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
-                <!-- Indonesia archipelago -->
-                <path d="M740,290 L760,285 L780,290 L800,295 L810,300 L800,310 L780,308 L760,305 L745,300 Z" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
-
-                <!-- Redding, CA marker -->
-                <g class="map-pin" transform="translate(155, 130)">
-                    <circle class="map-redding" r="5" />
-                    <circle r="9" fill="none" stroke="white" stroke-width="0.75" opacity="0.3"/>
-                    <text class="map-redding-label" x="12" y="3">Redding, CA</text>
-                </g>
-
-                <!-- Connection lines from origins to Redding -->
-                <line class="map-line" x1="155" y1="130" x2="210" y2="260" />
-                <line class="map-line" x1="155" y1="130" x2="280" y2="310" />
-                <line class="map-line" x1="155" y1="130" x2="530" y2="270" />
-                <line class="map-line" x1="155" y1="130" x2="520" y2="230" />
-                <line class="map-line" x1="155" y1="130" x2="770" y2="300" />
-                <line class="map-line" x1="155" y1="130" x2="200" y2="250" />
-
-                <!-- Origin Pins -->
-                <!-- Ethiopia -->
-                <g class="map-pin" data-origin="ethiopia" onclick="openOrigin('ethiopia')">
-                    <circle class="map-pin-pulse" cx="530" cy="270" r="4"/>
-                    <circle class="map-pin-dot" cx="530" cy="270" r="4"/>
-                    <text class="map-pin-label" x="530" y="258" text-anchor="middle">Ethiopia</text>
-                </g>
-
-                <!-- Colombia -->
-                <g class="map-pin" data-origin="colombia" onclick="openOrigin('colombia')">
-                    <circle class="map-pin-pulse" cx="240" cy="290" r="4"/>
-                    <circle class="map-pin-dot" cx="240" cy="290" r="4"/>
-                    <text class="map-pin-label" x="240" y="278" text-anchor="middle">Colombia</text>
-                </g>
-
-                <!-- Honduras -->
-                <g class="map-pin" data-origin="honduras" onclick="openOrigin('honduras')">
-                    <circle class="map-pin-pulse" cx="210" cy="260" r="4"/>
-                    <circle class="map-pin-dot" cx="210" cy="260" r="4"/>
-                    <text class="map-pin-label" x="210" y="248" text-anchor="middle">Honduras</text>
-                </g>
-
-                <!-- Guatemala -->
-                <g class="map-pin" data-origin="guatemala" onclick="openOrigin('guatemala')">
-                    <circle class="map-pin-pulse" cx="200" cy="252" r="4"/>
-                    <circle class="map-pin-dot" cx="200" cy="252" r="4"/>
-                    <text class="map-pin-label" x="182" y="247" text-anchor="middle">Guatemala</text>
-                </g>
-
-                <!-- Kenya -->
-                <g class="map-pin" data-origin="kenya" onclick="openOrigin('kenya')">
-                    <circle class="map-pin-pulse" cx="545" cy="295" r="4"/>
-                    <circle class="map-pin-dot" cx="545" cy="295" r="4"/>
-                    <text class="map-pin-label" x="563" y="298" text-anchor="start">Kenya</text>
-                </g>
-
-                <!-- Sumatra -->
-                <g class="map-pin" data-origin="sumatra" onclick="openOrigin('sumatra')">
-                    <circle class="map-pin-pulse" cx="770" cy="300" r="4"/>
-                    <circle class="map-pin-dot" cx="770" cy="300" r="4"/>
-                    <text class="map-pin-label" x="770" y="318" text-anchor="middle">Sumatra</text>
-                </g>
-
-                <!-- Peru -->
-                <g class="map-pin" data-origin="peru" onclick="openOrigin('peru')">
-                    <circle class="map-pin-pulse" cx="250" cy="330" r="4"/>
-                    <circle class="map-pin-dot" cx="250" cy="330" r="4"/>
-                    <text class="map-pin-label" x="265" y="333" text-anchor="start">Peru</text>
-                </g>
-
-                <!-- Coffee Belt Labels -->
-                <text x="20" y="195" font-family="Jost, sans-serif" font-size="6" font-weight="700" letter-spacing="2" text-transform="uppercase" fill="rgba(212,138,60,0.2)">TROPIC OF CANCER</text>
-                <text x="20" y="315" font-family="Jost, sans-serif" font-size="6" font-weight="700" letter-spacing="2" text-transform="uppercase" fill="rgba(212,138,60,0.2)">TROPIC OF CAPRICORN</text>
-            </svg>
+            <img class="map-image" src="img/map-of-the-world.jpeg" alt="Theory Coffee origin map — sourcing from Ethiopia, Colombia, Honduras, Guatemala, Kenya, Peru, and Sumatra" loading="lazy">
         </div>
     </div>
 
