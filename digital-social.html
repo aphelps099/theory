@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital + Social — Theory Coffee Roasters</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --copper: #D48A3C;
+            --copper-bright: #E89F4C;
+            --copper-dark: #B87430;
+            --charcoal: #1A1A1A;
+            --charcoal-mid: #242424;
+            --white: #FFFFFF;
+            --offwhite: #F8F6F3;
+            --bone: #EEEBE6;
+            --silver: #D8D4CE;
+            --grey-300: #A09B94;
+            --grey-400: #6E6A64;
+            --grey-500: #4A4744;
+            --black: #111111;
+            --font-sans: 'Jost', -apple-system, sans-serif;
+            --font-serif: 'Newsreader', Georgia, serif;
+            --ease: cubic-bezier(0.25, 1, 0.5, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; overflow-x: hidden; }
+        body {
+            font-family: var(--font-sans);
+            font-weight: 400; line-height: 1.5;
+            color: var(--black); background: var(--white);
+            -webkit-font-smoothing: antialiased;
+        }
+        ::selection { background: var(--copper); color: var(--white); }
+
+        .grain {
+            position: fixed; inset: 0; z-index: 9999;
+            pointer-events: none; opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat; background-size: 256px 256px;
+        }
+
+        /* NAV */
+        .topbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px 48px;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--bone);
+        }
+        .topbar-back {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none; color: var(--black);
+            font-size: 0.6875rem; font-weight: 700;
+            letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.3s;
+        }
+        .topbar-back:hover { color: var(--copper); }
+        .topbar-back svg { width: 16px; height: 16px; transition: transform 0.3s var(--ease); }
+        .topbar-back:hover svg { transform: translateX(-3px); }
+        .topbar-chapter { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); }
+        @media (max-width: 768px) { .topbar { padding: 20px 24px; } }
+
+        /* CHAPTER HERO */
+        .chapter-hero { padding: 180px 48px 100px; }
+        .chapter-hero-inner { max-width: 800px; }
+        .chapter-num { font-family: var(--font-sans); font-size: clamp(80px, 12vw, 160px); font-weight: 800; line-height: 0.85; color: var(--bone); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.1s forwards; }
+        .chapter-title { font-family: var(--font-sans); font-size: clamp(32px, 5vw, 56px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; color: var(--black); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.25s forwards; }
+        .chapter-intro { font-size: clamp(16px, 1.8vw, 20px); font-weight: 400; line-height: 1.7; color: var(--grey-400); max-width: 560px; opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.4s forwards; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) { .chapter-hero { padding: 140px 24px 72px; } }
+
+        /* TEXT SECTION */
+        .text-section { padding: 100px 48px; max-width: 800px; }
+        .text-section-label { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); margin-bottom: 24px; }
+        .text-section h2 { font-family: var(--font-sans); font-size: clamp(24px, 3.5vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; color: var(--black); margin-bottom: 20px; }
+        .text-section h2 em { font-family: var(--font-serif); font-style: italic; color: var(--grey-400); font-weight: 400; }
+        .text-section p { font-size: clamp(15px, 1.6vw, 17px); line-height: 1.75; color: var(--grey-400); max-width: 560px; }
+
+        /* WEBSITE SECTION */
+        .website-section { padding: 80px 48px; background: var(--offwhite); }
+        .website-label { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); margin-bottom: 48px; }
+        .website-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+        .website-card {
+            background: var(--white); padding: 48px 36px;
+            position: relative; transition: background 0.4s var(--ease);
+        }
+        .website-card:hover { background: var(--black); }
+        .website-card-num {
+            font-size: clamp(36px, 4vw, 48px); font-weight: 800; line-height: 1;
+            color: var(--bone); margin-bottom: 20px;
+            transition: color 0.4s var(--ease);
+        }
+        .website-card:hover .website-card-num { color: var(--copper); }
+        .website-card-name {
+            font-size: 1.125rem; font-weight: 700; letter-spacing: -0.01em;
+            margin-bottom: 12px; transition: color 0.4s var(--ease);
+        }
+        .website-card:hover .website-card-name { color: var(--white); }
+        .website-card-desc {
+            font-size: 0.875rem; line-height: 1.65; color: var(--grey-400);
+            transition: color 0.4s var(--ease);
+        }
+        .website-card:hover .website-card-desc { color: rgba(255,255,255,0.5); }
+        @media (max-width: 768px) {
+            .website-section { padding: 56px 24px; }
+            .website-grid { grid-template-columns: 1fr; }
+        }
+
+        /* CONTENT PILLARS */
+        .pillars-section { padding: 100px 48px; }
+        .pillars-label { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); margin-bottom: 48px; }
+        .pillar-row {
+            display: flex; align-items: stretch; border-bottom: 1px solid var(--bone);
+        }
+        .pillar-row:first-of-type { border-top: 1px solid var(--bone); }
+        .pillar-num {
+            width: 80px; flex-shrink: 0; padding: 32px 0;
+            font-size: clamp(28px, 3vw, 36px); font-weight: 800; color: var(--bone);
+            display: flex; align-items: center;
+        }
+        .pillar-content { flex: 1; padding: 32px 0 32px 24px; }
+        .pillar-name {
+            font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em;
+            margin-bottom: 6px;
+        }
+        .pillar-desc { font-size: 0.875rem; line-height: 1.65; color: var(--grey-400); max-width: 480px; }
+        .pillar-tag {
+            width: 140px; flex-shrink: 0; padding: 32px 0;
+            display: flex; align-items: center; justify-content: flex-end;
+            font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--grey-300);
+        }
+        @media (max-width: 768px) {
+            .pillars-section { padding: 56px 24px; }
+            .pillar-row { flex-direction: column; padding: 24px 0; }
+            .pillar-num { width: auto; padding: 0; margin-bottom: 8px; }
+            .pillar-content { padding: 0; }
+            .pillar-tag { width: auto; justify-content: flex-start; padding: 8px 0 0; }
+        }
+
+        /* PLATFORM GRID */
+        .platforms-section { padding: 80px 48px; background: var(--black); }
+        .platforms-label { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); margin-bottom: 48px; }
+        .platforms-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+        .platform-card {
+            background: var(--charcoal-mid); padding: 40px 28px;
+            transition: background 0.4s var(--ease);
+        }
+        .platform-card:hover { background: var(--charcoal); }
+        .platform-card-icon {
+            font-size: 1.5rem; margin-bottom: 20px; color: var(--copper);
+        }
+        .platform-card-name {
+            font-size: 1rem; font-weight: 700; color: var(--white);
+            margin-bottom: 8px;
+        }
+        .platform-card-handle {
+            font-size: 0.75rem; font-weight: 400; color: var(--copper-bright);
+            margin-bottom: 16px;
+        }
+        .platform-card-role {
+            font-size: 0.8125rem; line-height: 1.6; color: rgba(255,255,255,0.45);
+        }
+        @media (max-width: 768px) {
+            .platforms-section { padding: 56px 24px; }
+            .platforms-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* CADENCE */
+        .cadence-section { padding: 100px 48px; }
+        .cadence-label { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); margin-bottom: 48px; }
+        .cadence-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
+        .cadence-col-title {
+            font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--black); margin-bottom: 20px;
+            padding-bottom: 12px; border-bottom: 2px solid var(--copper);
+        }
+        .cadence-item { padding: 12px 0; border-bottom: 1px solid var(--bone); }
+        .cadence-item-type {
+            font-size: 0.8125rem; font-weight: 600; color: var(--black); margin-bottom: 2px;
+        }
+        .cadence-item-detail {
+            font-size: 0.75rem; color: var(--grey-400); line-height: 1.55;
+        }
+        @media (max-width: 768px) {
+            .cadence-section { padding: 56px 24px; }
+            .cadence-grid { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        /* EMAIL EXAMPLES */
+        .email-section { padding: 100px 48px; background: var(--bone); }
+        .email-label { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); margin-bottom: 48px; }
+        .email-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        .email-mockup {
+            background: var(--white); border-radius: 4px; overflow: hidden;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+        }
+        .email-mockup:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+        .email-mockup-bar {
+            background: var(--offwhite); padding: 10px 16px;
+            display: flex; align-items: center; gap: 6px;
+            border-bottom: 1px solid var(--bone);
+        }
+        .email-mockup-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--silver); }
+        .email-mockup-url {
+            margin-left: 12px; font-size: 0.5625rem; color: var(--grey-300);
+            font-family: 'SF Mono', 'Fira Code', monospace; letter-spacing: 0.02em;
+        }
+        .email-body { padding: 32px 28px; }
+        .email-type {
+            font-size: 0.5625rem; font-weight: 800; letter-spacing: 0.16em;
+            text-transform: uppercase; color: var(--copper); margin-bottom: 24px;
+        }
+        .email-wordmark {
+            font-family: var(--font-sans); font-size: 1.25rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.06em; color: var(--black);
+            margin-bottom: 28px;
+        }
+        .email-wordmark span { color: var(--copper); }
+        .email-subject {
+            font-family: var(--font-sans); font-size: 1.375rem; font-weight: 700;
+            letter-spacing: -0.02em; line-height: 1.2; color: var(--black);
+            margin-bottom: 16px;
+        }
+        .email-preview {
+            font-size: 0.8125rem; line-height: 1.7; color: var(--grey-400);
+            margin-bottom: 24px;
+        }
+        .email-divider { height: 2px; background: var(--copper); width: 32px; margin-bottom: 24px; }
+        .email-detail {
+            font-size: 0.75rem; line-height: 1.65; color: var(--grey-300);
+        }
+        .email-detail strong { color: var(--black); font-weight: 600; }
+        .email-cta {
+            display: inline-block; margin-top: 20px; padding: 10px 24px;
+            background: var(--black); color: var(--white);
+            font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; border: none;
+        }
+        .email-cta--copper { background: var(--copper); }
+        .email-footer-bar {
+            padding: 16px 28px; background: var(--black);
+            font-size: 0.5625rem; color: rgba(255,255,255,0.3);
+            letter-spacing: 0.06em;
+        }
+        .email-footer-bar span { color: var(--copper); opacity: 0.6; }
+        .email-img-block {
+            width: 100%; height: 120px; background: var(--charcoal);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px; position: relative; overflow: hidden;
+        }
+        .email-img-block::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(212,138,60,0.15), transparent 60%);
+        }
+        .email-img-text {
+            font-family: var(--font-sans); font-size: 2rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.08em; color: var(--white);
+            opacity: 0.12;
+        }
+        .email-note {
+            margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--bone);
+            font-size: 0.6875rem; font-style: italic; color: var(--grey-300);
+            font-family: var(--font-serif); line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .email-section { padding: 56px 24px; }
+            .email-grid { grid-template-columns: 1fr; max-width: 400px; }
+        }
+
+        /* INLINE QUOTE */
+        .inline-quote { padding: 80px 48px; background: var(--black); position: relative; }
+        .inline-quote::before { content: ''; position: absolute; top: 80px; bottom: 80px; left: 48px; width: 3px; background: var(--copper); }
+        .inline-quote-inner { max-width: 700px; padding-left: 48px; }
+        .inline-quote-text { font-family: var(--font-sans); font-size: clamp(22px, 3.5vw, 36px); font-weight: 300; line-height: 1.3; color: var(--white); letter-spacing: -0.01em; }
+        .inline-quote-text em { font-family: var(--font-serif); font-style: italic; color: var(--copper-bright); font-weight: 400; }
+        .inline-quote-source { margin-top: 28px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+        @media (max-width: 768px) { .inline-quote { padding: 56px 24px; } .inline-quote::before { left: 24px; top: 56px; bottom: 56px; } .inline-quote-inner { padding-left: 32px; } }
+
+        /* RULES SECTION */
+        .rules-section { padding: 80px 48px; background: var(--offwhite); }
+        .rules-label { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); margin-bottom: 48px; }
+        .rules-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
+        .rule-card { background: var(--white); padding: 36px; }
+        .rule-badge { display: inline-block; font-size: 0.5625rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; padding: 5px 12px; margin-bottom: 16px; }
+        .rule-badge--do { background: var(--copper); color: var(--white); }
+        .rule-badge--dont { background: var(--black); color: var(--white); }
+        .rule-card p { font-size: 0.875rem; line-height: 1.65; color: var(--grey-500); }
+        @media (max-width: 768px) {
+            .rules-section { padding: 56px 24px; }
+            .rules-grid { grid-template-columns: 1fr; }
+        }
+
+        /* CHAPTER NAV + COLOPHON */
+        .chapter-nav { display: flex; border-top: 3px solid var(--copper); }
+        .chapter-nav-link { flex: 1; padding: 40px 48px; text-decoration: none; color: inherit; transition: background 0.3s var(--ease); }
+        .chapter-nav-link:hover { background: var(--offwhite); }
+        .chapter-nav-link--next { text-align: right; }
+        .chapter-nav-dir { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--copper); margin-bottom: 6px; }
+        .chapter-nav-title { font-family: var(--font-sans); font-size: clamp(16px, 2vw, 22px); font-weight: 600; color: var(--black); }
+        @media (max-width: 768px) { .chapter-nav { flex-direction: column; } .chapter-nav-link { padding: 28px 24px; } .chapter-nav-link--next { text-align: left; border-top: 1px solid var(--bone); } }
+
+        .colophon { padding: 48px; background: var(--black); display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); }
+        .colophon-left { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.2); }
+        .colophon-right { font-size: 0.625rem; font-weight: 400; letter-spacing: 0.06em; color: rgba(255,255,255,0.15); }
+        .colophon-right a { color: var(--copper); text-decoration: none; opacity: 0.6; transition: opacity 0.3s; }
+        .colophon-right a:hover { opacity: 1; }
+        @media (max-width: 768px) { .colophon { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; } }
+
+        .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <nav class="topbar">
+        <a href="theory-v6-zag.html" class="topbar-back">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M10 4l-4 4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Brand House
+        </a>
+        <span class="topbar-chapter">Chapter 07</span>
+    </nav>
+
+    <!-- CHAPTER HERO -->
+    <section class="chapter-hero">
+        <div class="chapter-hero-inner">
+            <div class="chapter-num">07</div>
+            <h1 class="chapter-title">Digital + Social</h1>
+            <p class="chapter-intro">The screen is a storefront. Every post, page, and pixel should feel like walking into Theory.</p>
+        </div>
+    </section>
+
+    <!-- INTRO -->
+    <div class="text-section reveal">
+        <div class="text-section-label">The Principle</div>
+        <h2>Post less. <em>Mean more.</em></h2>
+        <p>Theory doesn't chase algorithms. We publish when we have something worth saying. Quality over frequency. Every piece of content should earn the attention it asks for.</p>
+    </div>
+
+    <!-- WEBSITE GUIDELINES -->
+    <div class="website-section reveal">
+        <div class="website-label">Website Standards</div>
+        <div class="website-grid">
+            <div class="website-card">
+                <div class="website-card-num">01</div>
+                <div class="website-card-name">Typography First</div>
+                <div class="website-card-desc">Jost for navigation, headings, and UI. Newsreader for editorial moments. No decorative fonts. Let whitespace do the heavy lifting.</div>
+            </div>
+            <div class="website-card">
+                <div class="website-card-num">02</div>
+                <div class="website-card-name">Photography Rules</div>
+                <div class="website-card-desc">Natural light. Muted tones. No stock. Every image on-site should be shot in a Theory location or of Theory product. Chapter 04 filters apply.</div>
+            </div>
+            <div class="website-card">
+                <div class="website-card-num">03</div>
+                <div class="website-card-name">Ecommerce UX</div>
+                <div class="website-card-desc">Clean product pages. One hero image, tasting notes, origin story. No clutter. The checkout should feel as considered as the pour.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT PILLARS -->
+    <div class="pillars-section reveal">
+        <div class="pillars-label">Content Pillars</div>
+        <div class="pillar-row">
+            <div class="pillar-num">01</div>
+            <div class="pillar-content">
+                <div class="pillar-name">Process</div>
+                <div class="pillar-desc">Behind the roast. Sourcing trips, cupping sessions, new arrivals. Show the craft without over-explaining it.</div>
+            </div>
+            <div class="pillar-tag">40% of content</div>
+        </div>
+        <div class="pillar-row">
+            <div class="pillar-num">02</div>
+            <div class="pillar-content">
+                <div class="pillar-name">Product</div>
+                <div class="pillar-desc">New releases, seasonal rotations, restocks. Clean product shots. Let the bag and the bean speak.</div>
+            </div>
+            <div class="pillar-tag">25% of content</div>
+        </div>
+        <div class="pillar-row">
+            <div class="pillar-num">03</div>
+            <div class="pillar-content">
+                <div class="pillar-name">Place</div>
+                <div class="pillar-desc">The cafés, the community, the people. Redding, Shasta, the culture around the cup. Real moments, not staged ones.</div>
+            </div>
+            <div class="pillar-tag">25% of content</div>
+        </div>
+        <div class="pillar-row">
+            <div class="pillar-num">04</div>
+            <div class="pillar-content">
+                <div class="pillar-name">Point of View</div>
+                <div class="pillar-desc">Opinion pieces, industry takes, the Theory perspective on coffee culture. Direct and grounded, never preachy.</div>
+            </div>
+            <div class="pillar-tag">10% of content</div>
+        </div>
+    </div>
+
+    <!-- PLATFORMS -->
+    <div class="platforms-section reveal">
+        <div class="platforms-label">Platform Strategy</div>
+        <div class="platforms-grid">
+            <div class="platform-card">
+                <div class="platform-card-icon">IG</div>
+                <div class="platform-card-name">Instagram</div>
+                <div class="platform-card-handle">@theorycoffee</div>
+                <div class="platform-card-role">Primary visual channel. Grid should read as a cohesive mood board. Stories for daily moments. Reels only when the content warrants motion.</div>
+            </div>
+            <div class="platform-card">
+                <div class="platform-card-icon">W</div>
+                <div class="platform-card-name">Website + Blog</div>
+                <div class="platform-card-handle">theorycoffee.com</div>
+                <div class="platform-card-role">The anchor. Long-form content lives here. Origin stories, brewing guides, new release announcements. SEO-conscious, never SEO-driven.</div>
+            </div>
+            <div class="platform-card">
+                <div class="platform-card-icon">E</div>
+                <div class="platform-card-name">Email</div>
+                <div class="platform-card-handle">Newsletter</div>
+                <div class="platform-card-role">Monthly. One feature, one product, one note from the team. No filler. Subject lines under 6 words. If it reads like spam, kill it.</div>
+            </div>
+            <div class="platform-card">
+                <div class="platform-card-icon">G</div>
+                <div class="platform-card-name">Google Business</div>
+                <div class="platform-card-handle">All Locations</div>
+                <div class="platform-card-role">Accurate hours, quality photos, prompt review responses. The unsexy channel that drives the most local traffic. Treat it seriously.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CADENCE -->
+    <div class="cadence-section reveal">
+        <div class="cadence-label">Posting Cadence</div>
+        <div class="cadence-grid">
+            <div class="cadence-col">
+                <div class="cadence-col-title">Weekly</div>
+                <div class="cadence-item">
+                    <div class="cadence-item-type">Instagram Feed</div>
+                    <div class="cadence-item-detail">3 posts. Mix of Process + Product + Place.</div>
+                </div>
+                <div class="cadence-item">
+                    <div class="cadence-item-type">Instagram Stories</div>
+                    <div class="cadence-item-detail">Daily when open. Behind-the-bar moments.</div>
+                </div>
+                <div class="cadence-item">
+                    <div class="cadence-item-type">Google Business</div>
+                    <div class="cadence-item-detail">1 post. New product or event callout.</div>
+                </div>
+            </div>
+            <div class="cadence-col">
+                <div class="cadence-col-title">Monthly</div>
+                <div class="cadence-item">
+                    <div class="cadence-item-type">Email Newsletter</div>
+                    <div class="cadence-item-detail">1 send. Feature story + new release.</div>
+                </div>
+                <div class="cadence-item">
+                    <div class="cadence-item-type">Blog Post</div>
+                    <div class="cadence-item-detail">1 long-form. Origin story or brewing guide.</div>
+                </div>
+                <div class="cadence-item">
+                    <div class="cadence-item-type">Review Audit</div>
+                    <div class="cadence-item-detail">Respond to all Google + Yelp reviews.</div>
+                </div>
+            </div>
+            <div class="cadence-col">
+                <div class="cadence-col-title">Quarterly</div>
+                <div class="cadence-item">
+                    <div class="cadence-item-type">Content Audit</div>
+                    <div class="cadence-item-detail">Review grid cohesion, analytics, engagement.</div>
+                </div>
+                <div class="cadence-item">
+                    <div class="cadence-item-type">Photo Shoot</div>
+                    <div class="cadence-item-detail">Refresh product + lifestyle image library.</div>
+                </div>
+                <div class="cadence-item">
+                    <div class="cadence-item-type">Strategy Check</div>
+                    <div class="cadence-item-detail">Pillars still accurate? Adjust the mix.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EMAIL EXAMPLES -->
+    <div class="email-section reveal">
+        <div class="email-label">Email Examples</div>
+        <div class="email-grid">
+
+            <!-- New Release Email -->
+            <div class="email-mockup">
+                <div class="email-mockup-bar">
+                    <div class="email-mockup-dot"></div>
+                    <div class="email-mockup-dot"></div>
+                    <div class="email-mockup-dot"></div>
+                    <div class="email-mockup-url">mail.theorycoffee.com</div>
+                </div>
+                <div class="email-body">
+                    <div class="email-type">New Release</div>
+                    <div class="email-wordmark">Theory<span>.</span></div>
+                    <div class="email-img-block">
+                        <div class="email-img-text">New Arrival</div>
+                    </div>
+                    <div class="email-subject">Tres Fuertes is back.</div>
+                    <div class="email-preview">Three farms. One blend. Our Colombian single-origin returns for a limited spring run. Expect stone fruit, brown sugar, and a finish that lingers.</div>
+                    <div class="email-divider"></div>
+                    <div class="email-detail">
+                        <strong>Origin:</strong> Colombia, Huila<br>
+                        <strong>Process:</strong> Washed<br>
+                        <strong>Notes:</strong> Stone fruit · brown sugar · clean finish
+                    </div>
+                    <div class="email-cta">Shop Now</div>
+                </div>
+                <div class="email-footer-bar">Theory Coffee Roasters · <span>Redding, CA</span></div>
+            </div>
+
+            <!-- Monthly Newsletter -->
+            <div class="email-mockup">
+                <div class="email-mockup-bar">
+                    <div class="email-mockup-dot"></div>
+                    <div class="email-mockup-dot"></div>
+                    <div class="email-mockup-dot"></div>
+                    <div class="email-mockup-url">mail.theorycoffee.com</div>
+                </div>
+                <div class="email-body">
+                    <div class="email-type">Monthly Letter</div>
+                    <div class="email-wordmark">Theory<span>.</span></div>
+                    <div class="email-subject">March at the roastery.</div>
+                    <div class="email-preview">We spent the first week of March cupping 14 samples from a new washing station in Sidama. Two made the cut. One blew our minds. More on that soon.</div>
+                    <div class="email-divider"></div>
+                    <div class="email-preview">Meanwhile, the downtown shop started pouring a new spring espresso blend, and Eden Bakery just dropped a cardamom morning bun that pairs dangerously well with a cortado.</div>
+                    <div class="email-cta--copper email-cta">Read More</div>
+                    <div class="email-note">Subject line: 4 words max. One story. One product. One sign-off. That's the format.</div>
+                </div>
+                <div class="email-footer-bar">Theory Coffee Roasters · <span>Redding, CA</span></div>
+            </div>
+
+            <!-- Welcome / Transactional -->
+            <div class="email-mockup">
+                <div class="email-mockup-bar">
+                    <div class="email-mockup-dot"></div>
+                    <div class="email-mockup-dot"></div>
+                    <div class="email-mockup-dot"></div>
+                    <div class="email-mockup-url">mail.theorycoffee.com</div>
+                </div>
+                <div class="email-body">
+                    <div class="email-type">Welcome Series</div>
+                    <div class="email-wordmark">Theory<span>.</span></div>
+                    <div class="email-subject">Welcome to Theory.</div>
+                    <div class="email-preview">You're in. We send one email a month. No spam, no filler, no "just checking in." When we write, it's because something is worth your time.</div>
+                    <div class="email-divider"></div>
+                    <div class="email-detail">
+                        <strong>What to expect:</strong><br>
+                        New releases before they hit the site.<br>
+                        The occasional story from origin.<br>
+                        Honest takes on what we're drinking.
+                    </div>
+                    <div class="email-cta">Browse the Shop</div>
+                    <div class="email-note">Welcome emails set the tone. No discount codes. No urgency. Just: here's who we are, here's what you'll get.</div>
+                </div>
+                <div class="email-footer-bar">Theory Coffee Roasters · <span>Redding, CA</span></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- QUOTE -->
+    <div class="inline-quote reveal">
+        <div class="inline-quote-inner">
+            <p class="inline-quote-text">Don't post because it's Tuesday. Post because <em>it matters.</em></p>
+            <div class="inline-quote-source">Content Principle</div>
+        </div>
+    </div>
+
+    <!-- SOCIAL RULES -->
+    <div class="rules-section reveal">
+        <div class="rules-label">Digital Guidelines</div>
+        <div class="rules-grid">
+            <div class="rule-card">
+                <div class="rule-badge rule-badge--do">Do</div>
+                <p>Respond to comments and DMs within 24 hours. Be warm, be brief. Sound like a person, not a brand deck.</p>
+            </div>
+            <div class="rule-card">
+                <div class="rule-badge rule-badge--dont">Don't</div>
+                <p>Use trending audio, memes, or formats that don't align with the brand. If it could be any coffee shop, it's not Theory.</p>
+            </div>
+            <div class="rule-card">
+                <div class="rule-badge rule-badge--do">Do</div>
+                <p>Maintain a consistent color temperature across the feed. Edit with Chapter 04 photo treatments. Warm, slightly desaturated, natural.</p>
+            </div>
+            <div class="rule-card">
+                <div class="rule-badge rule-badge--dont">Don't</div>
+                <p>Over-hashtag. Five maximum per post. No hashtag walls. No #coffee #coffeelover #coffeetime #coffeeoftheday. Be specific or skip it.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="text-section reveal">
+        <div class="text-section-label">The Standard</div>
+        <h2>Would you follow this account? <em>Be honest.</em></h2>
+        <p>Before you publish anything, ask: would this make someone stop scrolling? If the answer is no, it's not ready. Every post is a first impression for someone new.</p>
+    </div>
+
+    <!-- CHAPTER NAV -->
+    <nav class="chapter-nav">
+        <a href="packaging-merch.html" class="chapter-nav-link">
+            <div class="chapter-nav-dir">Previous</div>
+            <div class="chapter-nav-title">06 — Packaging + Merch</div>
+        </a>
+        <a href="theory-v6-zag.html" class="chapter-nav-link chapter-nav-link--next">
+            <div class="chapter-nav-dir">Back to</div>
+            <div class="chapter-nav-title">Brand House</div>
+        </a>
+    </nav>
+
+    <footer class="colophon">
+        <div class="colophon-left">Theory Coffee Roasters · Redding, CA</div>
+        <div class="colophon-right">Brand House 2026 · <a href="https://theorycoffee.com" target="_blank">theorycoffee.com</a></div>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
+        }, { threshold: 0.1, rootMargin: '-40px' });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Story — Theory Coffee Roasters</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --copper: #D48A3C;
+            --copper-bright: #E89F4C;
+            --copper-dark: #B87430;
+            --charcoal: #1A1A1A;
+            --charcoal-mid: #242424;
+            --white: #FFFFFF;
+            --offwhite: #F8F6F3;
+            --bone: #EEEBE6;
+            --silver: #D8D4CE;
+            --grey-300: #A09B94;
+            --grey-400: #6E6A64;
+            --grey-500: #4A4744;
+            --black: #111111;
+            --font-sans: 'Jost', -apple-system, sans-serif;
+            --font-serif: 'Newsreader', Georgia, serif;
+            --ease: cubic-bezier(0.25, 1, 0.5, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; overflow-x: hidden; }
+        body {
+            font-family: var(--font-sans);
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--black);
+            background: var(--white);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        ::selection { background: var(--copper); color: var(--white); }
+
+        .grain {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           NAV BAR
+           ═══════════════════════════════════════════════════════════════ */
+
+        .topbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 48px;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--bone);
+        }
+
+        .topbar-back {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--black);
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .topbar-back:hover { color: var(--copper); }
+
+        .topbar-back svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s var(--ease);
+        }
+
+        .topbar-back:hover svg { transform: translateX(-3px); }
+
+        .topbar-chapter {
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--copper);
+        }
+
+        @media (max-width: 768px) {
+            .topbar { padding: 20px 24px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           CHAPTER HERO
+           ═══════════════════════════════════════════════════════════════ */
+
+        .chapter-hero {
+            padding: 180px 48px 100px;
+            background: var(--white);
+            position: relative;
+        }
+
+        .chapter-hero-inner {
+            max-width: 800px;
+        }
+
+        .chapter-num {
+            font-family: var(--font-sans);
+            font-size: clamp(80px, 12vw, 160px);
+            font-weight: 800;
+            line-height: 0.85;
+            color: var(--bone);
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease-out) 0.1s forwards;
+        }
+
+        .chapter-title {
+            font-family: var(--font-sans);
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            color: var(--black);
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease-out) 0.25s forwards;
+        }
+
+        .chapter-intro {
+            font-size: clamp(16px, 1.8vw, 20px);
+            font-weight: 400;
+            line-height: 1.7;
+            color: var(--grey-400);
+            max-width: 560px;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease-out) 0.4s forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .chapter-hero { padding: 140px 24px 72px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           FULL-BLEED PHOTO
+           ═══════════════════════════════════════════════════════════════ */
+
+        .full-photo {
+            width: 100%;
+            height: clamp(300px, 50vw, 560px);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .full-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(0.85) contrast(1.05) brightness(1.05);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           TEXT SECTIONS
+           ═══════════════════════════════════════════════════════════════ */
+
+        .text-section {
+            padding: 100px 48px;
+            max-width: 800px;
+        }
+
+        .text-section-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .text-section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--bone);
+            max-width: 60px;
+        }
+
+        .text-section h2 {
+            font-family: var(--font-sans);
+            font-size: clamp(22px, 3vw, 32px);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: var(--black);
+            margin-bottom: 24px;
+        }
+
+        .text-section h2 em {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: var(--copper-dark);
+            font-weight: 500;
+        }
+
+        .text-section p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--grey-400);
+            margin-bottom: 20px;
+        }
+
+        .text-section p:last-child { margin-bottom: 0; }
+
+        @media (max-width: 768px) {
+            .text-section { padding: 72px 24px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           QUOTE BLOCK (inline)
+           ═══════════════════════════════════════════════════════════════ */
+
+        .inline-quote {
+            padding: 80px 48px;
+            background: var(--black);
+            position: relative;
+        }
+
+        .inline-quote::before {
+            content: '';
+            position: absolute;
+            top: 80px;
+            bottom: 80px;
+            left: 48px;
+            width: 3px;
+            background: var(--copper);
+        }
+
+        .inline-quote-inner {
+            max-width: 700px;
+            padding-left: 48px;
+        }
+
+        .inline-quote-text {
+            font-family: var(--font-sans);
+            font-size: clamp(22px, 3.5vw, 36px);
+            font-weight: 300;
+            line-height: 1.3;
+            color: var(--white);
+            letter-spacing: -0.01em;
+        }
+
+        .inline-quote-text em {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: var(--copper-bright);
+            font-weight: 400;
+        }
+
+        .inline-quote-source {
+            margin-top: 28px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+        }
+
+        @media (max-width: 768px) {
+            .inline-quote { padding: 56px 24px; }
+            .inline-quote::before { left: 24px; top: 56px; bottom: 56px; }
+            .inline-quote-inner { padding-left: 32px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           SPLIT PHOTO + TEXT
+           ═══════════════════════════════════════════════════════════════ */
+
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 480px;
+        }
+
+        .split-photo {
+            overflow: hidden;
+        }
+
+        .split-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(0.85) contrast(1.05);
+        }
+
+        .split-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 64px;
+            background: var(--offwhite);
+        }
+
+        .split-text h3 {
+            font-family: var(--font-sans);
+            font-size: clamp(18px, 2.5vw, 24px);
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--black);
+            margin-bottom: 16px;
+        }
+
+        .split-text p {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            color: var(--grey-400);
+        }
+
+        @media (max-width: 768px) {
+            .split { grid-template-columns: 1fr; }
+            .split-photo { height: 280px; }
+            .split-text { padding: 48px 24px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           CHAPTER NAV (bottom)
+           ═══════════════════════════════════════════════════════════════ */
+
+        .chapter-nav {
+            display: flex;
+            border-top: 3px solid var(--copper);
+        }
+
+        .chapter-nav-link {
+            flex: 1;
+            padding: 40px 48px;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.3s var(--ease);
+        }
+
+        .chapter-nav-link:hover { background: var(--offwhite); }
+
+        .chapter-nav-link--next { text-align: right; }
+
+        .chapter-nav-dir {
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 6px;
+        }
+
+        .chapter-nav-title {
+            font-family: var(--font-sans);
+            font-size: clamp(16px, 2vw, 22px);
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        @media (max-width: 768px) {
+            .chapter-nav { flex-direction: column; }
+            .chapter-nav-link { padding: 28px 24px; }
+            .chapter-nav-link--next { text-align: left; border-top: 1px solid var(--bone); }
+        }
+
+        /* Reveals */
+        .reveal {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+        }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+
+        /* Colophon */
+        .colophon {
+            padding: 48px;
+            background: var(--black);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .colophon-left {
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.2);
+        }
+
+        .colophon-right {
+            font-size: 0.625rem;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            color: rgba(255,255,255,0.15);
+        }
+
+        .colophon-right a {
+            color: var(--copper);
+            text-decoration: none;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        .colophon-right a:hover { opacity: 1; }
+
+        @media (max-width: 768px) {
+            .colophon {
+                padding: 32px 24px;
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- TOP BAR -->
+    <nav class="topbar">
+        <a href="theory-v6-zag.html" class="topbar-back">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M10 4l-4 4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Brand House
+        </a>
+        <span class="topbar-chapter">Chapter 01</span>
+    </nav>
+
+    <!-- CHAPTER HERO -->
+    <section class="chapter-hero">
+        <div class="chapter-hero-inner">
+            <div class="chapter-num">01</div>
+            <h1 class="chapter-title">Brand Story</h1>
+            <p class="chapter-intro">How a kitchen experiment became one of the top ten roasters in the United States.</p>
+        </div>
+    </section>
+
+    <!-- HERO PHOTO -->
+    <div class="full-photo reveal">
+        <img src="img/downtown.jpeg" alt="Theory Coffee Roasters — California Street" loading="eager">
+    </div>
+
+    <!-- THE BEGINNING -->
+    <div class="text-section reveal">
+        <div class="text-section-label">The Beginning</div>
+        <h2>Sam smoked out his own kitchen. <em>That was day one.</em></h2>
+        <p>Sam LaRobardiere didn't set out to build a coffee company. He set out to roast a better bean. The first batches happened in a home kitchen. Then a backyard barbecue grill. Then a farmers market table in Redding, California.</p>
+        <p>The response was immediate. People kept coming back. Not because of branding or marketing. Because the coffee was undeniable.</p>
+    </div>
+
+    <!-- QUOTE -->
+    <div class="inline-quote reveal">
+        <div class="inline-quote-inner">
+            <p class="inline-quote-text">The business was never a plan. It was an <em>obsession</em> that other people believed in.</p>
+            <div class="inline-quote-source">Sam LaRobardiere, Founder</div>
+        </div>
+    </div>
+
+    <!-- PROOF -->
+    <div class="text-section reveal">
+        <div class="text-section-label">The Proof</div>
+        <h2>Gold in year one. <em>Still roasting on a grill.</em></h2>
+        <p>Theory won a Golden Bean Gold Medal in its first year of competition. Then came the Good Food Awards. Then Food & Wine named them one of the 100 best cafés in America. Twitter chose Theory as their sole coffee provider after a blind tasting at SF headquarters.</p>
+        <p>The awards didn't change the process. They confirmed it.</p>
+    </div>
+
+    <!-- SPLIT: SHASTA PHOTO + TODAY -->
+    <div class="split reveal">
+        <div class="split-photo">
+            <img src="img/shasta.jpeg" alt="Theory Coffee — Mt. Shasta location">
+        </div>
+        <div class="split-text">
+            <h3>Four cafés. Two Q-Graders. One standard.</h3>
+            <p>Today Theory operates four locations across Northern California, runs weekly cuppings, sources directly from farms, and maintains a wholesale program that puts their coffee in kitchens and offices nationwide. The founding instinct never left.</p>
+        </div>
+    </div>
+
+    <!-- BRAND VOICE -->
+    <div class="text-section reveal">
+        <div class="text-section-label">The Voice</div>
+        <h2>Confident, not loud. <em>Warm, not soft.</em></h2>
+        <p>Theory speaks the way it roasts: with intention and without excess. The brand voice is direct, knowledgeable, and grounded. It doesn't oversell. It doesn't need to. The product does the work. The words just make the introduction.</p>
+    </div>
+
+    <!-- SPLIT: BAKERY PHOTO + COMMUNITY -->
+    <div class="split reveal">
+        <div class="split-text">
+            <h3>Partnership is the founding principle.</h3>
+            <p>Eden Bakery pastries in every café. Direct relationships with farmers. A wholesale program built on trust, not volume. Theory grows by making the people around it better.</p>
+        </div>
+        <div class="split-photo">
+            <img src="img/bakery1.jpeg" alt="Eden Bakery collaboration">
+        </div>
+    </div>
+
+    <!-- CHAPTER NAV -->
+    <nav class="chapter-nav">
+        <a href="theory-v6-zag.html" class="chapter-nav-link">
+            <div class="chapter-nav-dir">Back</div>
+            <div class="chapter-nav-title">Brand House</div>
+        </a>
+        <a href="visual-identity.html" class="chapter-nav-link chapter-nav-link--next">
+            <div class="chapter-nav-dir">Next Chapter</div>
+            <div class="chapter-nav-title">02 — Visual Identity</div>
+        </a>
+    </nav>
+
+    <!-- COLOPHON -->
+    <footer class="colophon">
+        <div class="colophon-left">Theory Coffee Roasters · Redding, CA</div>
+        <div class="colophon-right">Brand House 2026 · <a href="https://theorycoffee.com" target="_blank">theorycoffee.com</a></div>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '-40px' });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Identity — Theory Coffee Roasters</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --copper: #D48A3C;
+            --copper-bright: #E89F4C;
+            --copper-dark: #B87430;
+            --charcoal: #1A1A1A;
+            --charcoal-mid: #242424;
+            --white: #FFFFFF;
+            --offwhite: #F8F6F3;
+            --bone: #EEEBE6;
+            --silver: #D8D4CE;
+            --grey-300: #A09B94;
+            --grey-400: #6E6A64;
+            --grey-500: #4A4744;
+            --black: #111111;
+            --font-sans: 'Jost', -apple-system, sans-serif;
+            --font-serif: 'Newsreader', Georgia, serif;
+            --ease: cubic-bezier(0.25, 1, 0.5, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; overflow-x: hidden; }
+        body {
+            font-family: var(--font-sans);
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--black);
+            background: var(--white);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        ::selection { background: var(--copper); color: var(--white); }
+
+        .grain {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           NAV BAR
+           ═══════════════════════════════════════════════════════════════ */
+
+        .topbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 48px;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--bone);
+        }
+
+        .topbar-back {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--black);
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .topbar-back:hover { color: var(--copper); }
+
+        .topbar-back svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s var(--ease);
+        }
+
+        .topbar-back:hover svg { transform: translateX(-3px); }
+
+        .topbar-chapter {
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--copper);
+        }
+
+        @media (max-width: 768px) {
+            .topbar { padding: 20px 24px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           CHAPTER HERO
+           ═══════════════════════════════════════════════════════════════ */
+
+        .chapter-hero {
+            padding: 180px 48px 100px;
+            background: var(--white);
+        }
+
+        .chapter-hero-inner {
+            max-width: 800px;
+        }
+
+        .chapter-num {
+            font-family: var(--font-sans);
+            font-size: clamp(80px, 12vw, 160px);
+            font-weight: 800;
+            line-height: 0.85;
+            color: var(--bone);
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease-out) 0.1s forwards;
+        }
+
+        .chapter-title {
+            font-family: var(--font-sans);
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            color: var(--black);
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease-out) 0.25s forwards;
+        }
+
+        .chapter-intro {
+            font-size: clamp(16px, 1.8vw, 20px);
+            font-weight: 400;
+            line-height: 1.7;
+            color: var(--grey-400);
+            max-width: 560px;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease-out) 0.4s forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .chapter-hero { padding: 140px 24px 72px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           TEXT SECTIONS
+           ═══════════════════════════════════════════════════════════════ */
+
+        .text-section {
+            padding: 100px 48px;
+            max-width: 800px;
+        }
+
+        .text-section-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .text-section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--bone);
+            max-width: 60px;
+        }
+
+        .text-section h2 {
+            font-family: var(--font-sans);
+            font-size: clamp(22px, 3vw, 32px);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: var(--black);
+            margin-bottom: 24px;
+        }
+
+        .text-section h2 em {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: var(--copper-dark);
+            font-weight: 500;
+        }
+
+        .text-section p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--grey-400);
+            margin-bottom: 20px;
+        }
+
+        .text-section p:last-child { margin-bottom: 0; }
+
+        @media (max-width: 768px) {
+            .text-section { padding: 72px 24px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           LOGO DISPLAY
+           ═══════════════════════════════════════════════════════════════ */
+
+        .logo-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 480px;
+        }
+
+        .logo-display-dark,
+        .logo-display-light {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 48px;
+            position: relative;
+        }
+
+        .logo-display-dark {
+            background: var(--charcoal);
+        }
+
+        .logo-display-light {
+            background: var(--offwhite);
+        }
+
+        .logo-display-dark .logo-context,
+        .logo-display-light .logo-context {
+            position: absolute;
+            bottom: 28px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.5625rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        .logo-display-dark .logo-context { color: rgba(255,255,255,0.2); }
+        .logo-display-light .logo-context { color: var(--silver); }
+
+        .logo-lockup {
+            text-align: center;
+        }
+
+        .logo-wordmark {
+            font-family: var(--font-sans);
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .logo-display-dark .logo-wordmark { color: var(--white); }
+        .logo-display-light .logo-wordmark { color: var(--black); }
+
+        .logo-wordmark-period { color: var(--copper); }
+
+        .logo-tagline {
+            font-family: var(--font-serif);
+            font-size: clamp(12px, 1.2vw, 15px);
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            margin-top: 8px;
+        }
+
+        .logo-display-dark .logo-tagline { color: rgba(255,255,255,0.35); }
+        .logo-display-light .logo-tagline { color: var(--grey-300); }
+
+        @media (max-width: 768px) {
+            .logo-display { grid-template-columns: 1fr; min-height: auto; }
+            .logo-display-dark,
+            .logo-display-light { padding: 80px 32px; min-height: 280px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           COLOR PALETTE
+           ═══════════════════════════════════════════════════════════════ */
+
+        .palette-section {
+            padding: 100px 48px;
+            background: var(--white);
+        }
+
+        .palette-section-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 48px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .palette-section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--bone);
+            max-width: 60px;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2px;
+            max-width: 1100px;
+        }
+
+        .swatch {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.3s var(--ease);
+        }
+
+        .swatch:hover { transform: translateY(-2px); }
+
+        .swatch-color {
+            height: 120px;
+            position: relative;
+        }
+
+        .swatch-info {
+            padding: 16px 20px;
+            background: var(--offwhite);
+        }
+
+        .swatch-name {
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 2px;
+        }
+
+        .swatch-hex {
+            font-size: 0.6875rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            color: var(--grey-300);
+            text-transform: uppercase;
+        }
+
+        .swatch-role {
+            font-size: 0.625rem;
+            font-weight: 400;
+            color: var(--grey-300);
+            margin-top: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .palette-section { padding: 72px 24px; }
+            .palette-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           TYPOGRAPHY SPECIMEN
+           ═══════════════════════════════════════════════════════════════ */
+
+        .type-section {
+            padding: 100px 48px;
+            background: var(--charcoal);
+        }
+
+        .type-section-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 64px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .type-section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.08);
+            max-width: 60px;
+        }
+
+        .type-specimen {
+            max-width: 1100px;
+        }
+
+        .type-family {
+            margin-bottom: 80px;
+        }
+
+        .type-family:last-child { margin-bottom: 0; }
+
+        .type-family-name {
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.25);
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .type-sample-large {
+            font-size: clamp(48px, 8vw, 96px);
+            line-height: 1;
+            letter-spacing: -0.04em;
+            color: var(--white);
+            margin-bottom: 32px;
+        }
+
+        .type-weights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+        }
+
+        .type-weight {
+            padding: 20px 28px;
+            border: 1px solid rgba(255,255,255,0.06);
+            margin: -0.5px;
+        }
+
+        .type-weight-label {
+            font-size: 0.5625rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--copper);
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
+        .type-weight-sample {
+            font-size: 1.5rem;
+            color: var(--white);
+            line-height: 1.2;
+        }
+
+        @media (max-width: 768px) {
+            .type-section { padding: 72px 24px; }
+            .type-weight { padding: 16px 20px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           USAGE RULES — Do / Don't
+           ═══════════════════════════════════════════════════════════════ */
+
+        .usage-section {
+            padding: 100px 48px;
+            background: var(--offwhite);
+        }
+
+        .usage-section-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 48px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .usage-section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--bone);
+            max-width: 60px;
+        }
+
+        .usage-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            max-width: 900px;
+        }
+
+        .usage-card {
+            padding: 36px 32px;
+            background: var(--white);
+        }
+
+        .usage-card-badge {
+            display: inline-block;
+            font-size: 0.5625rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            margin-bottom: 20px;
+        }
+
+        .usage-card-badge--do {
+            background: var(--copper);
+            color: var(--white);
+        }
+
+        .usage-card-badge--dont {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .usage-card p {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            color: var(--grey-400);
+        }
+
+        @media (max-width: 768px) {
+            .usage-section { padding: 72px 24px; }
+            .usage-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           CHAPTER NAV + COLOPHON
+           ═══════════════════════════════════════════════════════════════ */
+
+        .chapter-nav {
+            display: flex;
+            border-top: 3px solid var(--copper);
+        }
+
+        .chapter-nav-link {
+            flex: 1;
+            padding: 40px 48px;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.3s var(--ease);
+        }
+
+        .chapter-nav-link:hover { background: var(--offwhite); }
+        .chapter-nav-link--next { text-align: right; }
+
+        .chapter-nav-dir {
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 6px;
+        }
+
+        .chapter-nav-title {
+            font-family: var(--font-sans);
+            font-size: clamp(16px, 2vw, 22px);
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        @media (max-width: 768px) {
+            .chapter-nav { flex-direction: column; }
+            .chapter-nav-link { padding: 28px 24px; }
+            .chapter-nav-link--next { text-align: left; border-top: 1px solid var(--bone); }
+        }
+
+        .colophon {
+            padding: 48px;
+            background: var(--black);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .colophon-left {
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.2);
+        }
+
+        .colophon-right {
+            font-size: 0.625rem;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            color: rgba(255,255,255,0.15);
+        }
+
+        .colophon-right a {
+            color: var(--copper);
+            text-decoration: none;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        .colophon-right a:hover { opacity: 1; }
+
+        @media (max-width: 768px) {
+            .colophon { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; }
+        }
+
+        /* Reveals */
+        .reveal {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+        }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- TOP BAR -->
+    <nav class="topbar">
+        <a href="theory-v6-zag.html" class="topbar-back">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M10 4l-4 4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Brand House
+        </a>
+        <span class="topbar-chapter">Chapter 02</span>
+    </nav>
+
+    <!-- CHAPTER HERO -->
+    <section class="chapter-hero">
+        <div class="chapter-hero-inner">
+            <div class="chapter-num">02</div>
+            <h1 class="chapter-title">Visual Identity</h1>
+            <p class="chapter-intro">The logo, the palette, the type. Every mark is a decision about who Theory is.</p>
+        </div>
+    </section>
+
+    <!-- LOGO DISPLAY -->
+    <div class="logo-display reveal">
+        <div class="logo-display-dark">
+            <div class="logo-lockup">
+                <div class="logo-wordmark">Theory<span class="logo-wordmark-period">.</span></div>
+                <div class="logo-tagline">Coffee Roasters · Est. 2018</div>
+            </div>
+            <div class="logo-context">On Dark</div>
+        </div>
+        <div class="logo-display-light">
+            <div class="logo-lockup">
+                <div class="logo-wordmark">Theory<span class="logo-wordmark-period">.</span></div>
+                <div class="logo-tagline">Coffee Roasters · Est. 2018</div>
+            </div>
+            <div class="logo-context">On Light</div>
+        </div>
+    </div>
+
+    <!-- LOGO NOTES -->
+    <div class="text-section reveal">
+        <div class="text-section-label">The Mark</div>
+        <h2>The word is the logo. <em>The period is the punctuation.</em></h2>
+        <p>Theory doesn't use an icon. The wordmark carries full weight. Set in Jost 800, uppercase, tight tracking. The copper period is the only ornamentation. It signals completion. Confidence. A sentence that doesn't need to be longer.</p>
+    </div>
+
+    <!-- COLOR PALETTE -->
+    <div class="palette-section reveal">
+        <div class="palette-section-label">Color Palette</div>
+        <div class="palette-grid">
+            <div class="swatch">
+                <div class="swatch-color" style="background: #D48A3C;"></div>
+                <div class="swatch-info">
+                    <div class="swatch-name">Copper</div>
+                    <div class="swatch-hex">#D48A3C</div>
+                    <div class="swatch-role">Primary accent</div>
+                </div>
+            </div>
+            <div class="swatch">
+                <div class="swatch-color" style="background: #E89F4C;"></div>
+                <div class="swatch-info">
+                    <div class="swatch-name">Copper Bright</div>
+                    <div class="swatch-hex">#E89F4C</div>
+                    <div class="swatch-role">Hover states, highlights</div>
+                </div>
+            </div>
+            <div class="swatch">
+                <div class="swatch-color" style="background: #B87430;"></div>
+                <div class="swatch-info">
+                    <div class="swatch-name">Copper Dark</div>
+                    <div class="swatch-hex">#B87430</div>
+                    <div class="swatch-role">Text on light</div>
+                </div>
+            </div>
+            <div class="swatch">
+                <div class="swatch-color" style="background: #111111;"></div>
+                <div class="swatch-info">
+                    <div class="swatch-name">Black</div>
+                    <div class="swatch-hex">#111111</div>
+                    <div class="swatch-role">Primary text, high contrast</div>
+                </div>
+            </div>
+            <div class="swatch">
+                <div class="swatch-color" style="background: #1A1A1A;"></div>
+                <div class="swatch-info">
+                    <div class="swatch-name">Charcoal</div>
+                    <div class="swatch-hex">#1A1A1A</div>
+                    <div class="swatch-role">Dark backgrounds</div>
+                </div>
+            </div>
+            <div class="swatch">
+                <div class="swatch-color" style="background: #F8F6F3;"></div>
+                <div class="swatch-info">
+                    <div class="swatch-name">Offwhite</div>
+                    <div class="swatch-hex">#F8F6F3</div>
+                    <div class="swatch-role">Light backgrounds, cards</div>
+                </div>
+            </div>
+            <div class="swatch">
+                <div class="swatch-color" style="background: #EEEBE6;"></div>
+                <div class="swatch-info">
+                    <div class="swatch-name">Bone</div>
+                    <div class="swatch-hex">#EEEBE6</div>
+                    <div class="swatch-role">Borders, dividers</div>
+                </div>
+            </div>
+            <div class="swatch">
+                <div class="swatch-color" style="background: #FFFFFF; border: 1px solid #EEEBE6;"></div>
+                <div class="swatch-info">
+                    <div class="swatch-name">White</div>
+                    <div class="swatch-hex">#FFFFFF</div>
+                    <div class="swatch-role">Clean canvas</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COLOR NOTES -->
+    <div class="text-section reveal">
+        <div class="text-section-label">Color Philosophy</div>
+        <h2>Copper is the only color. <em>Everything else is tone.</em></h2>
+        <p>The palette runs on contrast: black, white, and copper. Copper does the work of warmth, craft, and attention. It appears on accent bars, hover states, and the period in the wordmark. It never competes with photography. It frames it.</p>
+    </div>
+
+    <!-- TYPOGRAPHY SPECIMEN -->
+    <div class="type-section reveal">
+        <div class="type-section-label">Typography</div>
+        <div class="type-specimen">
+
+            <div class="type-family">
+                <div class="type-family-name">Primary — Jost</div>
+                <div class="type-sample-large" style="font-family: var(--font-sans); font-weight: 800;">
+                    Theory.
+                </div>
+                <div class="type-weights">
+                    <div class="type-weight">
+                        <div class="type-weight-label">Light 300</div>
+                        <div class="type-weight-sample" style="font-family: var(--font-sans); font-weight: 300;">The obsession never changed</div>
+                    </div>
+                    <div class="type-weight">
+                        <div class="type-weight-label">Regular 400</div>
+                        <div class="type-weight-sample" style="font-family: var(--font-sans); font-weight: 400;">The obsession never changed</div>
+                    </div>
+                    <div class="type-weight">
+                        <div class="type-weight-label">Medium 500</div>
+                        <div class="type-weight-sample" style="font-family: var(--font-sans); font-weight: 500;">The obsession never changed</div>
+                    </div>
+                    <div class="type-weight">
+                        <div class="type-weight-label">Semibold 600</div>
+                        <div class="type-weight-sample" style="font-family: var(--font-sans); font-weight: 600;">The obsession never changed</div>
+                    </div>
+                    <div class="type-weight">
+                        <div class="type-weight-label">Bold 700</div>
+                        <div class="type-weight-sample" style="font-family: var(--font-sans); font-weight: 700;">The obsession never changed</div>
+                    </div>
+                    <div class="type-weight">
+                        <div class="type-weight-label">ExtraBold 800</div>
+                        <div class="type-weight-sample" style="font-family: var(--font-sans); font-weight: 800;">The obsession never changed</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="type-family">
+                <div class="type-family-name">Secondary — Newsreader</div>
+                <div class="type-sample-large" style="font-family: var(--font-serif); font-weight: 400; font-style: italic; letter-spacing: -0.02em;">
+                    happy
+                </div>
+                <div class="type-weights">
+                    <div class="type-weight">
+                        <div class="type-weight-label">Light Italic 300</div>
+                        <div class="type-weight-sample" style="font-family: var(--font-serif); font-weight: 300; font-style: italic;">Good coffee starts with a theory</div>
+                    </div>
+                    <div class="type-weight">
+                        <div class="type-weight-label">Regular 400</div>
+                        <div class="type-weight-sample" style="font-family: var(--font-serif); font-weight: 400;">Good coffee starts with a theory</div>
+                    </div>
+                    <div class="type-weight">
+                        <div class="type-weight-label">Medium Italic 500</div>
+                        <div class="type-weight-sample" style="font-family: var(--font-serif); font-weight: 500; font-style: italic;">Good coffee starts with a theory</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- TYPE NOTES -->
+    <div class="text-section reveal">
+        <div class="text-section-label">Type Hierarchy</div>
+        <h2>Sans leads. <em>Serif punctuates.</em></h2>
+        <p>Jost carries all headlines, navigation, labels, and body text. It's geometric, modern, and scales from 9px labels to 200px hero type without losing authority. Newsreader appears only in italics: pull quotes, emphasis words, and the tagline. It adds warmth without softening the tone.</p>
+    </div>
+
+    <!-- USAGE RULES -->
+    <div class="usage-section reveal">
+        <div class="usage-section-label">Usage Guidelines</div>
+        <div class="usage-grid">
+            <div class="usage-card">
+                <div class="usage-card-badge usage-card-badge--do">Do</div>
+                <p>Use the copper period on the wordmark at all sizes. It's not optional. It's the brand's only graphic mark.</p>
+            </div>
+            <div class="usage-card">
+                <div class="usage-card-badge usage-card-badge--dont">Don't</div>
+                <p>Stack the wordmark over an icon or add graphic embellishments. The word is the mark. Nothing else.</p>
+            </div>
+            <div class="usage-card">
+                <div class="usage-card-badge usage-card-badge--do">Do</div>
+                <p>Maintain generous whitespace around the wordmark. Minimum clear space equals the height of the capital T.</p>
+            </div>
+            <div class="usage-card">
+                <div class="usage-card-badge usage-card-badge--dont">Don't</div>
+                <p>Use copper as a background color for large areas. It's an accent. It earns attention by being used sparingly.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHAPTER NAV -->
+    <nav class="chapter-nav">
+        <a href="brand-story.html" class="chapter-nav-link">
+            <div class="chapter-nav-dir">Previous</div>
+            <div class="chapter-nav-title">01 — Brand Story</div>
+        </a>
+        <a href="voice-tone.html" class="chapter-nav-link chapter-nav-link--next">
+            <div class="chapter-nav-dir">Next Chapter</div>
+            <div class="chapter-nav-title">03 — Voice + Tone</div>
+        </a>
+    </nav>
+
+    <!-- COLOPHON -->
+    <footer class="colophon">
+        <div class="colophon-left">Theory Coffee Roasters · Redding, CA</div>
+        <div class="colophon-right">Brand House 2026 · <a href="https://theorycoffee.com" target="_blank">theorycoffee.com</a></div>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '-40px' });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

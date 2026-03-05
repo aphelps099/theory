@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photography — Theory Coffee Roasters</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --copper: #D48A3C;
+            --copper-bright: #E89F4C;
+            --copper-dark: #B87430;
+            --charcoal: #1A1A1A;
+            --charcoal-mid: #242424;
+            --white: #FFFFFF;
+            --offwhite: #F8F6F3;
+            --bone: #EEEBE6;
+            --silver: #D8D4CE;
+            --grey-300: #A09B94;
+            --grey-400: #6E6A64;
+            --grey-500: #4A4744;
+            --black: #111111;
+            --font-sans: 'Jost', -apple-system, sans-serif;
+            --font-serif: 'Newsreader', Georgia, serif;
+            --ease: cubic-bezier(0.25, 1, 0.5, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; overflow-x: hidden; }
+        body {
+            font-family: var(--font-sans);
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--black);
+            background: var(--white);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        ::selection { background: var(--copper); color: var(--white); }
+
+        .grain {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
+        }
+
+        /* NAV */
+        .topbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 48px;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--bone);
+        }
+        .topbar-back {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--black);
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        .topbar-back:hover { color: var(--copper); }
+        .topbar-back svg { width: 16px; height: 16px; transition: transform 0.3s var(--ease); }
+        .topbar-back:hover svg { transform: translateX(-3px); }
+        .topbar-chapter {
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--copper);
+        }
+        @media (max-width: 768px) { .topbar { padding: 20px 24px; } }
+
+        /* CHAPTER HERO */
+        .chapter-hero { padding: 180px 48px 100px; background: var(--white); }
+        .chapter-hero-inner { max-width: 800px; }
+        .chapter-num {
+            font-family: var(--font-sans);
+            font-size: clamp(80px, 12vw, 160px);
+            font-weight: 800;
+            line-height: 0.85;
+            color: var(--bone);
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease-out) 0.1s forwards;
+        }
+        .chapter-title {
+            font-family: var(--font-sans);
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            color: var(--black);
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease-out) 0.25s forwards;
+        }
+        .chapter-intro {
+            font-size: clamp(16px, 1.8vw, 20px);
+            font-weight: 400;
+            line-height: 1.7;
+            color: var(--grey-400);
+            max-width: 560px;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease-out) 0.4s forwards;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) { .chapter-hero { padding: 140px 24px 72px; } }
+
+        /* TEXT SECTIONS */
+        .text-section { padding: 100px 48px; max-width: 800px; }
+        .text-section-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .text-section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--bone);
+            max-width: 60px;
+        }
+        .text-section h2 {
+            font-family: var(--font-sans);
+            font-size: clamp(22px, 3vw, 32px);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: var(--black);
+            margin-bottom: 24px;
+        }
+        .text-section h2 em {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: var(--copper-dark);
+            font-weight: 500;
+        }
+        .text-section p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--grey-400);
+            margin-bottom: 20px;
+        }
+        .text-section p:last-child { margin-bottom: 0; }
+        @media (max-width: 768px) { .text-section { padding: 72px 24px; } }
+
+        /* ═══════════════════════════════════════════════════════════════
+           PHOTO GALLERY — hero-scale images with captions
+           ═══════════════════════════════════════════════════════════════ */
+
+        .gallery-full {
+            width: 100%;
+            height: clamp(320px, 50vw, 600px);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-full img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-full-caption {
+            position: absolute;
+            bottom: 24px;
+            left: 48px;
+            font-size: 0.5625rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+        }
+
+        @media (max-width: 768px) {
+            .gallery-full-caption { left: 24px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           PHOTO PAIR — two images side by side
+           ═══════════════════════════════════════════════════════════════ */
+
+        .gallery-pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+        }
+
+        .gallery-pair-cell {
+            height: clamp(240px, 35vw, 440px);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-pair-cell img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s var(--ease);
+        }
+
+        .gallery-pair-cell:hover img { transform: scale(1.03); }
+
+        .gallery-pair-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 24px;
+            font-size: 0.5625rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+        }
+
+        @media (max-width: 768px) {
+            .gallery-pair { grid-template-columns: 1fr; }
+            .gallery-pair-cell { height: 280px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           TREATMENT EXAMPLES — before/after style cards
+           ═══════════════════════════════════════════════════════════════ */
+
+        .treatments {
+            padding: 100px 48px;
+            background: var(--charcoal);
+        }
+
+        .treatments-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 48px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .treatments-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.08);
+            max-width: 60px;
+        }
+
+        .treatment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            max-width: 1100px;
+        }
+
+        .treatment-card {
+            background: var(--charcoal-mid);
+            overflow: hidden;
+        }
+
+        .treatment-card-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .treatment-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .treatment-card-info {
+            padding: 24px;
+        }
+
+        .treatment-card-name {
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 6px;
+        }
+
+        .treatment-card-desc {
+            font-size: 0.8125rem;
+            line-height: 1.6;
+            color: var(--grey-400);
+        }
+
+        .treatment-card-css {
+            margin-top: 12px;
+            font-size: 0.6875rem;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            color: var(--copper);
+            opacity: 0.7;
+            letter-spacing: 0.02em;
+        }
+
+        @media (max-width: 900px) {
+            .treatment-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .treatments { padding: 72px 24px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           SHOT LIST — categories of photography
+           ═══════════════════════════════════════════════════════════════ */
+
+        .shotlist {
+            padding: 100px 48px;
+            background: var(--offwhite);
+        }
+
+        .shotlist-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 48px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .shotlist-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--bone);
+            max-width: 60px;
+        }
+
+        .shotlist-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+            max-width: 900px;
+        }
+
+        .shotlist-card {
+            padding: 36px 32px;
+            background: var(--white);
+            transition: all 0.3s var(--ease);
+        }
+
+        .shotlist-card:hover {
+            background: var(--black);
+        }
+
+        .shotlist-card-num {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--bone);
+            line-height: 1;
+            margin-bottom: 20px;
+            transition: color 0.3s var(--ease);
+        }
+
+        .shotlist-card:hover .shotlist-card-num { color: var(--copper); }
+
+        .shotlist-card-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 8px;
+            transition: color 0.3s var(--ease);
+        }
+
+        .shotlist-card:hover .shotlist-card-name { color: var(--white); }
+
+        .shotlist-card-desc {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: var(--grey-400);
+            transition: color 0.3s var(--ease);
+        }
+
+        .shotlist-card:hover .shotlist-card-desc { color: var(--grey-300); }
+
+        @media (max-width: 768px) {
+            .shotlist { padding: 72px 24px; }
+            .shotlist-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           DO / DON'T
+           ═══════════════════════════════════════════════════════════════ */
+
+        .rules-section {
+            padding: 100px 48px;
+            background: var(--white);
+        }
+
+        .rules-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 48px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .rules-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--bone);
+            max-width: 60px;
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            max-width: 900px;
+        }
+
+        .rule-card {
+            padding: 36px 32px;
+            background: var(--offwhite);
+        }
+
+        .rule-badge {
+            display: inline-block;
+            font-size: 0.5625rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            margin-bottom: 20px;
+        }
+
+        .rule-badge--do { background: var(--copper); color: var(--white); }
+        .rule-badge--dont { background: var(--black); color: var(--white); }
+
+        .rule-card p {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            color: var(--grey-400);
+        }
+
+        @media (max-width: 768px) {
+            .rules-section { padding: 72px 24px; }
+            .rules-grid { grid-template-columns: 1fr; }
+        }
+
+        /* CHAPTER NAV + COLOPHON */
+        .chapter-nav { display: flex; border-top: 3px solid var(--copper); }
+        .chapter-nav-link {
+            flex: 1;
+            padding: 40px 48px;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.3s var(--ease);
+        }
+        .chapter-nav-link:hover { background: var(--offwhite); }
+        .chapter-nav-link--next { text-align: right; }
+        .chapter-nav-dir {
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 6px;
+        }
+        .chapter-nav-title {
+            font-family: var(--font-sans);
+            font-size: clamp(16px, 2vw, 22px);
+            font-weight: 600;
+            color: var(--black);
+        }
+        @media (max-width: 768px) {
+            .chapter-nav { flex-direction: column; }
+            .chapter-nav-link { padding: 28px 24px; }
+            .chapter-nav-link--next { text-align: left; border-top: 1px solid var(--bone); }
+        }
+
+        .colophon {
+            padding: 48px;
+            background: var(--black);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .colophon-left {
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.2);
+        }
+        .colophon-right {
+            font-size: 0.625rem;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            color: rgba(255,255,255,0.15);
+        }
+        .colophon-right a { color: var(--copper); text-decoration: none; opacity: 0.6; transition: opacity 0.3s; }
+        .colophon-right a:hover { opacity: 1; }
+        @media (max-width: 768px) {
+            .colophon { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+        }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <nav class="topbar">
+        <a href="theory-v6-zag.html" class="topbar-back">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M10 4l-4 4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Brand House
+        </a>
+        <span class="topbar-chapter">Chapter 04</span>
+    </nav>
+
+    <!-- CHAPTER HERO -->
+    <section class="chapter-hero">
+        <div class="chapter-hero-inner">
+            <div class="chapter-num">04</div>
+            <h1 class="chapter-title">Photography</h1>
+            <p class="chapter-intro">The images that carry the brand. How to shoot, treat, and use them.</p>
+        </div>
+    </section>
+
+    <!-- HERO IMAGE -->
+    <div class="gallery-full reveal">
+        <img src="img/downtown.jpeg" alt="Theory Coffee — California Street flagship" loading="eager">
+        <div class="gallery-full-caption">California Street · Redding, CA</div>
+    </div>
+
+    <!-- DIRECTION -->
+    <div class="text-section reveal">
+        <div class="text-section-label">Direction</div>
+        <h2>Shoot the real thing. <em>Don't stage it.</em></h2>
+        <p>Theory photography captures what's already happening. Natural light. Real customers. Actual baristas mid-pull. The images should feel observed, not directed. If it looks like a stock photo, reshoot it.</p>
+    </div>
+
+    <!-- PHOTO PAIR -->
+    <div class="gallery-pair reveal">
+        <div class="gallery-pair-cell">
+            <img src="img/shasta.jpeg" alt="Mt. Shasta location">
+            <div class="gallery-pair-caption">Mt. Shasta</div>
+        </div>
+        <div class="gallery-pair-cell">
+            <img src="img/hilltop.jpeg" alt="Hilltop Drive location">
+            <div class="gallery-pair-caption">Hilltop Drive</div>
+        </div>
+    </div>
+
+    <!-- MOOD -->
+    <div class="text-section reveal">
+        <div class="text-section-label">Mood</div>
+        <h2>Warm. Urban. <em>Unforced.</em></h2>
+        <p>The overall feel is Northern California meets specialty coffee culture. Think morning light through café windows, steam rising from a pour-over, the texture of a weathered countertop. The atmosphere should invite you in without trying too hard.</p>
+    </div>
+
+    <!-- TREATMENTS -->
+    <div class="treatments reveal">
+        <div class="treatments-label">Photo Treatments</div>
+        <div class="treatment-grid">
+            <div class="treatment-card">
+                <div class="treatment-card-img">
+                    <img src="img/downtown.jpeg" alt="Natural treatment" style="filter: saturate(0.85) contrast(1.05) brightness(1.05);">
+                </div>
+                <div class="treatment-card-info">
+                    <div class="treatment-card-name">Natural</div>
+                    <div class="treatment-card-desc">Default treatment. Slightly desaturated, lifted contrast. Bright but not blown out.</div>
+                    <div class="treatment-card-css">saturate(0.85) contrast(1.05) brightness(1.05)</div>
+                </div>
+            </div>
+            <div class="treatment-card">
+                <div class="treatment-card-img">
+                    <img src="img/shasta.jpeg" alt="Muted treatment" style="filter: saturate(0.5) contrast(1.1) brightness(0.95);">
+                </div>
+                <div class="treatment-card-info">
+                    <div class="treatment-card-name">Muted</div>
+                    <div class="treatment-card-desc">For background or overlay use. Pulled back saturation for text legibility.</div>
+                    <div class="treatment-card-css">saturate(0.5) contrast(1.1) brightness(0.95)</div>
+                </div>
+            </div>
+            <div class="treatment-card">
+                <div class="treatment-card-img">
+                    <img src="img/hilltop.jpeg" alt="High contrast treatment" style="filter: saturate(0.9) contrast(1.2) brightness(1.0);">
+                </div>
+                <div class="treatment-card-info">
+                    <div class="treatment-card-name">High Contrast</div>
+                    <div class="treatment-card-desc">For hero moments. Punched-up contrast with natural color. Use sparingly.</div>
+                    <div class="treatment-card-css">saturate(0.9) contrast(1.2) brightness(1.0)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MOTORCYCLE PHOTO -->
+    <div class="gallery-full reveal">
+        <img src="img/motorcycles.jpeg" alt="California Street storefront">
+        <div class="gallery-full-caption">California Street Storefront</div>
+    </div>
+
+    <!-- SHOT LIST -->
+    <div class="shotlist reveal">
+        <div class="shotlist-label">Shot Categories</div>
+        <div class="shotlist-grid">
+            <div class="shotlist-card">
+                <div class="shotlist-card-num">01</div>
+                <div class="shotlist-card-name">Space + Architecture</div>
+                <div class="shotlist-card-desc">Café interiors, exteriors, signage, details. Capture the physical brand. Show the materials, the light, the layout.</div>
+            </div>
+            <div class="shotlist-card">
+                <div class="shotlist-card-num">02</div>
+                <div class="shotlist-card-name">Process + Craft</div>
+                <div class="shotlist-card-desc">Roasting, cupping, pulling shots, latte art. Hands at work. The tools and rituals that define the trade.</div>
+            </div>
+            <div class="shotlist-card">
+                <div class="shotlist-card-num">03</div>
+                <div class="shotlist-card-name">Product + Detail</div>
+                <div class="shotlist-card-desc">Bags, beans, cups, packaging. Shot clean against natural surfaces. No props that don't belong in a café.</div>
+            </div>
+            <div class="shotlist-card">
+                <div class="shotlist-card-num">04</div>
+                <div class="shotlist-card-name">People + Community</div>
+                <div class="shotlist-card-desc">Baristas, regulars, events. Candid over posed. Real expressions, real moments. No one looks at the camera.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BAKERY PHOTO -->
+    <div class="gallery-pair reveal">
+        <div class="gallery-pair-cell">
+            <img src="img/bakery1.jpeg" alt="Eden Bakery collaboration">
+            <div class="gallery-pair-caption">Eden Bakery</div>
+        </div>
+        <div class="gallery-pair-cell" style="background: var(--charcoal); display: flex; align-items: center; justify-content: center; padding: 48px;">
+            <div style="max-width: 280px;">
+                <div style="font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); margin-bottom: 16px;">Remember</div>
+                <div style="font-family: var(--font-sans); font-size: clamp(18px, 2vw, 24px); font-weight: 600; color: var(--white); line-height: 1.3;">The best Theory photo is one you'd want framed on the wall of the café.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RULES -->
+    <div class="rules-section reveal">
+        <div class="rules-label">Guidelines</div>
+        <div class="rules-grid">
+            <div class="rule-card">
+                <div class="rule-badge rule-badge--do">Do</div>
+                <p>Shoot in natural light. Morning golden hour and overcast days produce the best Theory images.</p>
+            </div>
+            <div class="rule-card">
+                <div class="rule-badge rule-badge--dont">Don't</div>
+                <p>Use flash or artificial key lights. The images should feel found, not produced.</p>
+            </div>
+            <div class="rule-card">
+                <div class="rule-badge rule-badge--do">Do</div>
+                <p>Include environmental context. A cup on a countertop is better than a cup on a white seamless.</p>
+            </div>
+            <div class="rule-card">
+                <div class="rule-badge rule-badge--dont">Don't</div>
+                <p>Over-saturate or over-filter. The coffee is the star. The edit should disappear.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHAPTER NAV -->
+    <nav class="chapter-nav">
+        <a href="voice-tone.html" class="chapter-nav-link">
+            <div class="chapter-nav-dir">Previous</div>
+            <div class="chapter-nav-title">03 — Voice + Tone</div>
+        </a>
+        <a href="cafe-experience.html" class="chapter-nav-link chapter-nav-link--next">
+            <div class="chapter-nav-dir">Next Chapter</div>
+            <div class="chapter-nav-title">05 — Café Experience</div>
+        </a>
+    </nav>
+
+    <footer class="colophon">
+        <div class="colophon-left">Theory Coffee Roasters · Redding, CA</div>
+        <div class="colophon-right">Brand House 2026 · <a href="https://theorycoffee.com" target="_blank">theorycoffee.com</a></div>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) entry.target.classList.add('is-visible');
+            });
+        }, { threshold: 0.1, rootMargin: '-40px' });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
