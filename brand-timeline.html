@@ -456,6 +456,18 @@
         .colophon-right a:hover { opacity: 1; }
         @media (max-width: 768px) { .colophon { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; } }
 
+        /* PHOTO BREAKS */
+        .photo-break { position: relative; overflow: hidden; }
+        .photo-break img { width: 100%; height: 480px; object-fit: cover; display: block; }
+        .photo-break--tall img { height: 560px; }
+        .photo-break-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px 48px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+        @media (max-width: 768px) { .photo-break img { height: 320px; } .photo-break--tall img { height: 400px; } .photo-break-caption { padding: 16px 24px; } }
+
+        /* TIMELINE PHOTO */
+        .timeline-photo { width: 100%; margin-top: 16px; overflow: hidden; }
+        .timeline-photo img { width: 100%; height: 200px; object-fit: cover; display: block; filter: grayscale(20%); transition: filter 0.4s; }
+        .timeline-item:hover .timeline-photo img { filter: grayscale(0%); }
+
         .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
         .reveal.is-visible { opacity: 1; transform: translateY(0); }
     </style>
@@ -499,6 +511,7 @@
                     <div class="timeline-year">2018</div>
                     <div class="timeline-event">The First Roast</div>
                     <p class="timeline-desc">Sam LaRobardiere smoked out his family kitchen roasting green coffee beans in a cast iron skillet. Moved to a popcorn popper. Then a backyard barbecue grill. The obsession had begun.</p>
+                    <div class="timeline-photo"><img src="img/sam.jpg" alt="Sam LaRobardiere at the roaster" loading="lazy"></div>
                     <span class="timeline-tag">Origin</span>
                 </div>
             </div>
@@ -536,6 +549,12 @@
 
         </div>
     </section>
+
+    <!-- PHOTO: ROASTERY -->
+    <div class="photo-break reveal">
+        <img src="img/day 2,703 in the roastery  fyp baristadaily coffeeroaster coffeeshop b.jpg" alt="Inside the Theory Coffee roastery — Diedrich roaster through the window" loading="lazy">
+        <div class="photo-break-caption">The Roastery — Redding, CA</div>
+    </div>
 
     <!-- ERA II -->
     <div class="era reveal">
@@ -606,6 +625,7 @@
                     <div class="timeline-year">2019</div>
                     <div class="timeline-event">First Cafe Opens</div>
                     <p class="timeline-desc">Opened the original Theory cafe in downtown Redding. Small, intentional, and designed to make every cup feel like something. The brand finally had a home.</p>
+                    <div class="timeline-photo"><img src="img/coffeebar.jpg" alt="Theory Coffee bar with full lineup of bags and espresso equipment" loading="lazy"></div>
                     <span class="timeline-tag">Milestone</span>
                 </div>
             </div>
@@ -723,6 +743,12 @@
             <div class="stat-num">2018</div>
             <div class="stat-label">Year Founded</div>
         </div>
+    </div>
+
+    <!-- PHOTO: CHAMPIONSHIP -->
+    <div class="photo-break photo-break--tall reveal">
+        <img src="img/Theory_Us_Coffee_Roasting_Championship_2.jpg" alt="Theory Coffee Roasters on the podium at the US Coffee Roasting Championship" loading="lazy">
+        <div class="photo-break-caption">US Coffee Roasting Championship — Portland</div>
     </div>
 
     <!-- AWARDS -->

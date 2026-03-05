@@ -1079,6 +1079,12 @@
         }
 
         /* Reveals */
+        /* PHOTO BREAKS */
+        .photo-break { position: relative; overflow: hidden; }
+        .photo-break img { width: 100%; height: 480px; object-fit: cover; display: block; }
+        .photo-break-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px 48px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+        @media (max-width: 768px) { .photo-break img { height: 320px; } .photo-break-caption { padding: 16px 24px; } }
+
         .reveal {
             opacity: 0;
             transform: translateY(20px);
@@ -1325,6 +1331,12 @@
         </div>
     </div>
 
+    <!-- PHOTO: COFFEE CULTURE -->
+    <div class="photo-break reveal">
+        <img src="img/coffeebar.jpg" alt="Theory Coffee retail counter — full lineup of bags, espresso equipment, and grinders" loading="lazy">
+        <div class="photo-break-caption">The Counter — California Street Flagship</div>
+    </div>
+
     <!-- 6. BRAND FOUNDATIONS -->
     <section class="foundations" id="values">
         <div class="foundations-inner">
@@ -1434,6 +1446,12 @@
             </div>
         </div>
     </section>
+
+    <!-- PHOTO: SAM + ROASTERY -->
+    <div class="photo-break reveal">
+        <img src="img/sam.jpg" alt="Sam LaRobardiere — Founder, Theory Coffee Roasters" loading="lazy">
+        <div class="photo-break-caption">Sam LaRobardiere — Founder + Head Roaster</div>
+    </div>
 
     <!-- 7. BRAND ARCHITECTURE -->
     <section class="architecture" id="architecture">
