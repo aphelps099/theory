@@ -107,113 +107,42 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
-            max-width: 900px;
+            max-width: 960px;
         }
 
-        .bag-mockup {
-            aspect-ratio: 3/4;
-            padding: 32px 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
+        .bag-photo {
             overflow: hidden;
             transition: transform 0.4s var(--ease);
         }
 
-        .bag-mockup:hover { transform: translateY(-4px); }
+        .bag-photo:hover { transform: translateY(-4px); }
 
-        .bag-mockup--dark {
-            background: var(--black);
-            border: 1px solid rgba(255,255,255,0.08);
+        .bag-photo img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            display: block;
+            border-radius: 4px;
+            filter: saturate(0.9) contrast(1.05);
         }
 
-        .bag-mockup--light {
-            background: var(--offwhite);
+        .bag-photo-caption {
+            padding: 14px 0 0;
         }
 
-        .bag-mockup--copper {
-            background: var(--copper);
+        .bag-photo-origin {
+            font-size: 0.5625rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--white); opacity: 0.4;
         }
 
-        .bag-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .bag-origin {
-            font-size: 0.5rem;
-            font-weight: 700;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            opacity: 0.5;
-        }
-
-        .bag-mockup--dark .bag-origin { color: var(--white); }
-        .bag-mockup--light .bag-origin { color: var(--black); }
-        .bag-mockup--copper .bag-origin { color: var(--white); }
-
-        .bag-weight {
-            font-size: 0.5rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            opacity: 0.4;
-        }
-
-        .bag-mockup--dark .bag-weight { color: var(--white); }
-        .bag-mockup--light .bag-weight { color: var(--black); }
-        .bag-mockup--copper .bag-weight { color: var(--white); }
-
-        .bag-center {
-            text-align: center;
-        }
-
-        .bag-wordmark {
-            font-family: var(--font-sans);
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            text-transform: uppercase;
-            line-height: 1;
-        }
-
-        .bag-mockup--dark .bag-wordmark { color: var(--white); }
-        .bag-mockup--light .bag-wordmark { color: var(--black); }
-        .bag-mockup--copper .bag-wordmark { color: var(--white); }
-
-        .bag-wordmark-period {
-            color: var(--copper);
-        }
-
-        .bag-mockup--copper .bag-wordmark-period { color: var(--white); opacity: 0.6; }
-
-        .bag-name {
+        .bag-photo-name {
             font-family: var(--font-serif);
-            font-size: 0.875rem;
             font-style: italic;
-            margin-top: 6px;
+            font-size: 0.9375rem;
+            color: var(--copper-bright);
+            margin-top: 4px;
         }
-
-        .bag-mockup--dark .bag-name { color: var(--copper-bright); }
-        .bag-mockup--light .bag-name { color: var(--copper-dark); }
-        .bag-mockup--copper .bag-name { color: rgba(255,255,255,0.75); }
-
-        .bag-bottom {
-            text-align: center;
-        }
-
-        .bag-roast {
-            font-size: 0.5rem;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            opacity: 0.35;
-        }
-
-        .bag-mockup--dark .bag-roast { color: var(--white); }
-        .bag-mockup--light .bag-roast { color: var(--black); }
-        .bag-mockup--copper .bag-roast { color: var(--white); }
 
         @media (max-width: 768px) {
             .bag-showcase { padding: 72px 24px; }
@@ -221,7 +150,7 @@
         }
 
         @media (max-width: 500px) {
-            .bag-grid { grid-template-columns: 1fr; max-width: 280px; }
+            .bag-grid { grid-template-columns: 1fr; max-width: 320px; }
         }
 
         /* ═══════════════════════════════════════════════════════════════
@@ -527,49 +456,47 @@
         <p>For most customers, the first physical interaction with Theory is a bag of coffee or a to-go cup. That moment carries the full weight of the brand. Clean design, quality materials, zero clutter. The packaging should feel as considered as the roast inside it.</p>
     </div>
 
-    <!-- BAG MOCKUPS -->
+    <!-- BAG PHOTOS -->
     <div class="bag-showcase reveal">
-        <div class="bag-showcase-label">Bag System</div>
+        <div class="bag-showcase-label">The Bags</div>
         <div class="bag-grid">
-            <div class="bag-mockup bag-mockup--dark">
-                <div class="bag-top">
-                    <span class="bag-origin">Ethiopia</span>
-                    <span class="bag-weight">12 oz</span>
-                </div>
-                <div class="bag-center">
-                    <div class="bag-wordmark">Theory<span class="bag-wordmark-period">.</span></div>
-                    <div class="bag-name">Yirgacheffe</div>
-                </div>
-                <div class="bag-bottom">
-                    <span class="bag-roast">Light Roast</span>
+            <div class="bag-photo">
+                <img src="img/Mexico%20-%20La%20Yerba%20(Natural).png" alt="Mexico La Yerba Natural" loading="lazy">
+                <div class="bag-photo-caption">
+                    <div class="bag-photo-origin">Mexico</div>
+                    <div class="bag-photo-name">La Yerba — Natural</div>
                 </div>
             </div>
 
-            <div class="bag-mockup bag-mockup--light">
-                <div class="bag-top">
-                    <span class="bag-origin">Colombia</span>
-                    <span class="bag-weight">12 oz</span>
-                </div>
-                <div class="bag-center">
-                    <div class="bag-wordmark">Theory<span class="bag-wordmark-period">.</span></div>
-                    <div class="bag-name">Tres Fuertes</div>
-                </div>
-                <div class="bag-bottom">
-                    <span class="bag-roast">Medium Roast</span>
+            <div class="bag-photo">
+                <img src="img/NEW%20COFFEE%20ALERT%20Guatemala%20-%20Raul%20Solis%20Paiz%20Pink%20Bourbon%20(Natural)%20aR.jpg" alt="Guatemala Raul Solis Paiz Pink Bourbon" loading="lazy">
+                <div class="bag-photo-caption">
+                    <div class="bag-photo-origin">Guatemala</div>
+                    <div class="bag-photo-name">Raul Solis Paiz — Pink Bourbon</div>
                 </div>
             </div>
 
-            <div class="bag-mockup bag-mockup--copper">
-                <div class="bag-top">
-                    <span class="bag-origin">Blend</span>
-                    <span class="bag-weight">12 oz</span>
+            <div class="bag-photo">
+                <img src="img/NEW%20COFFEE%20Sumatra%20-%20Gayo%20(Anaerobic%20Natural)%20This%20new%20release%20from%20th.jpg" alt="Sumatra Gayo Anaerobic Natural" loading="lazy">
+                <div class="bag-photo-caption">
+                    <div class="bag-photo-origin">Sumatra</div>
+                    <div class="bag-photo-name">Gayo — Anaerobic Natural</div>
                 </div>
-                <div class="bag-center">
-                    <div class="bag-wordmark">Theory<span class="bag-wordmark-period">.</span></div>
-                    <div class="bag-name">Collaborative</div>
+            </div>
+
+            <div class="bag-photo">
+                <img src="img/NEW%20COFFEE%20Guatemala%20-%20Emilio%20Garcia%20Say%20hello%20to%20Emilio%20Garcia%2C%20our%20n.jpg" alt="Guatemala Emilio Garcia" loading="lazy">
+                <div class="bag-photo-caption">
+                    <div class="bag-photo-origin">Guatemala</div>
+                    <div class="bag-photo-name">Emilio Garcia</div>
                 </div>
-                <div class="bag-bottom">
-                    <span class="bag-roast">Signature Blend</span>
+            </div>
+
+            <div class="bag-photo">
+                <img src="img/This%20weeks%20coffee%20release%20The%20first%20coffee%20is%20the%20Colombia%20Pink%20Bourbo.jpg" alt="Colombia Pink Bourbon" loading="lazy">
+                <div class="bag-photo-caption">
+                    <div class="bag-photo-origin">Colombia</div>
+                    <div class="bag-photo-name">Pink Bourbon</div>
                 </div>
             </div>
         </div>
@@ -578,8 +505,8 @@
     <!-- BAG SYSTEM NOTES -->
     <div class="text-section reveal">
         <div class="text-section-label">Bag System</div>
-        <h2>Three colorways. <em>One hierarchy.</em></h2>
-        <p>Dark bags for single origins. Light bags for medium roasts and accessible blends. Copper bags for signature and limited-edition releases. The wordmark is always centered. Origin top-left. Weight top-right. Roast level at the base. No other text on the front face.</p>
+        <h2>Clean label. <em>Every detail intentional.</em></h2>
+        <p>Bold wordmark front and center. Origin name and coffee name do the talking — no clutter, no filler copy. The bag design mirrors Theory's approach to roasting: only what needs to be there, executed with precision.</p>
     </div>
 
     <!-- QUOTE -->
