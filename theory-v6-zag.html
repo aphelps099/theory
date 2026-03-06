@@ -100,9 +100,109 @@
         }
         .header-link:hover { opacity: 1; }
 
+        .header-links { display: none; }
+
+        /* HAMBURGER BUTTON */
+        .hamburger {
+            width: 32px;
+            height: 24px;
+            position: relative;
+            cursor: pointer;
+            z-index: 201;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: var(--white);
+            position: absolute;
+            left: 0;
+            transition: all 0.35s var(--ease);
+        }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+        .hamburger span:nth-child(3) { bottom: 0; }
+
+        .hamburger.is-open span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); }
+        .hamburger.is-open span:nth-child(2) { opacity: 0; }
+        .hamburger.is-open span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); }
+
+        /* MENU OVERLAY */
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s var(--ease);
+        }
+        .menu-overlay.is-open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .menu-inner {
+            text-align: center;
+            width: 100%;
+            max-width: 480px;
+            padding: 0 32px;
+        }
+
+        .menu-section-label {
+            font-size: 0.5625rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 20px;
+        }
+
+        .menu-link {
+            display: block;
+            padding: 10px 0;
+            font-family: var(--font-sans);
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.6;
+            transition: opacity 0.25s, color 0.25s;
+        }
+        .menu-link:hover {
+            opacity: 1;
+            color: var(--copper-bright);
+        }
+
+        .menu-divider {
+            width: 40px;
+            height: 1px;
+            background: var(--grey-500);
+            margin: 24px auto;
+        }
+
+        .menu-link-sm {
+            display: block;
+            padding: 8px 0;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            color: var(--grey-400);
+            text-decoration: none;
+            transition: color 0.25s;
+        }
+        .menu-link-sm:hover { color: var(--copper-bright); }
+
         @media (max-width: 768px) {
             .header { padding: 20px 24px; }
-            .header-links { display: none; }
+            .menu-link { font-size: 1.125rem; padding: 9px 0; }
         }
 
         /* ═══════════════════════════════════════════════════════════════
@@ -563,9 +663,25 @@
         .photo-strip-cell:hover::after { color: var(--copper-bright); }
 
         @media (max-width: 900px) {
-            .photo-strip { grid-template-columns: 1fr 1fr; height: clamp(200px, 28vw, 300px); }
-            .photo-strip-cell:nth-child(3),
-            .photo-strip-cell:nth-child(4) { display: none; }
+            .photo-strip {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                height: 260px;
+                scrollbar-width: none;
+            }
+            .photo-strip::-webkit-scrollbar { display: none; }
+            .photo-strip-cell {
+                flex: 0 0 80%;
+                scroll-snap-align: center;
+                height: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .photo-strip { height: 220px; }
+            .photo-strip-cell { flex: 0 0 85%; }
         }
 
         /* ═══════════════════════════════════════════════════════════════
@@ -959,8 +1075,6 @@
             overflow: hidden;
         }
 
-        @media (max-width: 768px) { .architecture { padding: 80px 24px; } }
-
         .architecture-content {
             max-width: 1000px;
             margin: 0 auto;
@@ -1058,23 +1172,29 @@
         .arch-service:hover .arch-service-detail { color: rgba(255,255,255,0.8); }
 
         @media (max-width: 768px) {
-            .arch-services {
-                flex-wrap: nowrap;
-                justify-content: flex-start;
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                padding-bottom: 16px;
-                margin: 0 -24px;
-                padding-left: 24px;
-                padding-right: 24px;
-                gap: 8px;
-                scrollbar-width: none;
+            .architecture { padding: 56px 24px; }
+            .architecture-title { margin-bottom: 36px; }
+            .arch-master {
+                padding: 20px 32px;
+                margin-bottom: 0;
             }
-            .arch-services::-webkit-scrollbar { display: none; }
+            .arch-connector {
+                margin-bottom: 24px;
+            }
+            .arch-line-v { height: 24px; }
+            .arch-line-h { display: none; }
+            .arch-services {
+                flex-direction: column;
+                gap: 2px;
+            }
             .arch-service {
-                flex: 0 0 auto;
-                min-width: 120px;
-                scroll-snap-align: start;
+                padding: 12px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .arch-service-detail {
+                margin-top: 0;
             }
         }
 
@@ -1149,12 +1269,29 @@
 
     <header class="header">
         <div class="header-logo">Theory Coffee Roasters</div>
-        <nav class="header-links">
-            <a href="#story" class="header-link">Story</a>
-            <a href="#values" class="header-link">Values</a>
-            <a href="#architecture" class="header-link">Architecture</a>
-        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
     </header>
+
+    <!-- MENU OVERLAY -->
+    <div class="menu-overlay" id="menuOverlay">
+        <nav class="menu-inner">
+            <div class="menu-section-label">The Playbook</div>
+            <a href="brand-story.html" class="menu-link">01 — Brand Story</a>
+            <a href="visual-identity.html" class="menu-link">02 — Visual Identity</a>
+            <a href="photography.html" class="menu-link">03 — Photography</a>
+            <a href="packaging-merch.html" class="menu-link">04 — Packaging + Merch</a>
+            <a href="coffee-origins.html" class="menu-link">05 — Coffee Origins</a>
+            <a href="brand-timeline.html" class="menu-link">06 — Brand Timeline</a>
+            <a href="wholesale-toolkit.html" class="menu-link">07 — Wholesale Toolkit</a>
+            <a href="brand-anthem.html" class="menu-link">08 — Brand Anthem</a>
+            <div class="menu-divider"></div>
+            <a href="#story" class="menu-link-sm" data-menu-close>Story</a>
+            <a href="#values" class="menu-link-sm" data-menu-close>Values</a>
+            <a href="#architecture" class="menu-link-sm" data-menu-close>Architecture</a>
+        </nav>
+    </div>
 
     <!-- 1. THE WORD -->
     <section class="hero">
@@ -1483,6 +1620,22 @@
             });
         }, { threshold: 0.1, rootMargin: '-40px' });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const menuOverlay = document.getElementById('menuOverlay');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('is-open');
+            menuOverlay.classList.toggle('is-open');
+            document.body.style.overflow = menuOverlay.classList.contains('is-open') ? 'hidden' : '';
+        });
+        menuOverlay.querySelectorAll('[data-menu-close]').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('is-open');
+                menuOverlay.classList.remove('is-open');
+                document.body.style.overflow = '';
+            });
+        });
 
         // Subtle parallax on hero photo
         const heroPhoto = document.querySelector('.hero-photo');
