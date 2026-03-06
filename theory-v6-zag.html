@@ -104,11 +104,11 @@
 
         /* HAMBURGER BUTTON */
         .hamburger {
-            width: 32px;
-            height: 24px;
+            width: 28px;
+            height: 18px;
             position: relative;
             cursor: pointer;
-            z-index: 201;
+            z-index: 301;
             background: none;
             border: none;
             padding: 0;
@@ -116,43 +116,104 @@
         .hamburger span {
             display: block;
             width: 100%;
-            height: 2px;
+            height: 1.5px;
             background: var(--white);
             position: absolute;
             left: 0;
-            transition: all 0.35s var(--ease);
+            transition: all 0.5s var(--ease-out);
         }
-        .hamburger span:nth-child(1) { top: 0; }
-        .hamburger span:nth-child(2) { top: 50%; transform: translateY(-50%); }
-        .hamburger span:nth-child(3) { bottom: 0; }
+        .hamburger span:nth-child(1) { top: 0; width: 100%; }
+        .hamburger span:nth-child(2) { top: 50%; transform: translateY(-50%); width: 60%; }
+        .hamburger span:nth-child(3) { bottom: 0; width: 80%; }
 
-        .hamburger.is-open span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); }
-        .hamburger.is-open span:nth-child(2) { opacity: 0; }
-        .hamburger.is-open span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); }
+        .hamburger:hover span { width: 100%; }
+
+        .hamburger.is-open span:nth-child(1) {
+            top: 50%; width: 100%;
+            transform: translateY(-50%) rotate(45deg);
+        }
+        .hamburger.is-open span:nth-child(2) {
+            opacity: 0; width: 0%;
+            transform: translateY(-50%) translateX(10px);
+        }
+        .hamburger.is-open span:nth-child(3) {
+            bottom: 50%; width: 100%;
+            transform: translateY(50%) rotate(-45deg);
+        }
 
         /* MENU OVERLAY */
         .menu-overlay {
             position: fixed;
             inset: 0;
-            z-index: 200;
-            background: var(--black);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
+            z-index: 250;
+            background: rgba(17, 17, 17, 0.97);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            clip-path: inset(0 0 100% 0);
             pointer-events: none;
-            transition: opacity 0.4s var(--ease);
+            transition: clip-path 0.7s var(--ease-out);
         }
         .menu-overlay.is-open {
-            opacity: 1;
+            clip-path: inset(0 0 0 0);
             pointer-events: all;
         }
 
-        .menu-inner {
-            text-align: center;
-            width: 100%;
-            max-width: 480px;
-            padding: 0 32px;
+        /* Left panel — branding side */
+        .menu-brand {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 80px 64px 64px;
+            border-right: 1px solid rgba(255,255,255,0.04);
+            position: relative;
+        }
+
+        .menu-brand-word {
+            font-family: var(--font-sans);
+            font-size: clamp(64px, 8vw, 120px);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.04em;
+            line-height: 0.9;
+            color: var(--white);
+            opacity: 0.04;
+            position: absolute;
+            top: 50%;
+            left: 64px;
+            transform: translateY(-50%);
+        }
+
+        .menu-brand-meta {
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-brand-name {
+            font-size: 0.5625rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 8px;
+        }
+
+        .menu-brand-tagline {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.25);
+            line-height: 1.5;
+        }
+
+        /* Right panel — navigation */
+        .menu-nav {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 64px;
+            position: relative;
         }
 
         .menu-section-label {
@@ -161,48 +222,159 @@
             letter-spacing: 0.22em;
             text-transform: uppercase;
             color: var(--copper);
-            margin-bottom: 20px;
+            margin-bottom: 32px;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.5s var(--ease-out) 0.2s, transform 0.5s var(--ease-out) 0.2s;
+        }
+
+        .menu-overlay.is-open .menu-section-label {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .menu-link {
-            display: block;
-            padding: 10px 0;
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            padding: 0;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+        }
+
+        .menu-overlay.is-open .menu-link { opacity: 1; transform: translateY(0); }
+        .menu-overlay.is-open .menu-link:nth-child(2)  { transition-delay: 0.08s; }
+        .menu-overlay.is-open .menu-link:nth-child(3)  { transition-delay: 0.12s; }
+        .menu-overlay.is-open .menu-link:nth-child(4)  { transition-delay: 0.16s; }
+        .menu-overlay.is-open .menu-link:nth-child(5)  { transition-delay: 0.20s; }
+        .menu-overlay.is-open .menu-link:nth-child(6)  { transition-delay: 0.24s; }
+        .menu-overlay.is-open .menu-link:nth-child(7)  { transition-delay: 0.28s; }
+        .menu-overlay.is-open .menu-link:nth-child(8)  { transition-delay: 0.32s; }
+        .menu-overlay.is-open .menu-link:nth-child(9)  { transition-delay: 0.36s; }
+
+        .menu-link-num {
             font-family: var(--font-sans);
-            font-size: 1.25rem;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            color: var(--white);
-            text-decoration: none;
-            opacity: 0.6;
-            transition: opacity 0.25s, color 0.25s;
-        }
-        .menu-link:hover {
-            opacity: 1;
-            color: var(--copper-bright);
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: var(--copper);
+            opacity: 0.5;
+            min-width: 20px;
+            transition: opacity 0.3s;
         }
 
-        .menu-divider {
-            width: 40px;
-            height: 1px;
-            background: var(--grey-500);
-            margin: 24px auto;
-        }
-
-        .menu-link-sm {
-            display: block;
-            padding: 8px 0;
-            font-size: 0.8125rem;
+        .menu-link-text {
+            font-family: var(--font-sans);
+            font-size: clamp(1.25rem, 2vw, 1.75rem);
             font-weight: 500;
-            letter-spacing: 0.06em;
-            color: var(--grey-400);
-            text-decoration: none;
-            transition: color 0.25s;
+            letter-spacing: -0.01em;
+            color: var(--white);
+            padding: 12px 0;
+            position: relative;
+            transition: color 0.3s, transform 0.3s var(--ease);
         }
+
+        .menu-link-text::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--copper);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s var(--ease);
+        }
+
+        .menu-link:hover .menu-link-text {
+            color: var(--copper-bright);
+            transform: translateX(4px);
+        }
+        .menu-link:hover .menu-link-text::after { transform: scaleX(1); }
+        .menu-link:hover .menu-link-num { opacity: 1; }
+
+        /* Divider */
+        .menu-divider {
+            width: 32px;
+            height: 1px;
+            background: rgba(255,255,255,0.08);
+            margin: 28px 0;
+            margin-left: 36px;
+            opacity: 0;
+            transition: opacity 0.5s var(--ease-out) 0.4s;
+        }
+        .menu-overlay.is-open .menu-divider { opacity: 1; }
+
+        /* Secondary links */
+        .menu-link-sm {
+            display: inline-block;
+            margin-left: 36px;
+            padding: 6px 0;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.2);
+            text-decoration: none;
+            transition: color 0.3s;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.4s var(--ease-out) 0.45s, transform 0.4s var(--ease-out) 0.45s, color 0.3s;
+        }
+        .menu-overlay.is-open .menu-link-sm { opacity: 1; transform: translateY(0); }
         .menu-link-sm:hover { color: var(--copper-bright); }
+
+        /* Close hint bottom-right */
+        .menu-close-hint {
+            position: absolute;
+            bottom: 40px;
+            right: 64px;
+            font-size: 0.5625rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.12);
+            opacity: 0;
+            transition: opacity 0.4s var(--ease-out) 0.55s;
+        }
+        .menu-overlay.is-open .menu-close-hint { opacity: 1; }
+
+        /* Copper accent line at top of overlay */
+        .menu-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--copper), var(--copper-bright), var(--copper));
+            z-index: 1;
+            transform: scaleX(0);
+            transition: transform 0.6s var(--ease-out) 0.15s;
+        }
+        .menu-overlay.is-open::before { transform: scaleX(1); }
 
         @media (max-width: 768px) {
             .header { padding: 20px 24px; }
-            .menu-link { font-size: 1.125rem; padding: 9px 0; }
+            .menu-overlay {
+                grid-template-columns: 1fr;
+            }
+            .menu-brand { display: none; }
+            .menu-nav {
+                padding: 100px 32px 64px;
+                justify-content: flex-start;
+            }
+            .menu-link-text {
+                font-size: 1.25rem;
+                padding: 10px 0;
+            }
+            .menu-divider { margin: 20px 0; margin-left: 36px; }
+            .menu-close-hint { right: 32px; bottom: 32px; }
         }
 
         /* ═══════════════════════════════════════════════════════════════
@@ -1276,20 +1448,28 @@
 
     <!-- MENU OVERLAY -->
     <div class="menu-overlay" id="menuOverlay">
-        <nav class="menu-inner">
+        <div class="menu-brand">
+            <div class="menu-brand-word">Theory.</div>
+            <div class="menu-brand-meta">
+                <div class="menu-brand-name">Theory Coffee Roasters</div>
+                <div class="menu-brand-tagline">Redding, California<br>Est. 2018</div>
+            </div>
+        </div>
+        <nav class="menu-nav">
             <div class="menu-section-label">The Playbook</div>
-            <a href="brand-story.html" class="menu-link">01 — Brand Story</a>
-            <a href="visual-identity.html" class="menu-link">02 — Visual Identity</a>
-            <a href="photography.html" class="menu-link">03 — Photography</a>
-            <a href="packaging-merch.html" class="menu-link">04 — Packaging + Merch</a>
-            <a href="coffee-origins.html" class="menu-link">05 — Coffee Origins</a>
-            <a href="brand-timeline.html" class="menu-link">06 — Brand Timeline</a>
-            <a href="wholesale-toolkit.html" class="menu-link">07 — Wholesale Toolkit</a>
-            <a href="brand-anthem.html" class="menu-link">08 — Brand Anthem</a>
+            <a href="brand-story.html" class="menu-link"><span class="menu-link-num">01</span><span class="menu-link-text">Brand Story</span></a>
+            <a href="visual-identity.html" class="menu-link"><span class="menu-link-num">02</span><span class="menu-link-text">Visual Identity</span></a>
+            <a href="photography.html" class="menu-link"><span class="menu-link-num">03</span><span class="menu-link-text">Photography</span></a>
+            <a href="packaging-merch.html" class="menu-link"><span class="menu-link-num">04</span><span class="menu-link-text">Packaging + Merch</span></a>
+            <a href="coffee-origins.html" class="menu-link"><span class="menu-link-num">05</span><span class="menu-link-text">Coffee Origins</span></a>
+            <a href="brand-timeline.html" class="menu-link"><span class="menu-link-num">06</span><span class="menu-link-text">Brand Timeline</span></a>
+            <a href="wholesale-toolkit.html" class="menu-link"><span class="menu-link-num">07</span><span class="menu-link-text">Wholesale Toolkit</span></a>
+            <a href="brand-anthem.html" class="menu-link"><span class="menu-link-num">08</span><span class="menu-link-text">Brand Anthem</span></a>
             <div class="menu-divider"></div>
             <a href="#story" class="menu-link-sm" data-menu-close>Story</a>
             <a href="#values" class="menu-link-sm" data-menu-close>Values</a>
             <a href="#architecture" class="menu-link-sm" data-menu-close>Architecture</a>
+            <div class="menu-close-hint">Esc to close</div>
         </nav>
     </div>
 
@@ -1621,20 +1801,40 @@
         }, { threshold: 0.1, rootMargin: '-40px' });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Hamburger menu toggle
+        // Menu
         const hamburger = document.getElementById('hamburger');
         const menuOverlay = document.getElementById('menuOverlay');
+
+        function openMenu() {
+            hamburger.classList.add('is-open');
+            menuOverlay.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            hamburger.classList.remove('is-open');
+            menuOverlay.classList.remove('is-open');
+            document.body.style.overflow = '';
+        }
+
         hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('is-open');
-            menuOverlay.classList.toggle('is-open');
-            document.body.style.overflow = menuOverlay.classList.contains('is-open') ? 'hidden' : '';
+            menuOverlay.classList.contains('is-open') ? closeMenu() : openMenu();
         });
+
+        // ESC to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && menuOverlay.classList.contains('is-open')) closeMenu();
+        });
+
+        // Click backdrop (left brand panel) to close
+        const menuBrand = menuOverlay.querySelector('.menu-brand');
+        if (menuBrand) {
+            menuBrand.addEventListener('click', closeMenu);
+        }
+
+        // Anchor links close menu
         menuOverlay.querySelectorAll('[data-menu-close]').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('is-open');
-                menuOverlay.classList.remove('is-open');
-                document.body.style.overflow = '';
-            });
+            link.addEventListener('click', closeMenu);
         });
 
         // Subtle parallax on hero photo
