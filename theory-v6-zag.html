@@ -359,14 +359,43 @@
         }
         .menu-overlay.is-open::before { transform: scaleX(1); }
 
+        /* Mobile close button inside menu */
+        .menu-close-btn {
+            display: none;
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            z-index: 10;
+            padding: 0;
+        }
+        .menu-close-btn::before,
+        .menu-close-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 14px;
+            height: 1.5px;
+            background: var(--white);
+        }
+        .menu-close-btn::before { transform: translate(-50%, -50%) rotate(45deg); }
+        .menu-close-btn::after { transform: translate(-50%, -50%) rotate(-45deg); }
+        .menu-close-btn:hover { border-color: var(--copper); }
+
         @media (max-width: 768px) {
             .header { padding: 20px 24px; }
             .menu-overlay {
                 grid-template-columns: 1fr;
             }
             .menu-brand { display: none; }
+            .menu-close-btn { display: block; }
             .menu-nav {
-                padding: 100px 32px 64px;
+                padding: 80px 32px 64px;
                 justify-content: flex-start;
             }
             .menu-link-text {
@@ -1456,6 +1485,7 @@
             </div>
         </div>
         <nav class="menu-nav">
+            <button class="menu-close-btn" id="menuCloseBtn" aria-label="Close menu"></button>
             <div class="menu-section-label">The Playbook</div>
             <a href="brand-story.html" class="menu-link"><span class="menu-link-num">01</span><span class="menu-link-text">Brand Story</span></a>
             <a href="visual-identity.html" class="menu-link"><span class="menu-link-num">02</span><span class="menu-link-text">Visual Identity</span></a>
@@ -1831,6 +1861,9 @@
         if (menuBrand) {
             menuBrand.addEventListener('click', closeMenu);
         }
+
+        // Close button (mobile)
+        document.getElementById('menuCloseBtn').addEventListener('click', closeMenu);
 
         // Anchor links close menu
         menuOverlay.querySelectorAll('[data-menu-close]').forEach(link => {
